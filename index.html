@@ -3,34 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Smart Planner (Upload Only)</title>
+    <title>RCM Smart Planner</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        /* 1. तिरंगा थीम (Full Page Background) */
+        /* 1. तिरंगा थीम */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             height: 100vh;
-            /* केशरी, पांढरा, हिरवा ग्रेडियंट */
             background: linear-gradient(180deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
             background-attachment: fixed;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden; /* आडवे स्क्रोल बंद */
+            overflow-x: hidden;
         }
 
-        /* 2. हेडर डिझाइन */
+        /* 2. हेडर */
         .header-section {
             background-color: rgba(255, 255, 255, 0.95);
-            padding: 12px 15px;
+            padding: 10px 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             flex-shrink: 0;
-            border-bottom: 3px solid #000080; /* अशोक चक्र निळा */
+            border-bottom: 3px solid #000080;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -38,63 +37,52 @@
         .header-section h2 {
             margin: 0;
             color: #000080;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             text-transform: uppercase;
         }
 
-        /* Reports बटन */
         .report-btn {
             background-color: #FF9933;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            transition: 0.3s;
         }
-        .report-btn:hover { background-color: #e68a00; }
 
-        /* 3. कंट्रोल सेक्शन (Upload + Search) */
+        /* 3. कंट्रोल सेक्शन */
         .control-section {
-            padding: 15px;
+            padding: 10px;
             text-align: center;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
-        /* अपलोड बटन स्टाईल (Flag Theme Compatible) */
         .file-upload-wrapper {
             position: relative;
             overflow: hidden;
             display: inline-block;
-            width: 90%;
+            width: 95%;
             max-width: 400px;
         }
         .btn-upload {
             border: 2px dashed #000080;
             color: #000080;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
-        .btn-upload:hover { background-color: #f0f0f5; }
-        
         .file-upload-wrapper input[type=file] {
             font-size: 100px;
             position: absolute;
@@ -106,10 +94,9 @@
             height: 100%;
         }
 
-        /* सर्च बॉक्स */
         input[type="text"]#searchInput {
-            padding: 12px;
-            width: 85%;
+            padding: 10px;
+            width: 90%;
             max-width: 400px;
             border: 2px solid #000080;
             border-radius: 25px;
@@ -117,113 +104,106 @@
             text-align: center;
             outline: none;
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* 4. टेबल कंटेनर */
+        /* 4. टेबल */
         .table-container {
             flex-grow: 1;
-            overflow-y: auto; /* फक्त उभे स्क्रोल */
-            margin: 0 10px 10px 10px;
+            overflow-y: auto;
+            margin: 0 5px 5px 5px;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
+            border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 13px;
             table-layout: fixed;
         }
 
         thead th {
             background-color: #000080;
             color: white;
-            padding: 12px 8px;
-            text-align: left;
+            padding: 10px 4px;
+            text-align: center; /* Center headers */
             position: sticky;
             top: 0;
             z-index: 10;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         td {
-            padding: 10px 8px;
+            padding: 8px 4px;
             border-bottom: 1px solid #eee;
             word-wrap: break-word;
             vertical-align: middle;
+            text-align: center; /* Center content */
         }
+        
+        td:nth-child(2) { text-align: left; } /* Name left aligned */
 
-        /* ID Bold Feature */
+        /* ID Bold */
         td:first-child {
             font-weight: 900;
             color: #333;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         .input-pv {
-            width: 85%;
-            padding: 6px;
+            width: 90%;
+            padding: 5px 2px;
             border: 1px solid #000080;
-            border-radius: 5px;
+            border-radius: 4px;
             text-align: center;
             font-weight: bold;
+            font-size: 13px;
         }
 
         .btn-save {
             background-color: #138808;
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 12px;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 11px;
             cursor: pointer;
             width: 100%;
         }
 
-        /* Column Responsive Widths */
-        th:nth-child(1), td:nth-child(1) { width: 14%; } /* ID */
-        th:nth-child(2), td:nth-child(2) { width: 30%; } /* Name */
-        th:nth-child(3), td:nth-child(3) { width: 0%; display: none; } /* Mobile Hide */
-        th:nth-child(4), td:nth-child(4) { width: 16%; } /* Old PV */
-        th:nth-child(5), td:nth-child(5) { width: 22%; } /* Input */
-        th:nth-child(6), td:nth-child(6) { width: 18%; } /* Save */
-        th:nth-child(7), td:nth-child(7) { display: none; } /* Diff */
+        /* --- महत्वाची सुधारणा: Mobile Column Widths --- */
+        /* मोबाईलवर 6 कॉलम बसवण्यासाठी ऍडजस्टमेंट */
+        th:nth-child(1), td:nth-child(1) { width: 12%; } /* ID */
+        th:nth-child(2), td:nth-child(2) { width: 24%; } /* Name - थोडं नाव कट होईल पण ऍडजस्ट होईल */
+        th:nth-child(3), td:nth-child(3) { width: 0%; display: none; } /* Mobile Hidden */
+        th:nth-child(4), td:nth-child(4) { width: 14%; } /* PV */
+        th:nth-child(5), td:nth-child(5) { width: 18%; } /* New */
+        th:nth-child(6), td:nth-child(6) { width: 16%; } /* Save */
+        th:nth-child(7), td:nth-child(7) { width: 16%; display: table-cell; } /* Diff - आता दिसेल! */
 
+        /* Desktop View */
         @media screen and (min-width: 601px) {
             th:nth-child(3), td:nth-child(3) { display: table-cell; width: 15%; }
-            th:nth-child(7), td:nth-child(7) { display: table-cell; width: 10%; }
-            th:nth-child(1), td:nth-child(1) { width: 10%; }
             th:nth-child(2), td:nth-child(2) { width: 25%; }
+            th:nth-child(1), td:nth-child(1) { width: 8%; }
+            th:nth-child(7), td:nth-child(7) { width: 10%; }
             .header-section h2 { font-size: 24px; }
         }
 
-        .diff-val.positive { color: green; font-weight: bold; }
-        .diff-val.negative { color: red; font-weight: bold; }
+        .diff-val { font-weight: bold; font-size: 12px; }
+        .diff-val.positive { color: green; }
+        .diff-val.negative { color: red; }
 
-        /* Modal (Popup) */
-        .modal {
-            display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px);
-        }
-        .modal-content {
-            background-color: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-top: 5px solid #FF9933; border-bottom: 5px solid #138808;
-        }
-        .ai-box { background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left; border-left: 5px solid #000080; }
-        .action-btn { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal-content { background-color: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; }
+        .ai-box { background: #f0f8ff; padding: 10px; border-radius: 8px; margin: 15px 0; text-align: left; border-left: 5px solid #000080; }
+        .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
         .btn-pdf { background-color: #dc3545; }
         .btn-excel { background-color: #28a745; }
         .btn-close { background-color: #6c757d; }
-        
-        /* Empty State Message */
-        .empty-message {
-            text-align: center;
-            color: #666;
-            padding: 40px 20px;
-            font-size: 16px;
-        }
+        .empty-message { text-align: center; color: #666; padding: 40px 20px; }
 
     </style>
 </head>
@@ -239,7 +219,6 @@
             <button class="btn-upload">📂 Excel फाइल अपलोड करा</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
         </div>
-
         <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
 
@@ -257,11 +236,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <tr>
-                    <td colspan="7" class="empty-message">
-                        👆 कृपया वरून <b>Excel फाइल</b> अपलोड करा.
-                    </td>
-                </tr>
+                <tr><td colspan="7" class="empty-message">👆 कृपया Excel फाइल अपलोड करा.</td></tr>
             </tbody>
         </table>
     </div>
@@ -270,9 +245,9 @@
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">🤖 AI Analysis</h3>
             <div id="aiAnalysis" class="ai-box">Calculating...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF डाउनलोड</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel डाउनलोड</button>
-            <button class="action-btn btn-close" onclick="closeReports()">बंद करा</button>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF Download</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel Download</button>
+            <button class="action-btn btn-close" onclick="closeReports()">Close</button>
         </div>
     </div>
 
@@ -292,91 +267,88 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- EMPTY DATA INITIALLY ---
-        // इथे जुनी लिस्ट काढून टाकली आहे.
         window.associateData = [];
-
         const tableBody = document.getElementById('tableBody');
 
-        // --- 1. EXCEL UPLOAD LOGIC ---
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            
             reader.onload = (event) => {
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
                 const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                if (jsonData.length === 0) { alert("Excel फाईल रिकामी आहे!"); return; }
 
-                if (jsonData.length === 0) {
-                    alert("Excel फाईल रिकामी आहे!");
-                    return;
-                }
-
-                // Excel डेटा मॅप करणे
-                window.associateData = jsonData.map(row => {
-                    return {
-                        id: row['ID'] || row['IdNo'] || row['Id'] || 'N/A',
-                        name: row['Name'] || row['Associate Name'] || 'Unknown',
-                        mobile: row['Mobile'] || row['MobileNo'] || '',
-                        pv: row['PV'] || row['OctPv'] || row['Old PV'] || 0
-                    };
-                });
-
-                alert(`${window.associateData.length} रेकॉर्ड्स लोड झाले!`);
+                window.associateData = jsonData.map(row => ({
+                    id: row['ID'] || row['IdNo'] || row['Id'] || 'N/A',
+                    name: row['Name'] || row['Associate Name'] || 'Unknown',
+                    mobile: row['Mobile'] || row['MobileNo'] || '',
+                    pv: row['PV'] || row['OctPv'] || row['Old PV'] || 0
+                }));
                 loadTable();
             };
-
             reader.readAsArrayBuffer(file);
         });
 
-        // --- 2. TABLE LOAD ---
         function loadTable() {
             tableBody.innerHTML = '';
-            
             if (window.associateData.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="empty-message">
-                            👆 कृपया वरून <b>Excel फाइल</b> अपलोड करा.
-                        </td>
-                    </tr>`;
+                tableBody.innerHTML = '<tr><td colspan="7" class="empty-message">👆 कृपया Excel फाइल अपलोड करा.</td></tr>';
                 return;
             }
 
             window.associateData.forEach((row, index) => {
                 let tr = document.createElement('tr');
+                // Added oninput event to calculate difference immediately
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.name}</td>
                     <td class="mobile-col">${row.mobile}</td>
                     <td id="old-${index}">${row.pv}</td>
-                    <td><input type="number" class="input-pv" id="input-${index}" placeholder="Target"></td>
+                    <td>
+                        <input type="number" class="input-pv" id="input-${index}" placeholder="Target" oninput="window.calculateDiff(${index})">
+                    </td>
                     <td><button class="btn-save" onclick="window.saveToFirebase(${index})">Save</button></td>
-                    <td id="diff-${index}" class="diff-val"></td>
+                    <td id="diff-${index}" class="diff-val">-</td>
                 `;
                 tableBody.appendChild(tr);
             });
         }
 
-        // --- 3. FIREBASE SAVE ---
-        window.saveToFirebase = async function(index) {
-            const rowData = window.associateData[index];
+        // NEW: Real-time calculation function
+        window.calculateDiff = function(index) {
             const oldPv = parseInt(document.getElementById(`old-${index}`).innerText) || 0;
-            const newPvInput = document.getElementById(`input-${index}`).value;
+            const newPvVal = document.getElementById(`input-${index}`).value;
             const diffCell = document.getElementById(`diff-${index}`);
-            
-            if (newPvInput === '') { alert("कृपया Target PV टाका"); return; }
-            
-            const newPv = parseInt(newPvInput);
+
+            if(newPvVal === '') {
+                diffCell.innerText = '-';
+                diffCell.className = 'diff-val';
+                return;
+            }
+
+            const newPv = parseInt(newPvVal);
             const diff = newPv - oldPv;
             
             diffCell.innerText = diff > 0 ? `+${diff}` : diff;
             diffCell.className = diff > 0 ? 'diff-val positive' : (diff < 0 ? 'diff-val negative' : 'diff-val');
+        }
+
+        window.saveToFirebase = async function(index) {
+            const rowData = window.associateData[index];
+            const oldPv = parseInt(document.getElementById(`old-${index}`).innerText) || 0;
+            const newPvInput = document.getElementById(`input-${index}`).value;
+            
+            if (newPvInput === '') { alert("Target PV टाका"); return; }
+            
+            // Ensure diff is calculated visually
+            window.calculateDiff(index);
+            
+            const newPv = parseInt(newPvInput);
+            const diff = newPv - oldPv;
 
             const btn = document.querySelectorAll('.btn-save')[index];
             btn.innerText = "⏳";
@@ -403,23 +375,17 @@
             }
         }
 
-        // --- 4. FILTER ---
         window.filterTable = function() {
             const input = document.getElementById('searchInput');
             const filter = input.value.toUpperCase();
             const tr = tableBody.getElementsByTagName('tr');
-
             for (let i = 0; i < tr.length; i++) {
-                // Skip checking if it's the empty message row
                 if (tr[i].querySelector('.empty-message')) continue;
-
                 let tdId = tr[i].getElementsByTagName('td')[0];
                 let tdName = tr[i].getElementsByTagName('td')[1];
-                
                 if (tdName || tdId) {
                     let txtId = tdId.textContent || tdId.innerText;
                     let txtName = tdName.textContent || tdName.innerText;
-                    
                     if (txtName.toUpperCase().indexOf(filter) > -1 || txtId.indexOf(filter) > -1) {
                         tr[i].style.display = "";
                     } else {
@@ -429,7 +395,6 @@
             }
         }
 
-        // --- 5. REPORTS ---
         function getReportData() {
             return window.associateData.map((row, index) => {
                 const inputVal = document.getElementById(`input-${index}`) ? document.getElementById(`input-${index}`).value : "";
@@ -440,56 +405,44 @@
         }
 
         window.openReports = function() {
-            if(window.associateData.length === 0) { alert("कृपया आधी Excel फाइल अपलोड करा!"); return; }
-            
+            if(window.associateData.length === 0) { alert("Excel फाइल अपलोड करा!"); return; }
             document.getElementById('reportModal').style.display = 'flex';
-            
             const data = getReportData();
             let totalOld = 0, totalNew = 0, maxGrowth = -Infinity, starPerformer = "None";
-
             data.forEach(d => {
                 totalOld += parseInt(d.pv || 0);
                 totalNew += parseInt(d.targetPv || 0);
                 if (d.difference > maxGrowth) { maxGrowth = d.difference; starPerformer = d.name; }
             });
-
             const growth = totalNew - totalOld;
             const growthPercent = totalOld > 0 ? ((growth / totalOld) * 100).toFixed(1) : 0;
             const color = growth >= 0 ? "green" : "red";
-
             document.getElementById('aiAnalysis').innerHTML = `
-                <div><strong>📈 Old PV:</strong> ${totalOld} | <strong>🎯 New:</strong> ${totalNew}</div>
+                <div><strong>📈 Old:</strong> ${totalOld} | <strong>🎯 New:</strong> ${totalNew}</div>
                 <div style="font-size:16px; margin:10px 0;"><strong>🚀 Growth:</strong> <span style="color:${color}">${growth > 0 ? '+' : ''}${growth} (${growthPercent}%)</span></div>
                 <div style="border-top:1px solid #ccc; padding-top:5px;"><strong>🏆 Star:</strong> ${starPerformer} (+${maxGrowth})</div>
             `;
         }
 
         window.closeReports = function() { document.getElementById('reportModal').style.display = 'none'; }
-
         window.generatePDF = function() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const data = getReportData().filter(d => d.difference !== 0);
-            if(data.length === 0) { alert("काहीही बदल (Targets) नाहीत!"); return; }
-            
+            if(data.length === 0) { alert("काहीही बदल नाहीत!"); return; }
             const tableRows = data.map(item => [item.id, item.name, item.pv, item.targetPv, item.difference]);
             doc.text("RCM Target Report", 14, 15);
             doc.autoTable({ head: [['ID', 'Name', 'Old PV', 'Target', 'Diff']], body: tableRows, startY: 20 });
             doc.save('RCM_Report.pdf');
         }
-
         window.generateExcel = function() {
             const data = getReportData();
-            const exportData = data.map(item => ({ "ID": item.id, "Name": item.name, "Mobile": item.mobile, "Old PV": item.pv, "New Target": item.targetPv, "Diff": item.difference }));
+            const exportData = data.map(item => ({ "ID": item.id, "Name": item.name, "Old PV": item.pv, "New Target": item.targetPv, "Diff": item.difference }));
             const ws = XLSX.utils.json_to_sheet(exportData);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Report");
             XLSX.writeFile(wb, "RCM_Target_Report.xlsx");
         }
-
-        // Init Load (Will show empty state)
-        loadTable();
-
     </script>
 </body>
 </html>
