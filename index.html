@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Final Planner</title>
+    <title>RCM Pro Planner</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -12,7 +12,7 @@
     <style>
         /* 1. तिरंगा थीम */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -34,10 +34,24 @@
             justify-content: space-between;
             align-items: center;
         }
-        .header-section h2 { margin: 0; color: #000080; font-size: 20px; text-transform: uppercase; }
+        .header-section h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
         
-        .header-btn-group { display: flex; gap: 10px; }
-        .action-icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; }
+        /* Reports Button (Top Right) */
+        .report-btn {
+            background-color: #FF9933;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .report-btn:hover { background-color: #e68a00; }
 
         /* 3. कंट्रोल सेक्शन */
         .control-section {
@@ -59,7 +73,7 @@
             border: 2px solid #000080;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
         .btn-upload { background: white; color: #000080; border-style: dashed; }
         .btn-open { background: #000080; color: white; }
@@ -76,7 +90,7 @@
             flex-grow: 1;
             overflow-y: auto;
             margin: 5px;
-            margin-bottom: 60px; /* Space for footer button */
+            margin-bottom: 70px; /* Space for footer button */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -110,7 +124,7 @@
         /* 5. Final Save Button (Footer) */
         .footer-save {
             position: fixed;
-            bottom: 10px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
@@ -128,7 +142,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .footer-save:active { transform: translateX(-50%) scale(0.98); }
 
@@ -136,22 +150,21 @@
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
         .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; max-height: 80vh; overflow-y: auto; }
         
-        /* Reports List Style */
+        .ai-box { background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; border-left: 5px solid #000080; font-size: 14px; }
+        
+        .action-btn { width: 100%; padding: 12px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; display: flex; justify-content: center; gap: 8px; }
+        .btn-pdf { background: #dc3545; } 
+        .btn-excel { background: #28a745; } 
+        .btn-close { background: #6c757d; }
+
+        /* Saved List Style */
         .saved-report-item {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s;
         }
         .saved-report-item:hover { background: #e9ecef; border-color: #000080; }
         .report-date { font-weight: bold; color: #000080; }
         .report-info { font-size: 12px; color: #666; }
 
-        .btn-close { background: #6c757d; color: white; padding: 8px 15px; border: none; border-radius: 5px; margin-top: 10px; cursor: pointer; }
         .empty-msg { text-align: center; color: #666; padding: 40px 20px; }
 
     </style>
@@ -160,9 +173,9 @@
 
     <div class="header-section">
         <h2>🇮🇳 RCM Planner</h2>
-        <div class="header-btn-group">
-            <button class="action-icon-btn" onclick="openReportsModal()">📊</button>
-        </div>
+        <button class="report-btn" onclick="openReportsModal()">
+            📊 Reports
+        </button>
     </div>
 
     <div class="control-section">
@@ -173,7 +186,7 @@
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
 
             <button class="btn-main btn-open" onclick="openSavedList()">
-                📂 Open Saved Reports
+                📂 Open Saved
             </button>
         </div>
 
@@ -202,19 +215,31 @@
         💾 Final Save Report
     </button>
 
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#000080; margin-top:0;">🤖 Smart Analysis</h3>
+            
+            <div id="aiAnalysis" class="ai-box">
+                Calculating...
+            </div>
+
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF Download</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel Download</button>
+            <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
+        </div>
+    </div>
+
     <div id="savedListModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">📂 Saved Reports</h3>
-            <div id="savedReportsList" style="text-align: left;">
-                Loading...
-            </div>
-            <button class="btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
+            <div id="savedReportsList" style="text-align: left;">Loading...</div>
+            <button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB4rpjLDm8Q_L-xjvs1E_mV9KUBdwIGaeA",
@@ -281,7 +306,6 @@
                 `;
                 tableBody.appendChild(tr);
                 
-                // Color formatting initial load
                 if(row.diff !== 0) {
                     const cell = tr.querySelector(`#diff-${index}`);
                     cell.className = row.diff > 0 ? 'diff-val positive' : 'diff-val negative';
@@ -313,14 +337,48 @@
             diffCell.className = diff > 0 ? 'diff-val positive' : (diff < 0 ? 'diff-val negative' : 'diff-val');
         }
 
-        // --- FINAL SAVE (Create New Report) ---
+        // --- REPORTS LOGIC (AI / PDF / EXCEL) ---
+        window.openReportsModal = function() {
+            if(window.associateData.length === 0) { alert("Data नाही! आधी Excel अपलोड करा."); return; }
+            document.getElementById('reportModal').style.display = 'flex';
+            
+            // AI Analysis
+            let totalOld = 0;
+            let totalTarget = 0;
+            let activeCount = 0;
+
+            window.associateData.forEach(d => {
+                totalOld += d.pv;
+                if(d.target !== '') {
+                    totalTarget += parseInt(d.target);
+                    activeCount++;
+                } else {
+                    totalTarget += d.pv; // Assume same if no target
+                }
+            });
+
+            const growth = totalTarget - totalOld;
+            const growthPercent = totalOld > 0 ? ((growth / totalOld) * 100).toFixed(1) : 0;
+            const color = growth >= 0 ? "green" : "red";
+
+            document.getElementById('aiAnalysis').innerHTML = `
+                <div><strong>👥 Total Associates:</strong> ${window.associateData.length}</div>
+                <div><strong>🎯 Targets Set:</strong> ${activeCount}</div>
+                <hr>
+                <div><strong>📉 Old PV:</strong> ${totalOld}</div>
+                <div><strong>📈 New Target:</strong> ${totalTarget}</div>
+                <div style="font-size:16px; margin-top:5px;">
+                    <strong>🚀 Growth:</strong> 
+                    <span style="color:${color}">${growth > 0 ? '+' : ''}${growth} (${growthPercent}%)</span>
+                </div>
+            `;
+        }
+
+        // --- FINAL SAVE (Save to Firebase) ---
         window.saveFinalReport = async function() {
             if (window.associateData.length === 0) { alert("Data नाही! आधी Excel अपलोड करा."); return; }
             
-            // फक्त ज्यांचा टारगेट सेट आहे किंवा ज्यांचा डेटा आहे तो सेव्ह करा
-            // पण 'File Open' करण्यासाठी सर्व डेटा सेव्ह करणे चांगले.
-            
-            const reportName = prompt("रिपोर्टला नाव द्या (उदा. Oct Targets):", `Report - ${new Date().toLocaleString()}`);
+            const reportName = prompt("रिपोर्टला नाव द्या (उदा. Oct Closing):", `Report - ${new Date().toLocaleString()}`);
             if (!reportName) return;
 
             const btn = document.querySelector('.footer-save');
@@ -329,11 +387,10 @@
             btn.style.backgroundColor = "#ffc107";
 
             try {
-                // Add to 'saved_reports' collection
                 await addDoc(collection(db, "saved_reports"), {
                     reportName: reportName,
                     createdAt: serverTimestamp(),
-                    data: window.associateData // Saving the whole array
+                    data: window.associateData
                 });
 
                 btn.innerText = "✅ Saved!";
@@ -345,7 +402,7 @@
             } catch (error) {
                 console.error("Error:", error);
                 btn.innerText = "❌ Error";
-                alert("Error saving report: " + error.message);
+                alert("Error: " + error.message);
             }
         }
 
@@ -361,18 +418,18 @@
                 
                 listContainer.innerHTML = "";
                 if(querySnapshot.empty) {
-                    listContainer.innerHTML = "<p>अद्याप कोणतेही रिपोर्ट्स सेव्ह केलेले नाहीत.</p>";
+                    listContainer.innerHTML = "<p>कोणतेही सेव्ह रिपोर्ट्स नाहीत.</p>";
                     return;
                 }
 
                 querySnapshot.forEach((doc) => {
                     const r = doc.data();
-                    const date = r.createdAt ? r.createdAt.toDate().toLocaleString() : 'Just now';
+                    const date = r.createdAt ? r.createdAt.toDate().toLocaleString() : 'Date N/A';
                     const div = document.createElement('div');
                     div.className = 'saved-report-item';
                     div.innerHTML = `
-                        <div class="report-date">${r.reportName}</div>
-                        <div class="report-info">📅 ${date} | 👥 ${r.data ? r.data.length : 0} Records</div>
+                        <div class="report-date">📄 ${r.reportName}</div>
+                        <div class="report-info">📅 ${date} | 👥 ${r.data ? r.data.length : 0} People</div>
                     `;
                     div.onclick = () => loadSelectedReport(r.data);
                     listContainer.appendChild(div);
@@ -384,20 +441,46 @@
             }
         }
 
-        // --- LOAD SELECTED REPORT ---
         window.loadSelectedReport = function(savedData) {
             if(!savedData) return;
             window.associateData = savedData;
             loadTable();
             document.getElementById('savedListModal').style.display = 'none';
-            alert("रिपोर्ट लोड झाला! आता तुम्ही Edit करू शकता.");
+            alert("रिपोर्ट लोड झाला! आता तुम्ही बदल करू शकता.");
+        }
+
+        // --- PDF & EXCEL ---
+        window.generatePDF = function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const data = window.associateData.filter(d => d.diff !== 0); // Only changed rows
+            
+            if(data.length === 0) {
+                // If no changes, ask to print all?
+                if(!confirm("काहीही बदल नाहीत. पूर्ण लिस्ट प्रिंट करायची का?")) return;
+            }
+            
+            const printData = data.length > 0 ? data : window.associateData;
+            const rows = printData.map(i => [i.id, i.name, i.pv, i.target, i.diff]);
+            
+            doc.text("RCM Target Report", 14, 15);
+            doc.autoTable({ head: [['ID', 'Name', 'Old PV', 'Target', 'Diff']], body: rows, startY: 20 });
+            doc.save('RCM_Report.pdf');
+        }
+
+        window.generateExcel = function() {
+            const ws = XLSX.utils.json_to_sheet(window.associateData.map(i => ({
+                ID: i.id, Name: i.name, Mobile: i.mobile, Old_PV: i.pv, New_Target: i.target, Difference: i.diff
+            })));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Targets");
+            XLSX.writeFile(wb, "RCM_Target_Report.xlsx");
         }
 
         // --- FILTER ---
         window.filterTable = function() {
             const search = document.getElementById('searchInput').value.toUpperCase();
             const tr = tableBody.getElementsByTagName('tr');
-            
             for (let i = 0; i < tr.length; i++) {
                 if (tr[i].querySelector('.empty-msg')) continue;
                 let tdId = tr[i].getElementsByTagName('td')[0];
