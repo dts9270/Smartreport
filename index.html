@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Pro - Mission 15 Days</title>
+    <title>RCM Pro - Auto Save</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -29,8 +29,8 @@
 
         .nav-tabs { display: flex; width: 100%; background: #eee; }
         .tab-btn {
-            flex: 1; padding: 12px; border: none; background: #eee;
-            font-weight: bold; font-size: 14px; cursor: pointer;
+            flex: 1; padding: 10px; border: none; background: #eee;
+            font-weight: bold; font-size: 13px; cursor: pointer;
             border-bottom: 4px solid transparent; transition: 0.3s;
         }
         .tab-btn.active { background: white; color: #000080; border-bottom-color: #FF9933; }
@@ -46,16 +46,16 @@
         }
         .dash-title { font-size: 10px; color: #666; font-weight: bold; text-transform: uppercase; }
         .dash-value { font-size: 18px; font-weight: bold; color: #000080; margin-top: 4px; }
-        .card-green { border-left-color: #28a745; }
-        .card-red { border-left-color: #dc3545; }
-        .card-orange { border-left-color: #ffc107; }
+        .card-green { border-left-color: #28a745; } .card-red { border-left-color: #dc3545; } .card-orange { border-left-color: #ffc107; }
 
         /* 4. कंट्रोल सेक्शन */
         .control-section { padding: 10px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .btn-group { display: flex; gap: 10px; width: 95%; max-width: 500px; }
-        .btn-main { flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .btn-upload { background: white; color: #000080; border-style: dashed; }
-        .btn-open { background: #000080; color: white; }
+        .btn-group { display: flex; gap: 10px; width: 95%; max-width: 500px; flex-wrap: wrap; justify-content: center; }
+        
+        .btn-main { padding: 8px 15px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .btn-upload { background: white; color: #000080; border-style: dashed; flex: 2; }
+        .btn-reset { background: #dc3545; color: white; border-color: #dc3545; flex: 1; } /* Delete Button */
+        
         input[type="file"] { display: none; }
         input[type="text"]#searchInput { padding: 10px; width: 90%; max-width: 400px; border: 2px solid #000080; border-radius: 25px; text-align: center; outline: none; font-size: 16px; }
 
@@ -68,38 +68,53 @@
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
         td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; }
 
-        /* Calling Table */
-        .calling-row { cursor: pointer; transition: 0.2s; }
-        .calling-row:hover { background-color: #f0f8ff; }
-        .details-row { display: none; background-color: #f9f9f9; border-left: 5px solid #FF9933; }
-        .details-container { padding: 15px; text-align: left; }
-        
+        /* Styles */
         .badge { padding: 3px 8px; border-radius: 12px; font-size: 10px; color: white; font-weight: bold; display: inline-block; }
         .badge-pending { background-color: #dc3545; } 
         .badge-calling { background-color: #ffc107; color: black; } 
         .badge-done { background-color: #28a745; }
 
-        .btn-call { background-color: #28a745; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block; margin-bottom: 10px; }
+        .btn-call { background-color: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 11px; }
         .history-box { max-height: 120px; overflow-y: auto; background: white; border: 1px solid #ddd; padding: 8px; margin-bottom: 10px; border-radius: 5px; font-size: 12px; }
         .log-item { border-bottom: 1px solid #eee; padding: 4px 0; color: #555; }
         .log-date { color: #000080; font-weight: bold; font-size: 10px; }
 
-        /* Inputs & Buttons */
-        .note-input-group { display: flex; gap: 5px; }
-        .input-note { flex: 1; padding: 8px; border: 1px solid #000080; border-radius: 4px; }
-        .btn-add-note { background: #000080; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .input-note { width: 90%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; }
         .input-pv { width: 90%; padding: 6px 2px; border: 1px solid #000080; border-radius: 4px; text-align: center; font-weight: bold; }
         .input-remark { width: 95%; padding: 6px 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 12px; background: #f9f9f9; }
         .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
-        
         .footer-save { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #000080; color: white; padding: 12px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 100; }
         .report-btn { background: #FF9933; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
+        /* TASK TAB STYLES */
+        .task-section-header { background: #e0f2f1; padding: 10px; font-weight: bold; color: #004d40; border-bottom: 2px solid #004d40; display: flex; justify-content: space-between; align-items: center; }
+        .progress-bar-container { height: 8px; width: 100%; background: #ddd; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #28a745; width: 0%; transition: width 0.5s; }
+        
+        /* Updated To-Do List Styles */
+        .todo-container { padding: 15px; }
+        .todo-input-group { display: flex; gap: 5px; margin-bottom: 15px; }
+        .todo-input { flex: 1; padding: 10px; border: 2px solid #000080; border-radius: 5px; }
+        .btn-add-todo { background: #000080; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
+        
+        .todo-list { list-style: none; padding: 0; margin: 0; }
+        .todo-item { 
+            background: white; border-bottom: 1px solid #eee; padding: 12px; display: flex; 
+            justify-content: space-between; align-items: center; transition: 0.2s;
+        }
+        .todo-item.completed { background-color: #e8f5e9; } /* Light Green BG */
+        .todo-item.completed .todo-text { 
+            text-decoration: line-through; color: #888; 
+        }
+        .todo-status { font-weight: bold; color: #28a745; display: none; }
+        .todo-item.completed .todo-status { display: inline; margin-right: 10px; }
+        
+        .btn-action-todo { background: none; border: none; font-size: 18px; cursor: pointer; }
 
         /* Modals */
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
         .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; max-height: 80vh; overflow-y: auto; }
         .empty-msg { text-align: center; color: #666; padding: 40px 20px; }
-        .saved-report-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; }
         .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
         .btn-close { background: #6c757d; } .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; }
 
@@ -120,16 +135,17 @@
             <button class="report-btn" onclick="openReportsModal()">📊 Reports</button>
         </div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Planning</button>
-            <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calling Mission</button>
+            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Plan</button>
+            <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calls</button>
+            <button class="tab-btn" onclick="switchTab('tasks', this)">🎯 Tasks</button>
         </div>
     </div>
 
     <div class="control-section">
         <div class="btn-group">
-            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel</button>
+            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel (Auto Save)</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-open" onclick="openSavedList()">📂 Open Saved</button>
+            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ Delete All</button>
         </div>
         <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
@@ -147,7 +163,7 @@
                 </tr>
             </thead>
             <tbody id="planningBody">
-                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा किंवा 📂 Saved Data उघडा.</td></tr>
+                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा. डेटा Auto-Save होईल.</td></tr>
             </tbody>
         </table>
     </div>
@@ -171,7 +187,6 @@
                 <div class="dash-value" id="stat-rate">0</div>
             </div>
         </div>
-
         <table class="calling-table">
             <thead>
                 <tr>
@@ -182,28 +197,59 @@
                 </tr>
             </thead>
             <tbody id="callingBody">
-                <tr><td colspan="4" class="empty-msg">👆 Calling लिस्ट साठी डेटा लोड करा.</td></tr>
+                <tr><td colspan="4" class="empty-msg">No Data. Upload Excel.</td></tr>
             </tbody>
         </table>
     </div>
 
-    <button class="footer-save" onclick="saveFinalReport()">💾 Final Save All</button>
+    <div id="taskView" class="view-section">
+        
+        <div class="task-section-header">
+            <span>🎲 Today's 25 Calls</span>
+            <span id="random-progress-text">0/25</span>
+        </div>
+        <div style="padding: 0 10px 10px;">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="random-progress-bar"></div>
+            </div>
+        </div>
+        <table class="calling-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="randomTaskBody">
+                <tr><td colspan="3" class="empty-msg">Data Loading...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="task-section-header" style="margin-top:20px; background:#e8eaf6; color:#1a237e; border-bottom-color:#1a237e;">
+            <span>✅ My To-Do List</span>
+            <span id="todo-progress-text">0/0</span>
+        </div>
+        
+        <div class="todo-container">
+            <div class="todo-input-group">
+                <input type="text" id="newTodoInput" class="todo-input" placeholder="New Task...">
+                <button class="btn-add-todo" onclick="addManualTask()">Add</button>
+            </div>
+            <ul id="todoList" class="todo-list">
+                </ul>
+        </div>
+    </div>
+
+    <button class="footer-save" onclick="saveFinalReport()">💾 Final Save Report (Cloud)</button>
 
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">🤖 Report Center</h3>
             <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF with Date & Time</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Download Excel</button>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF (With Time)</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button>
             <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
-        </div>
-    </div>
-
-    <div id="savedListModal" class="modal">
-        <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">📂 Saved Reports</h3>
-            <div id="savedReportsList" style="text-align: left;">Loading...</div>
-            <button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
         </div>
     </div>
 
@@ -217,7 +263,8 @@
                     <th style="width:25%">Name</th>
                     <th style="width:15%">Target</th>
                     <th style="width:15%">Status</th>
-                    <th style="width:35%">Notes & Date</th> </tr>
+                    <th style="width:35%">Notes & Date</th>
+                </tr>
             </thead>
             <tbody id="pdf-body"></tbody>
         </table>
@@ -239,11 +286,39 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // --- GLOBAL DATA & PERSISTENCE ---
         window.associateData = [];
+        window.dailyRandomIndices = [];
+        window.manualTodos = [];
+
+        // LOAD DATA FROM LOCAL STORAGE ON START
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('rcm_data_master');
+            if(savedData) {
+                window.associateData = JSON.parse(savedData);
+                console.log("Data loaded from LocalStorage");
+            }
+
+            const savedTodos = localStorage.getItem('rcm_todos_master');
+            if(savedTodos) window.manualTodos = JSON.parse(savedTodos);
+
+            const savedRandom = localStorage.getItem('rcm_random_' + new Date().toLocaleDateString());
+            if(savedRandom) window.dailyRandomIndices = JSON.parse(savedRandom);
+
+            loadAllTables();
+        }
+
+        // SAVE DATA TO LOCAL STORAGE
+        function saveToLocal() {
+            localStorage.setItem('rcm_data_master', JSON.stringify(window.associateData));
+            localStorage.setItem('rcm_todos_master', JSON.stringify(window.manualTodos));
+        }
+
         const planningBody = document.getElementById('planningBody');
         const callingBody = document.getElementById('callingBody');
+        const randomTaskBody = document.getElementById('randomTaskBody');
 
-        // EXCEL UPLOAD
+        // --- EXCEL UPLOAD ---
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -256,7 +331,7 @@
                 if (jsonData.length === 0) { alert("File Empty!"); return; }
 
                 const uniqueIds = new Set();
-                window.associateData = [];
+                window.associateData = []; // Reset on new upload
 
                 jsonData.forEach(row => {
                     const id = row['ID'] || row['IdNo'] || row['Id'] || 'N/A';
@@ -268,59 +343,44 @@
                             mobile: row['Mobile'] || row['MobileNo'] || '',
                             city: row['City'] || row['Gaon'] || '',
                             pv: parseInt(row['PV'] || row['OctPv'] || row['Old PV'] || 0),
-                            target: '',
-                            remark: '',
-                            callHistory: [],
-                            status: 'Pending'
+                            target: '', remark: '', callHistory: [], status: 'Pending'
                         });
                     }
                 });
-                alert(`${window.associateData.length} Records Loaded!`);
+                
+                saveToLocal(); // Auto Save
+                alert(`${window.associateData.length} Records Loaded & Auto-Saved!`);
                 loadAllTables();
+                generateDailyRandomList();
             };
             reader.readAsArrayBuffer(file);
         });
 
+        // --- RESET DATA ---
+        window.resetAllData = function() {
+            if(confirm("तुम्हाला नक्की सर्व डेटा डिलीट करायचा आहे का? (ही कृती परत घेता येणार नाही)")) {
+                localStorage.removeItem('rcm_data_master');
+                localStorage.removeItem('rcm_todos_master');
+                window.associateData = [];
+                window.manualTodos = [];
+                loadAllTables();
+                alert("All Data Deleted.");
+            }
+        }
+
+        // --- LOAD TABLES ---
         function loadAllTables() {
             renderPlanningTable();
             renderCallingTable();
+            renderRandomTaskTable();
+            renderTodoList();
             updateDashboard();
         }
 
-        function updateDashboard() {
-            if (window.associateData.length === 0) return;
-            const total = window.associateData.length;
-            let doneCount = 0;
-            let todayCount = 0;
-            let monthCount = 0;
-            const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); 
-            const currentMonth = new Date().toLocaleDateString('en-IN', { month: 'short' });
-
-            window.associateData.forEach(row => {
-                if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) doneCount++;
-                if (row.callHistory && row.callHistory.length > 0) {
-                    const lastCall = row.callHistory[0].date; 
-                    if (lastCall.includes(todayStr)) todayCount++;
-                    if (lastCall.includes(currentMonth)) monthCount++;
-                }
-            });
-
-            const remaining = total - doneCount;
-            const daysLeft = 15;
-            const dailyRate = remaining > 0 ? Math.ceil(remaining / daysLeft) : 0;
-
-            document.getElementById('stat-today').innerText = todayCount;
-            document.getElementById('stat-month').innerText = monthCount;
-            document.getElementById('stat-left').innerText = remaining;
-            document.getElementById('stat-rate').innerText = dailyRate;
-        }
-
+        // --- RENDER FUNCTIONS ---
         function renderPlanningTable() {
             planningBody.innerHTML = '';
-            if (window.associateData.length === 0) {
-                planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">No Data.</td></tr>';
-                return;
-            }
+            if (window.associateData.length === 0) { planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">No Data Saved. Upload Excel.</td></tr>'; return; }
             window.associateData.forEach((row, index) => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -338,31 +398,18 @@
         function renderCallingTable() {
             callingBody.innerHTML = '';
             if (window.associateData.length === 0) return;
-
             window.associateData.forEach((row, index) => {
-                let badgeClass = 'badge-pending';
-                let badgeText = 'Pending';
-                if (row.status === 'Calling') { badgeClass = 'badge-calling'; badgeText = 'Calling...'; }
-                else if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) { 
-                    badgeClass = 'badge-done'; badgeText = 'Done'; row.status = 'Done';
-                }
-
+                let badgeClass = row.status === 'Done' ? 'badge-done' : (row.status === 'Calling' ? 'badge-calling' : 'badge-pending');
                 let tr = document.createElement('tr');
                 tr.className = 'calling-row';
                 tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') window.toggleDetail(index); };
-
                 tr.innerHTML = `
-                    <td>${row.id}</td>
-                    <td>${row.name}</td>
-                    <td id="status-cell-${index}"><span class="badge ${badgeClass}">${badgeText}</span></td>
-                    <td>🔽</td>
+                    <td>${row.id}</td> <td>${row.name}</td>
+                    <td id="status-cell-${index}"><span class="badge ${badgeClass}">${row.status}</span></td> <td>🔽</td>
                 `;
                 callingBody.appendChild(tr);
-
-                let historyHtml = (row.callHistory || []).map(h => 
-                    `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`
-                ).join('');
-                if(!historyHtml) historyHtml = '<div style="color:#aaa; text-align:center;">No history yet.</div>';
+                
+                let historyHtml = (row.callHistory || []).map(h => `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`).join('') || '<div style="color:#aaa;">No history.</div>';
 
                 let detailTr = document.createElement('tr');
                 detailTr.id = `detail-${index}`;
@@ -371,15 +418,9 @@
                     <td colspan="4">
                         <div class="details-container">
                             <div><strong>Mobile:</strong> ${row.mobile} | <strong>City:</strong> ${row.city}</div>
-                            <div style="margin: 10px 0;">
-                                <a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 Call Now</a>
-                            </div>
-                            <strong>📝 History:</strong>
+                            <div style="margin:10px 0;"><a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 Call Now</a></div>
                             <div class="history-box" id="hist-box-${index}">${historyHtml}</div>
-                            <div class="note-input-group">
-                                <input type="text" class="input-note" id="call-note-${index}" placeholder="Type result...">
-                                <button class="btn-add-note" onclick="window.addCallNote(${index})">Add Note</button>
-                            </div>
+                            <div class="note-input-group"><input type="text" class="input-note" id="call-note-${index}" placeholder="Type result..."><button class="btn-add-note" onclick="window.addCallNote(${index})">Add Note</button></div>
                         </div>
                     </td>
                 `;
@@ -387,26 +428,145 @@
             });
         }
 
+        // --- NEW: MANUAL TO-DO LIST LOGIC ---
+        window.addManualTask = function() {
+            const input = document.getElementById('newTodoInput');
+            const text = input.value.trim();
+            if(!text) return;
+            window.manualTodos.push({ text: text, done: false });
+            saveToLocal(); // Auto Save
+            input.value = '';
+            renderTodoList();
+        }
+
+        window.toggleTodo = function(index) {
+            window.manualTodos[index].done = !window.manualTodos[index].done;
+            saveToLocal(); // Auto Save
+            renderTodoList();
+        }
+
+        window.deleteTodo = function(index) {
+            if(confirm("Delete this task?")) {
+                window.manualTodos.splice(index, 1);
+                saveToLocal();
+                renderTodoList();
+            }
+        }
+
+        function renderTodoList() {
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+            let doneCount = 0;
+
+            window.manualTodos.forEach((task, index) => {
+                if(task.done) doneCount++;
+                let li = document.createElement('li');
+                li.className = `todo-item ${task.done ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <div style="display:flex; align-items:center; width:100%;">
+                        <input type="checkbox" style="transform:scale(1.3); margin-right:10px;" ${task.done ? 'checked' : ''} onclick="window.toggleTodo(${index})">
+                        <div style="flex:1">
+                            <span class="todo-text">${task.text}</span>
+                            ${task.done ? '<span class="todo-status">✔ Done</span>' : ''}
+                        </div>
+                    </div>
+                    <button class="btn-action-todo" style="color:red;" onclick="window.deleteTodo(${index})">🗑</button>
+                `;
+                list.appendChild(li);
+            });
+            document.getElementById('todo-progress-text').innerText = `${doneCount}/${window.manualTodos.length}`;
+        }
+
+        // --- RANDOM LIST ---
+        function generateDailyRandomList() {
+            const todayKey = 'rcm_random_' + new Date().toLocaleDateString();
+            const storedIndices = localStorage.getItem(todayKey);
+            if (storedIndices && JSON.parse(storedIndices).length > 0) {
+                window.dailyRandomIndices = JSON.parse(storedIndices);
+            } else {
+                let pendingIndices = window.associateData.map((_, i) => i).filter(i => window.associateData[i].status !== 'Done');
+                for (let i = pendingIndices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [pendingIndices[i], pendingIndices[j]] = [pendingIndices[j], pendingIndices[i]];
+                }
+                window.dailyRandomIndices = pendingIndices.slice(0, 25);
+                localStorage.setItem(todayKey, JSON.stringify(window.dailyRandomIndices));
+            }
+            renderRandomTaskTable();
+        }
+
+        function renderRandomTaskTable() {
+            randomTaskBody.innerHTML = '';
+            let completed = 0;
+            if(window.dailyRandomIndices.length === 0) { randomTaskBody.innerHTML = '<tr><td colspan="3" class="empty-msg">No pending calls today.</td></tr>'; return; }
+
+            window.dailyRandomIndices.forEach(realIndex => {
+                const row = window.associateData[realIndex];
+                if(row && row.status === 'Done') completed++;
+                if(!row) return;
+
+                let tr = document.createElement('tr');
+                tr.style.background = row.status === 'Done' ? '#e8f5e9' : 'white';
+                tr.innerHTML = `
+                    <td>${row.name}</td>
+                    <td><a href="tel:${row.mobile}" onclick="window.markCalling(${realIndex})">📞</a></td>
+                    <td>${row.status === 'Done' ? '✅' : `<button class="btn-call" onclick="switchTab('calling', null); window.toggleDetail(${realIndex});">Open</button>`}</td>
+                `;
+                randomTaskBody.appendChild(tr);
+            });
+            const pct = window.dailyRandomIndices.length > 0 ? Math.round((completed / window.dailyRandomIndices.length) * 100) : 0;
+            document.getElementById('random-progress-text').innerText = `${completed}/${window.dailyRandomIndices.length}`;
+            document.getElementById('random-progress-bar').style.width = `${pct}%`;
+        }
+
+        // --- DASHBOARD ---
+        function updateDashboard() {
+            if (window.associateData.length === 0) return;
+            let doneCount = 0, todayCount = 0, monthCount = 0;
+            const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); 
+            const currentMonth = new Date().toLocaleDateString('en-IN', { month: 'short' });
+
+            window.associateData.forEach(row => {
+                if (row.status === 'Done') doneCount++;
+                if (row.callHistory && row.callHistory.length > 0) {
+                    const lastCall = row.callHistory[0].date; 
+                    if (lastCall.includes(todayStr)) todayCount++;
+                    if (lastCall.includes(currentMonth)) monthCount++;
+                }
+            });
+            const remaining = window.associateData.length - doneCount;
+            const dailyRate = remaining > 0 ? Math.ceil(remaining / 15) : 0;
+            document.getElementById('stat-today').innerText = todayCount;
+            document.getElementById('stat-month').innerText = monthCount;
+            document.getElementById('stat-left').innerText = remaining;
+            document.getElementById('stat-rate').innerText = dailyRate;
+        }
+
+        // --- CORE ACTIONS ---
         window.switchTab = function(tabName, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
+            else { /* Auto select logic */ }
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
             if(tabName === 'planning') document.getElementById('planningView').classList.add('active-view');
-            else {
-                document.getElementById('callingView').classList.add('active-view');
-                renderCallingTable(); updateDashboard();
-            }
+            else if(tabName === 'calling') { document.getElementById('callingView').classList.add('active-view'); renderCallingTable(); }
+            else if(tabName === 'tasks') { document.getElementById('taskView').classList.add('active-view'); renderRandomTaskTable(); renderTodoList(); }
+            updateDashboard();
         }
 
         window.toggleDetail = function(index) {
             const row = document.getElementById(`detail-${index}`);
-            row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+            if(row) row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
         }
 
-        window.updateData = function(index, field, value) { window.associateData[index][field] = value; }
+        window.updateData = function(index, field, value) { 
+            window.associateData[index][field] = value; 
+            saveToLocal(); 
+        }
 
         window.markCalling = function(index) {
             window.associateData[index].status = 'Calling';
+            saveToLocal();
             const cell = document.getElementById(`status-cell-${index}`);
             if(cell) cell.innerHTML = `<span class="badge badge-calling">Calling...</span>`;
         }
@@ -414,7 +574,7 @@
         window.addCallNote = async function(index) {
             const noteInput = document.getElementById(`call-note-${index}`);
             const note = noteInput.value;
-            if(!note) { alert("Note cannot be empty"); return; }
+            if(!note) { alert("Note empty"); return; }
 
             const now = new Date();
             const timeStamp = now.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute:'numeric', hour12: true });
@@ -430,8 +590,11 @@
             if(cell) cell.innerHTML = `<span class="badge badge-done">Done</span>`;
 
             noteInput.value = '';
+            saveToLocal(); // Auto Save
             updateDashboard();
+            renderRandomTaskTable();
 
+            // Firebase Save
             try {
                 const row = window.associateData[index];
                 await setDoc(doc(db, "rcm_targets", row.id.toString()), {
@@ -439,22 +602,21 @@
                     target: row.target, remark: row.remark, callHistory: row.callHistory,
                     status: 'Done', lastUpdated: serverTimestamp()
                 }, { merge: true });
-            } catch(e) { console.error("Save Error", e); }
+            } catch(e) { console.error(e); }
         }
 
         window.saveInd = async function(index) {
             const row = window.associateData[index];
             const btn = document.querySelectorAll('.btn-row-save')[index];
             btn.innerText = "⏳";
+            saveToLocal();
             try {
                 await setDoc(doc(db, "rcm_targets", row.id.toString()), {
                     name: row.name, mobile: row.mobile, old_pv: row.pv,
-                    target: row.target, remark: row.remark, 
-                    callHistory: row.callHistory || [], status: row.status || 'Pending',
+                    target: row.target, remark: row.remark, callHistory: row.callHistory || [], status: row.status || 'Pending',
                     lastUpdated: serverTimestamp()
                 });
-                btn.innerText = "✅";
-                setTimeout(() => btn.innerText = "Save", 1500);
+                btn.innerText = "✅"; setTimeout(() => btn.innerText = "Save", 1500);
             } catch(e) { btn.innerText = "❌"; }
         }
 
@@ -468,48 +630,22 @@
                 await addDoc(collection(db, "saved_reports"), {
                     reportName: name, createdAt: serverTimestamp(), data: window.associateData
                 });
-                btn.innerText = "✅ Saved!";
-                setTimeout(() => btn.innerText = "💾 Final Save All", 2000);
+                btn.innerText = "✅ Saved (Cloud)"; setTimeout(() => btn.innerText = "💾 Final Save All", 2000);
             } catch(e) { btn.innerText = "Error"; }
-        }
-
-        window.openSavedList = async function() {
-            document.getElementById('savedListModal').style.display='flex';
-            const box = document.getElementById('savedReportsList');
-            box.innerHTML = "Loading...";
-            try {
-                const sn = await getDocs(query(collection(db, "saved_reports"), orderBy("createdAt", "desc")));
-                box.innerHTML = "";
-                sn.forEach(doc => {
-                    const d = doc.data();
-                    const el = document.createElement('div');
-                    el.className = 'saved-report-item';
-                    el.innerHTML = `<strong>${d.reportName}</strong><br><small>${d.createdAt?.toDate().toLocaleDateString()}</small>`;
-                    el.onclick = () => {
-                        window.associateData = d.data;
-                        loadAllTables();
-                        document.getElementById('savedListModal').style.display='none';
-                    };
-                    box.appendChild(el);
-                });
-            } catch(e) { box.innerHTML = "Error"; }
         }
 
         window.filterAll = function() {
             const s = document.getElementById('searchInput').value.toUpperCase();
             [planningBody, callingBody].forEach(body => {
                 const rows = body.querySelectorAll('tr:not(.details-row)');
-                rows.forEach(tr => {
-                    if(tr.innerText.toUpperCase().indexOf(s) > -1) tr.style.display = '';
-                    else tr.style.display = 'none';
-                });
+                rows.forEach(tr => { tr.style.display = tr.innerText.toUpperCase().indexOf(s) > -1 ? '' : 'none'; });
             });
         }
         
         window.openReportsModal = function() {
             document.getElementById('reportModal').style.display = 'flex';
             let called = 0;
-            window.associateData.forEach(d => { if(d.status === 'Done' || (d.callHistory && d.callHistory.length > 0)) called++; });
+            window.associateData.forEach(d => { if(d.status === 'Done') called++; });
             document.getElementById('aiAnalysis').innerHTML = `
                 <strong>Total Associates:</strong> ${window.associateData.length}<br>
                 <strong>Calls Completed:</strong> <span style="color:green; font-size:18px;">${called}</span><br>
@@ -517,45 +653,26 @@
             `;
         }
 
-        // --- PDF GENERATION WITH DATE & TIME IN NOTES ---
+        // --- PDF & EXCEL ---
         window.generatePDF = function() {
             const pdfBody = document.getElementById('pdf-body');
             pdfBody.innerHTML = '';
             document.getElementById('pdf-date').innerText = "Generated: " + new Date().toLocaleString();
 
             window.associateData.forEach(d => {
-                // Combine notes with Date Time
                 let note = d.remark || '';
                 if(d.callHistory && d.callHistory.length > 0) {
-                    // Added Date & Time in small tag
                     note += (note ? '<br>' : '') + '📞 <span class="pdf-date-tag">[' + d.callHistory[0].date + ']</span> ' + d.callHistory[0].note;
                 }
-
                 let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${d.id}</td>
-                    <td>${d.name}</td>
-                    <td>${d.target || '-'}</td>
-                    <td>${d.status || 'Pending'}</td>
-                    <td>${note}</td>
-                `;
+                tr.innerHTML = `<td>${d.id}</td><td>${d.name}</td><td>${d.target || '-'}</td><td>${d.status || 'Pending'}</td><td>${note}</td>`;
                 pdfBody.appendChild(tr);
             });
 
             const element = document.getElementById('pdf-template');
             element.style.display = 'block'; 
-            
-            var opt = {
-                margin:       0.3,
-                filename:     'RCM_Mission_Report_With_Dates.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                element.style.display = 'none'; 
-            });
+            var opt = { margin: 0.3, filename: 'RCM_Report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
         }
 
         window.generateExcel = function() {
@@ -568,6 +685,10 @@
             XLSX.utils.book_append_sheet(wb, ws, "Data");
             XLSX.writeFile(wb, "Report.xlsx");
         }
+
+        // Initial Load
+        loadFromLocalStorage();
+
     </script>
 </body>
 </html>
