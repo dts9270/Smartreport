@@ -36,19 +36,19 @@
         }
         .tab-btn.active { background: white; color: #000080; border-bottom-color: #FF9933; }
 
-        /* 3. DASHBOARD (NEW) */
+        /* 3. DASHBOARD (Calling Tab) */
         .dashboard-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;
             background: #f0f8ff; border-bottom: 1px solid #ccc;
         }
         .dash-card {
-            background: white; padding: 10px; border-radius: 8px; text-align: center;
+            background: white; padding: 8px; border-radius: 8px; text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #000080;
         }
-        .dash-title { font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase; }
-        .dash-value { font-size: 20px; font-weight: bold; color: #000080; margin-top: 5px; }
-        .card-red { border-left-color: #dc3545; }
+        .dash-title { font-size: 10px; color: #666; font-weight: bold; text-transform: uppercase; }
+        .dash-value { font-size: 18px; font-weight: bold; color: #000080; margin-top: 4px; }
         .card-green { border-left-color: #28a745; }
+        .card-red { border-left-color: #dc3545; }
         .card-orange { border-left-color: #ffc107; }
 
         /* 4. कंट्रोल सेक्शन */
@@ -94,7 +94,9 @@
         .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
         
         .footer-save { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #000080; color: white; padding: 12px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 100; }
-        .report-btn { background: #FF9933; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        
+        /* Reports Button */
+        .report-btn { background: #FF9933; color: white; border: none; padding: 6px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
         /* Modals */
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -123,7 +125,7 @@
         <div class="btn-group">
             <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-open" onclick="openSavedList()">📂 Saved Data</button>
+            <button class="btn-main btn-open" onclick="openSavedList()">📂 Open Saved</button>
         </div>
         <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
@@ -141,7 +143,7 @@
                 </tr>
             </thead>
             <tbody id="planningBody">
-                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा.</td></tr>
+                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा किंवा 📂 Saved Data उघडा.</td></tr>
             </tbody>
         </table>
     </div>
@@ -164,7 +166,6 @@
             <div class="dash-card card-orange">
                 <div class="dash-title">Daily Asking Rate</div>
                 <div class="dash-value" id="stat-rate">0</div>
-                <div style="font-size:9px; color:#888;">For 15 Days Goal</div>
             </div>
         </div>
 
@@ -178,7 +179,7 @@
                 </tr>
             </thead>
             <tbody id="callingBody">
-                <tr><td colspan="4" class="empty-msg">👆 Calling लिस्ट साठी Excel अपलोड करा.</td></tr>
+                <tr><td colspan="4" class="empty-msg">👆 Calling लिस्ट साठी डेटा लोड करा.</td></tr>
             </tbody>
         </table>
     </div>
@@ -187,17 +188,17 @@
 
     <div id="reportModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">🤖 Analysis</h3>
+            <h3 style="color:#000080; margin-top:0;">🤖 Analysis Report</h3>
             <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 Download PDF</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Download Excel</button>
             <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
     </div>
 
     <div id="savedListModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">📂 Saved Files</h3>
+            <h3 style="color:#000080; margin-top:0;">📂 Saved Reports (Juni List)</h3>
             <div id="savedReportsList" style="text-align: left;">Loading...</div>
             <button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
         </div>
@@ -241,7 +242,6 @@
 
                 jsonData.forEach(row => {
                     const id = row['ID'] || row['IdNo'] || row['Id'] || 'N/A';
-                    // Only add if ID is unique
                     if (id !== 'N/A' && !uniqueIds.has(id)) {
                         uniqueIds.add(id);
                         window.associateData.push({
@@ -257,8 +257,7 @@
                         });
                     }
                 });
-
-                alert(`${window.associateData.length} Unique Records Loaded! (Duplicates Removed)`);
+                alert(`${window.associateData.length} Records Loaded! (Duplicates Removed)`);
                 loadAllTables();
             };
             reader.readAsArrayBuffer(file);
@@ -268,7 +267,7 @@
         function loadAllTables() {
             renderPlanningTable();
             renderCallingTable();
-            updateDashboard(); // 🔥 Update Dashboard
+            updateDashboard();
         }
 
         function updateDashboard() {
@@ -279,17 +278,15 @@
             let todayCount = 0;
             let monthCount = 0;
 
-            const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); // e.g., "1 Jan"
-            const currentMonth = new Date().toLocaleDateString('en-IN', { month: 'short' }); // e.g., "Jan"
+            const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); 
+            const currentMonth = new Date().toLocaleDateString('en-IN', { month: 'short' });
 
             window.associateData.forEach(row => {
                 if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) {
                     doneCount++;
                 }
-                
-                // Check Call History for Today & Month
                 if (row.callHistory && row.callHistory.length > 0) {
-                    const lastCall = row.callHistory[0].date; // e.g., "1 Jan, 10:00 PM"
+                    const lastCall = row.callHistory[0].date; 
                     if (lastCall.includes(todayStr)) todayCount++;
                     if (lastCall.includes(currentMonth)) monthCount++;
                 }
@@ -297,13 +294,12 @@
 
             const remaining = total - doneCount;
             const daysLeft = 15;
-            const dailyRate = Math.ceil(remaining / daysLeft);
+            const dailyRate = remaining > 0 ? Math.ceil(remaining / daysLeft) : 0;
 
-            // Update UI
             document.getElementById('stat-today').innerText = todayCount;
             document.getElementById('stat-month').innerText = monthCount;
             document.getElementById('stat-left').innerText = remaining;
-            document.getElementById('stat-rate').innerText = remaining > 0 ? dailyRate : 'Done!';
+            document.getElementById('stat-rate').innerText = dailyRate;
         }
 
         function renderPlanningTable() {
@@ -366,7 +362,7 @@
                             <div style="margin: 10px 0;">
                                 <a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 Call Now</a>
                             </div>
-                            <strong>📝 Remarks / History:</strong>
+                            <strong>📝 History:</strong>
                             <div class="history-box" id="hist-box-${index}">${historyHtml}</div>
                             <div class="note-input-group">
                                 <input type="text" class="input-note" id="call-note-${index}" placeholder="Type result...">
@@ -408,7 +404,7 @@
         window.addCallNote = async function(index) {
             const noteInput = document.getElementById(`call-note-${index}`);
             const note = noteInput.value;
-            if(!note) { alert("Please type a note first"); return; }
+            if(!note) { alert("Note cannot be empty"); return; }
 
             const now = new Date();
             const timeStamp = now.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute:'numeric', hour12: true });
@@ -417,7 +413,6 @@
             window.associateData[index].callHistory.unshift({ date: timeStamp, note: note });
             window.associateData[index].status = 'Done';
 
-            // Update UI
             const histBox = document.getElementById(`hist-box-${index}`);
             histBox.innerHTML = `<div class="log-item"><span class="log-date">${timeStamp}</span> ${note}</div>` + histBox.innerHTML;
             
@@ -425,11 +420,8 @@
             if(cell) cell.innerHTML = `<span class="badge badge-done">Done</span>`;
 
             noteInput.value = '';
-            
-            // 🔥 Update Dashboard Immediately
             updateDashboard();
 
-            // Auto Save
             try {
                 const row = window.associateData[index];
                 await setDoc(doc(db, "rcm_targets", row.id.toString()), {
@@ -471,6 +463,7 @@
             } catch(e) { btn.innerText = "Error"; }
         }
 
+        // --- OPEN SAVED REPORTS (Juni Reports) ---
         window.openSavedList = async function() {
             document.getElementById('savedListModal').style.display='flex';
             const box = document.getElementById('savedReportsList');
@@ -504,14 +497,20 @@
             });
         }
         
+        // --- REPORTS (AI, PDF, Excel) ---
         window.openReportsModal = function() {
             document.getElementById('reportModal').style.display = 'flex';
             let called = 0;
-            window.associateData.forEach(d => { if(d.status === 'Done' || (d.callHistory && d.callHistory.length > 0)) called++; });
+            let planned = 0;
+            window.associateData.forEach(d => { 
+                if(d.status === 'Done' || (d.callHistory && d.callHistory.length > 0)) called++; 
+                if(d.target || d.remark) planned++;
+            });
             document.getElementById('aiAnalysis').innerHTML = `
                 <strong>Total Associates:</strong> ${window.associateData.length}<br>
-                <strong>Calls Completed:</strong> <span style="color:green; font-size:18px;">${called}</span><br>
-                <strong>Pending:</strong> <span style="color:red">${window.associateData.length - called}</span>
+                <strong>Planned For:</strong> ${planned}<br>
+                <strong>Calls Made:</strong> <span style="color:green; font-size:16px;">${called}</span><br>
+                <strong>Remaining:</strong> <span style="color:red">${window.associateData.length - called}</span>
             `;
         }
 
