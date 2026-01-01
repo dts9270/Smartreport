@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Pro Planner</title>
+    <title>RCM Pro Planner & Calling</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -13,197 +13,171 @@
         /* 1. तिरंगा थीम */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
+            margin: 0; padding: 0; height: 100vh;
             background: linear-gradient(180deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
             background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            display: flex; flex-direction: column; overflow-x: hidden;
         }
 
-        /* 2. हेडर */
+        /* 2. हेडर & TABS */
         .header-section {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 10px 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-            flex-shrink: 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15); flex-shrink: 0;
             border-bottom: 3px solid #000080;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-        .header-section h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
-        
-        .report-btn {
-            background-color: #FF9933;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+        .header-top h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
+
+        /* TAB BUTTONS */
+        .nav-tabs { display: flex; width: 100%; background: #eee; }
+        .tab-btn {
+            flex: 1; padding: 12px; border: none; background: #eee;
+            font-weight: bold; font-size: 14px; cursor: pointer;
+            border-bottom: 4px solid transparent; transition: 0.3s;
         }
+        .tab-btn.active { background: white; color: #000080; border-bottom-color: #FF9933; }
+        .tab-btn:hover { background: #e0e0e0; }
 
         /* 3. कंट्रोल सेक्शन */
-        .control-section {
-            padding: 10px;
-            text-align: center;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
+        .control-section { padding: 10px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
         .btn-group { display: flex; gap: 10px; width: 95%; max-width: 500px; }
-        
-        .btn-main {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid #000080;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
+        .btn-main { flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
         .btn-upload { background: white; color: #000080; border-style: dashed; }
         .btn-open { background: #000080; color: white; }
-
         input[type="file"] { display: none; }
-        input[type="text"]#searchInput {
-            padding: 10px; width: 90%; max-width: 400px;
-            border: 2px solid #000080; border-radius: 25px;
-            text-align: center; outline: none; font-size: 16px;
-        }
+        input[type="text"]#searchInput { padding: 10px; width: 90%; max-width: 400px; border: 2px solid #000080; border-radius: 25px; text-align: center; outline: none; font-size: 16px; }
 
-        /* 4. टेबल */
-        .table-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin: 5px;
-            margin-bottom: 70px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        /* 4. टेबल (Planning Tab) */
+        .view-section { flex-grow: 1; overflow-y: auto; margin: 5px; margin-bottom: 70px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; }
+        .view-section.active-view { display: block; }
 
         table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
-        thead th { background-color: #000080; color: white; padding: 12px 5px; text-align: left; position: sticky; top: 0; z-index: 10; font-size: 12px; }
+        thead th { background-color: #000080; color: white; padding: 12px 5px; text-align: left; position: sticky; top: 0; z-index: 10; }
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; }
+
+        /* Planning Table Columns */
+        .plan-table th:nth-child(1), .plan-table td:nth-child(1) { width: 12%; }
+        .plan-table th:nth-child(2), .plan-table td:nth-child(2) { width: 25%; }
+        .plan-table th:nth-child(3), .plan-table td:nth-child(3) { width: 12%; } /* PV */
+        .plan-table th:nth-child(4), .plan-table td:nth-child(4) { width: 16%; } /* Target */
+        .plan-table th:nth-child(5), .plan-table td:nth-child(5) { width: 22%; } /* Remark */
+        .plan-table th:nth-child(6), .plan-table td:nth-child(6) { width: 13%; } /* Save */
+
+        /* CALLING TABLE STYLES */
+        .calling-row { cursor: pointer; transition: 0.2s; }
+        .calling-row:hover { background-color: #f0f8ff; }
+        .details-row { display: none; background-color: #f9f9f9; border-left: 5px solid #FF9933; }
+        .details-container { padding: 15px; text-align: left; }
         
-        td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; } /* ID */
-        .input-pv { width: 90%; padding: 6px 2px; border: 1px solid #000080; border-radius: 4px; text-align: center; font-weight: bold; font-size: 13px; }
-
-        /* Save Button in Row */
-        .btn-row-save {
-            background-color: #138808;
-            color: white;
-            border: none;
-            padding: 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            width: 100%;
+        /* Call Button */
+        .btn-call { 
+            background-color: #28a745; color: white; border: none; padding: 8px 20px; 
+            border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-bottom: 10px;
         }
-
-        /* Column Widths (Updated for Save Button) */
-        th:nth-child(1), td:nth-child(1) { width: 12%; } /* ID */
-        th:nth-child(2), td:nth-child(2) { width: 28%; } /* Name */
-        th:nth-child(3), td:nth-child(3) { width: 0%; display: none; } /* Mobile Hide */
-        th:nth-child(4), td:nth-child(4) { width: 14%; } /* PV */
-        th:nth-child(5), td:nth-child(5) { width: 18%; } /* New */
-        th:nth-child(6), td:nth-child(6) { width: 16%; } /* Save (Button) */
-        th:nth-child(7), td:nth-child(7) { width: 12%; } /* Diff */
-
-        @media screen and (min-width: 601px) {
-            th:nth-child(3), td:nth-child(3) { display: table-cell; width: 15%; }
-            th:nth-child(2), td:nth-child(2) { width: 20%; }
-            th:nth-child(6), td:nth-child(6) { width: 10%; }
+        
+        /* History Logs */
+        .history-box { 
+            max-height: 150px; overflow-y: auto; background: white; border: 1px solid #ddd; 
+            padding: 10px; margin-bottom: 10px; border-radius: 5px; font-size: 12px;
         }
+        .log-item { border-bottom: 1px solid #eee; padding: 4px 0; color: #555; }
+        .log-date { color: #000080; font-weight: bold; font-size: 11px; display: block; }
 
-        .diff-val { font-weight: bold; font-size: 12px; }
-        .diff-val.positive { color: green; }
-        .diff-val.negative { color: red; }
+        /* Add Note Input */
+        .note-input-group { display: flex; gap: 5px; }
+        .input-note { flex: 1; padding: 8px; border: 1px solid #000080; border-radius: 4px; }
+        .btn-add-note { background: #000080; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
 
-        /* 5. Final Save Button (Footer) */
-        .footer-save {
-            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; background-color: #000080; /* Navy Blue */
-            color: white; padding: 12px; border: none; border-radius: 25px;
-            font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            cursor: pointer; z-index: 100;
-        }
+        /* Inputs & Buttons */
+        .input-pv { width: 90%; padding: 6px 2px; border: 1px solid #000080; border-radius: 4px; text-align: center; font-weight: bold; }
+        .input-remark { width: 95%; padding: 6px 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 12px; background: #f9f9f9; }
+        .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
+        .footer-save { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #000080; color: white; padding: 12px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 100; }
+        .report-btn { background: #FF9933; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
         /* Modals */
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
         .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; max-height: 80vh; overflow-y: auto; }
-        
-        .ai-box { background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; border-left: 5px solid #000080; font-size: 14px; }
-        .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; } .btn-close { background: #6c757d; }
-        
-        .saved-report-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; }
         .empty-msg { text-align: center; color: #666; padding: 40px 20px; }
+        .saved-report-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; }
+        .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-close { background: #6c757d; } .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; }
 
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <h2>🇮🇳 RCM Planner</h2>
-        <button class="report-btn" onclick="openReportsModal()">📊 Reports</button>
+        <div class="header-top">
+            <h2>🇮🇳 RCM Planner</h2>
+            <button class="report-btn" onclick="openReportsModal()">📊 Reports</button>
+        </div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Planning</button>
+            <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calling Mission</button>
+        </div>
     </div>
 
     <div class="control-section">
         <div class="btn-group">
             <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-open" onclick="openSavedList()">📂 Open Saved</button>
+            <button class="btn-main btn-open" onclick="openSavedList()">📂 Saved Data</button>
         </div>
-        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="🔍 नाव किंवा ID शोधा...">
+        <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
 
-    <div class="table-container">
-        <table id="pvTable">
+    <div id="planningView" class="view-section active-view">
+        <table class="plan-table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>नाव</th>
-                    <th>मोबाईल</th>
-                    <th>PV</th>
-                    <th>New</th>
+                    <th>Name</th>
+                    <th>Old PV</th>
+                    <th>Target</th>
+                    <th>Plan/Remark</th>
                     <th>Save</th>
-                    <th>Diff</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                <tr><td colspan="7" class="empty-msg">👆 कृपया Excel अपलोड करा किंवा Saved Report उघडा.</td></tr>
+            <tbody id="planningBody">
+                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा.</td></tr>
             </tbody>
         </table>
     </div>
 
-    <button class="footer-save" onclick="saveFinalReport()">💾 Final Save Report</button>
+    <div id="callingView" class="view-section">
+        <table class="calling-table">
+            <thead>
+                <tr>
+                    <th style="width:15%">ID</th>
+                    <th style="width:40%">Name</th>
+                    <th style="width:25%">Status</th>
+                    <th style="width:20%">Tap</th>
+                </tr>
+            </thead>
+            <tbody id="callingBody">
+                <tr><td colspan="4" class="empty-msg">👆 Calling लिस्ट साठी Excel अपलोड करा.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="footer-save" onclick="saveFinalReport()">💾 Final Save All</button>
 
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">🤖 Analysis</h3>
-            <div id="aiAnalysis" class="ai-box">Calculating...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF Download</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel Download</button>
+            <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button>
             <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
     </div>
 
     <div id="savedListModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">📂 Saved Reports</h3>
+            <h3 style="color:#000080; margin-top:0;">📂 Saved Files</h3>
             <div id="savedReportsList" style="text-align: left;">Loading...</div>
             <button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
         </div>
@@ -226,9 +200,25 @@
         const db = getFirestore(app);
 
         window.associateData = [];
-        const tableBody = document.getElementById('tableBody');
+        const planningBody = document.getElementById('planningBody');
+        const callingBody = document.getElementById('callingBody');
 
-        // EXCEL UPLOAD
+        // --- TAB SWITCHING ---
+        window.switchTab = function(tabName, btn) {
+            // UI Toggle
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
+            if(tabName === 'planning') {
+                document.getElementById('planningView').classList.add('active-view');
+            } else {
+                document.getElementById('callingView').classList.add('active-view');
+                renderCallingTable(); // Refresh Calling Table
+            }
+        }
+
+        // --- EXCEL UPLOAD ---
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -236,8 +226,7 @@
             reader.onload = (event) => {
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
+                const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
                 if (jsonData.length === 0) { alert("File Empty!"); return; }
 
@@ -245,211 +234,230 @@
                     id: row['ID'] || row['IdNo'] || row['Id'] || 'N/A',
                     name: row['Name'] || row['Associate Name'] || 'Unknown',
                     mobile: row['Mobile'] || row['MobileNo'] || '',
+                    city: row['City'] || row['Gaon'] || '',
                     pv: parseInt(row['PV'] || row['OctPv'] || row['Old PV'] || 0),
                     target: '',
-                    diff: 0
+                    remark: '',
+                    callHistory: [] // Array to store calling logs
                 }));
-                loadTable();
+                loadAllTables();
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // LOAD TABLE
-        function loadTable() {
-            tableBody.innerHTML = '';
+        function loadAllTables() {
+            renderPlanningTable();
+            renderCallingTable();
+        }
+
+        // --- RENDER PLANNING TABLE ---
+        function renderPlanningTable() {
+            planningBody.innerHTML = '';
             if (window.associateData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="empty-msg">👆 कृपया Excel अपलोड करा किंवा Saved Report उघडा.</td></tr>';
+                planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">No Data.</td></tr>';
                 return;
             }
-
             window.associateData.forEach((row, index) => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${row.id}</td>
-                    <td>${row.name}</td>
-                    <td class="mobile-col">${row.mobile}</td>
+                    <td>${row.name}<br><small style="color:gray">${row.city}</small></td>
                     <td>${row.pv}</td>
-                    <td>
-                        <input type="number" class="input-pv" id="input-${index}" placeholder="Target" value="${row.target}" oninput="window.calcDiff(${index})">
-                    </td>
-                    <td>
-                        <button class="btn-row-save" onclick="window.saveIndividual(${index})">Save</button>
-                    </td>
-                    <td id="diff-${index}" class="diff-val">
-                        ${row.diff !== 0 ? (row.diff > 0 ? '+' + row.diff : row.diff) : '-'}
-                    </td>
+                    <td><input type="number" class="input-pv" id="tgt-${index}" value="${row.target}" oninput="window.updateData(${index}, 'target', this.value)"></td>
+                    <td><input type="text" class="input-remark" id="rem-${index}" value="${row.remark}" placeholder="Plan..." oninput="window.updateData(${index}, 'remark', this.value)"></td>
+                    <td><button class="btn-row-save" onclick="window.saveInd(${index})">Save</button></td>
                 `;
-                tableBody.appendChild(tr);
-                
-                if(row.diff !== 0) {
-                    const cell = tr.querySelector(`#diff-${index}`);
-                    cell.className = row.diff > 0 ? 'diff-val positive' : 'diff-val negative';
-                }
+                planningBody.appendChild(tr);
             });
         }
 
-        // CALC DIFF
-        window.calcDiff = function(index) {
-            const inputVal = document.getElementById(`input-${index}`).value;
-            const oldPv = window.associateData[index].pv;
-            
-            if(inputVal === '') {
-                window.associateData[index].target = '';
-                window.associateData[index].diff = 0;
-                document.getElementById(`diff-${index}`).innerText = '-';
-                document.getElementById(`diff-${index}`).className = 'diff-val';
-                return;
-            }
+        // --- RENDER CALLING TABLE (ACCORDION) ---
+        function renderCallingTable() {
+            callingBody.innerHTML = '';
+            if (window.associateData.length === 0) return;
 
-            const newTarget = parseInt(inputVal);
-            const diff = newTarget - oldPv;
-            
-            window.associateData[index].target = newTarget;
-            window.associateData[index].diff = diff;
+            window.associateData.forEach((row, index) => {
+                // Main Row
+                let tr = document.createElement('tr');
+                tr.className = 'calling-row';
+                tr.onclick = () => window.toggleDetail(index);
+                
+                // Status Logic
+                let lastLog = row.callHistory && row.callHistory.length > 0 ? row.callHistory[0].date.split(',')[0] : 'Pending';
+                let statusColor = lastLog === 'Pending' ? 'red' : 'green';
 
-            const diffCell = document.getElementById(`diff-${index}`);
-            diffCell.innerText = diff > 0 ? `+${diff}` : diff;
-            diffCell.className = diff > 0 ? 'diff-val positive' : (diff < 0 ? 'diff-val negative' : 'diff-val');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td>${row.name}</td>
+                    <td style="color:${statusColor}; font-weight:bold; font-size:11px;">${lastLog}</td>
+                    <td>🔽</td>
+                `;
+                callingBody.appendChild(tr);
+
+                // Detail Row (Hidden)
+                let detailTr = document.createElement('tr');
+                detailTr.id = `detail-${index}`;
+                detailTr.className = 'details-row';
+                
+                // Generate History HTML
+                let historyHtml = (row.callHistory || []).map(h => 
+                    `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`
+                ).join('');
+
+                if(!historyHtml) historyHtml = '<div style="color:#aaa">No calls yet.</div>';
+
+                detailTr.innerHTML = `
+                    <td colspan="4">
+                        <div class="details-container">
+                            <div><strong>Mobile:</strong> ${row.mobile} | <strong>City:</strong> ${row.city}</div>
+                            <div style="margin: 10px 0;">
+                                <a href="tel:${row.mobile}" class="btn-call">📞 Call Now</a>
+                            </div>
+                            
+                            <strong>Call History:</strong>
+                            <div class="history-box" id="hist-box-${index}">${historyHtml}</div>
+                            
+                            <div class="note-input-group">
+                                <input type="text" class="input-note" id="call-note-${index}" placeholder="Call Result (e.g. Will buy tomorrow)">
+                                <button class="btn-add-note" onclick="window.addCallNote(${index})">Add Note</button>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                callingBody.appendChild(detailTr);
+            });
         }
 
-        // INDIVIDUAL SAVE (Row Button)
-        window.saveIndividual = async function(index) {
-            const row = window.associateData[index];
-            if(row.target === '') { alert("Target टाका!"); return; }
+        // --- INTERACTION LOGIC ---
+        window.toggleDetail = function(index) {
+            const row = document.getElementById(`detail-${index}`);
+            row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+        }
 
-            const btns = document.querySelectorAll('.btn-row-save');
-            const btn = btns[index]; // Note: filtering might mess up index if not careful, but basic index works on full list load
+        window.updateData = function(index, field, value) {
+            window.associateData[index][field] = value;
+        }
+
+        window.addCallNote = async function(index) {
+            const noteInput = document.getElementById(`call-note-${index}`);
+            const note = noteInput.value;
+            if(!note) return;
+
+            const now = new Date();
+            const timeStamp = now.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit' });
+
+            // Update Local Data
+            if(!window.associateData[index].callHistory) window.associateData[index].callHistory = [];
+            window.associateData[index].callHistory.unshift({ date: timeStamp, note: note });
+
+            // Refresh History UI immediately
+            const histBox = document.getElementById(`hist-box-${index}`);
+            histBox.innerHTML = `<div class="log-item"><span class="log-date">${timeStamp}</span> ${note}</div>` + histBox.innerHTML;
             
-            btn.innerText = "⏳";
-            
+            noteInput.value = ''; // Clear input
+
+            // AUTO SAVE to Firebase
             try {
-                // Saving individual record to 'rcm_targets' collection
+                const row = window.associateData[index];
                 await setDoc(doc(db, "rcm_targets", row.id.toString()), {
                     name: row.name,
                     mobile: row.mobile,
                     old_pv: row.pv,
-                    target: parseInt(row.target),
-                    diff: row.diff,
-                    updated_at: serverTimestamp()
+                    target: row.target,
+                    remark: row.remark,
+                    callHistory: row.callHistory,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+                console.log("Call Note Saved");
+            } catch(e) { console.error("Save Error", e); }
+        }
+
+        // --- SAVING & LOADING ---
+        window.saveInd = async function(index) {
+            const row = window.associateData[index];
+            const btn = document.querySelectorAll('.btn-row-save')[index]; // Careful with filtered views
+            btn.innerText = "⏳";
+            try {
+                await setDoc(doc(db, "rcm_targets", row.id.toString()), {
+                    name: row.name, mobile: row.mobile, old_pv: row.pv,
+                    target: row.target, remark: row.remark, callHistory: row.callHistory || [],
+                    lastUpdated: serverTimestamp()
                 });
                 btn.innerText = "✅";
-                btn.style.backgroundColor = "#0056b3"; // Dark blue to show done
-                setTimeout(() => { btn.innerText = "Save"; btn.style.backgroundColor = "#138808"; }, 2000);
-            } catch (e) {
-                console.error(e);
-                btn.innerText = "❌";
-                alert("Save Failed");
-            }
+                setTimeout(() => btn.innerText = "Save", 1500);
+            } catch(e) { btn.innerText = "❌"; }
         }
 
-        // FINAL SAVE (Report)
         window.saveFinalReport = async function() {
-            if (window.associateData.length === 0) { alert("Data नाही!"); return; }
+            if(!window.associateData.length) return alert("No Data");
+            const name = prompt("Report Name:", `Plan ${new Date().toLocaleDateString()}`);
+            if(!name) return;
             
-            const reportName = prompt("रिपोर्ट नाव (उदा. Closing Oct):", `Report - ${new Date().toLocaleString()}`);
-            if (!reportName) return;
-
             const btn = document.querySelector('.footer-save');
-            const originalText = btn.innerText;
             btn.innerText = "⏳ Saving...";
-            
             try {
                 await addDoc(collection(db, "saved_reports"), {
-                    reportName: reportName,
-                    createdAt: serverTimestamp(),
-                    data: window.associateData
+                    reportName: name, createdAt: serverTimestamp(), data: window.associateData
                 });
                 btn.innerText = "✅ Saved!";
-                setTimeout(() => { btn.innerText = originalText; }, 2000);
-            } catch (e) {
-                console.error(e);
-                btn.innerText = "❌ Error";
-            }
+                setTimeout(() => btn.innerText = "💾 Final Save All", 2000);
+            } catch(e) { btn.innerText = "Error"; }
         }
 
-        // OPEN SAVED
         window.openSavedList = async function() {
-            document.getElementById('savedListModal').style.display = 'flex';
-            const listContainer = document.getElementById('savedReportsList');
-            listContainer.innerHTML = "Loading...";
-
+            document.getElementById('savedListModal').style.display='flex';
+            const box = document.getElementById('savedReportsList');
+            box.innerHTML = "Loading...";
             try {
-                const q = query(collection(db, "saved_reports"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                
-                listContainer.innerHTML = "";
-                if(querySnapshot.empty) { listContainer.innerHTML = "No reports found."; return; }
-
-                querySnapshot.forEach((doc) => {
-                    const r = doc.data();
-                    const date = r.createdAt ? r.createdAt.toDate().toLocaleString() : '-';
-                    const div = document.createElement('div');
-                    div.className = 'saved-report-item';
-                    div.innerHTML = `<strong>${r.reportName}</strong><br><small>${date}</small>`;
-                    div.onclick = () => {
-                        window.associateData = r.data;
-                        loadTable();
-                        document.getElementById('savedListModal').style.display = 'none';
+                const sn = await getDocs(query(collection(db, "saved_reports"), orderBy("createdAt", "desc")));
+                box.innerHTML = "";
+                sn.forEach(doc => {
+                    const d = doc.data();
+                    const el = document.createElement('div');
+                    el.className = 'saved-report-item';
+                    el.innerHTML = `<strong>${d.reportName}</strong><br><small>${d.createdAt?.toDate().toLocaleDateString()}</small>`;
+                    el.onclick = () => {
+                        window.associateData = d.data;
+                        loadAllTables();
+                        document.getElementById('savedListModal').style.display='none';
                     };
-                    listContainer.appendChild(div);
+                    box.appendChild(el);
                 });
-            } catch (e) { listContainer.innerHTML = "Error loading list."; }
+            } catch(e) { box.innerHTML = "Error"; }
         }
 
-        // REPORTS
-        window.openReportsModal = function() {
-            if(window.associateData.length === 0) { alert("Data Empty!"); return; }
-            document.getElementById('reportModal').style.display = 'flex';
-            
-            let tOld = 0, tTarget = 0, active = 0;
-            window.associateData.forEach(d => {
-                tOld += d.pv;
-                if(d.target !== '') { tTarget += parseInt(d.target); active++; } 
-                else { tTarget += d.pv; }
+        // --- FILTER ---
+        window.filterAll = function() {
+            const s = document.getElementById('searchInput').value.toUpperCase();
+            // Filter both tables visual
+            [planningBody, callingBody].forEach(body => {
+                const rows = body.querySelectorAll('tr:not(.details-row)'); // Skip detail rows in logic
+                rows.forEach(tr => {
+                    if(tr.innerText.toUpperCase().indexOf(s) > -1) tr.style.display = '';
+                    else tr.style.display = 'none';
+                });
             });
-            const growth = tTarget - tOld;
-            
+        }
+        
+        // --- REPORTS ---
+        window.openReportsModal = function() {
+            document.getElementById('reportModal').style.display = 'flex';
+            let called = 0;
+            window.associateData.forEach(d => { if(d.callHistory && d.callHistory.length > 0) called++; });
             document.getElementById('aiAnalysis').innerHTML = `
-                <div><strong>Total People:</strong> ${window.associateData.length}</div>
-                <div><strong>Targets Set:</strong> ${active}</div>
-                <hr>
-                <div><strong>Old PV:</strong> ${tOld}</div>
-                <div><strong>New Target:</strong> ${tTarget}</div>
-                <div style="margin-top:5px; color:${growth>=0?'green':'red'}">
-                    <strong>Growth:</strong> ${growth>0?'+':''}${growth}
-                </div>
+                <strong>Total Associates:</strong> ${window.associateData.length}<br>
+                <strong>Calls Made:</strong> ${called}
             `;
         }
 
         window.generatePDF = function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const data = window.associateData.filter(d => d.diff !== 0);
-            if(data.length === 0 && !confirm("No changes. Print all?")) return;
-            
-            const rows = (data.length ? data : window.associateData).map(i => [i.id, i.name, i.pv, i.target, i.diff]);
-            doc.text("Target Report", 14, 15);
-            doc.autoTable({ head: [['ID', 'Name', 'Old', 'Target', 'Diff']], body: rows, startY: 20 });
-            doc.save('Report.pdf');
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            const data = window.associateData;
+            const rows = data.map(d => [d.id, d.name, d.target, d.remark, (d.callHistory||[]).length]);
+            doc.autoTable({ head:[['ID','Name','Target','Plan','Calls']], body:rows });
+            doc.save('Planner.pdf');
         }
 
-        window.generateExcel = function() {
-            const ws = XLSX.utils.json_to_sheet(window.associateData.map(i => ({ID:i.id, Name:i.name, Old:i.pv, Target:i.target, Diff:i.diff})));
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Targets");
-            XLSX.writeFile(wb, "Report.xlsx");
-        }
-
-        // FILTER
-        window.filterTable = function() {
-            const s = document.getElementById('searchInput').value.toUpperCase();
-            const tr = tableBody.getElementsByTagName('tr');
-            for(let i=0; i<tr.length; i++) {
-                if(tr[i].querySelector('.empty-msg')) continue;
-                const txt = tr[i].innerText.toUpperCase();
-                tr[i].style.display = txt.indexOf(s) > -1 ? "" : "none";
-            }
-        }
     </script>
 </body>
 </html>
