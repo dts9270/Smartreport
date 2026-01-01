@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Pro - Master Planner</title>
+    <title>RCM Pro - Smart Planner</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -18,92 +18,152 @@
             display: flex; flex-direction: column; overflow-x: hidden;
         }
 
-        /* 2. HEADER */
+        /* 2. हेडर & TABS */
         .header-section {
             background-color: rgba(255, 255, 255, 0.98);
             padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15); flex-shrink: 0;
             border-bottom: 3px solid #000080;
         }
         .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
-        .header-top h2 { margin: 0; color: #000080; font-size: 16px; font-weight: 800; text-transform: uppercase; }
+        .header-top h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
 
-        .btn-master-report {
-            background: linear-gradient(45deg, #000080, #1a237e);
-            color: white; border: none; padding: 6px 12px; border-radius: 20px;
-            font-weight: bold; cursor: pointer; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-        .nav-tabs { display: flex; width: 100%; background: #eee; overflow-x: auto; }
+        .nav-tabs { display: flex; width: 100%; background: #eee; }
         .tab-btn {
-            flex: 1; padding: 10px; border: none; background: #eee; white-space: nowrap;
+            flex: 1; padding: 10px; border: none; background: #eee;
             font-weight: bold; font-size: 13px; cursor: pointer;
             border-bottom: 4px solid transparent; transition: 0.3s;
         }
         .tab-btn.active { background: white; color: #000080; border-bottom-color: #FF9933; }
 
-        /* 3. COMMON UTILS */
-        .view-section { flex-grow: 1; overflow-y: auto; margin: 5px; margin-bottom: 80px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; padding-bottom: 60px; }
-        .view-section.active-view { display: block; }
-        
+        /* 3. DASHBOARD */
+        .dashboard-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;
+            background: #f0f8ff; border-bottom: 1px solid #ccc;
+        }
+        .dash-card {
+            background: white; padding: 8px; border-radius: 8px; text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #000080;
+        }
+        .dash-title { font-size: 10px; color: #666; font-weight: bold; text-transform: uppercase; }
+        .dash-value { font-size: 18px; font-weight: bold; color: #000080; margin-top: 4px; }
+        .card-green { border-left-color: #28a745; }
+        .card-red { border-left-color: #dc3545; }
+        .card-orange { border-left-color: #ffc107; }
+
+        /* 4. कंट्रोल सेक्शन */
         .control-section { padding: 10px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
         .btn-group { display: flex; gap: 10px; width: 95%; max-width: 500px; flex-wrap: wrap; justify-content: center; }
+        
         .btn-main { padding: 8px 15px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
         .btn-upload { background: white; color: #000080; border-style: dashed; flex: 2; }
         .btn-reset { background: #dc3545; color: white; border-color: #dc3545; flex: 1; }
+        
         input[type="file"] { display: none; }
         input[type="text"]#searchInput { padding: 10px; width: 90%; max-width: 400px; border: 2px solid #000080; border-radius: 25px; text-align: center; outline: none; font-size: 16px; }
 
-        /* 4. TABLES & LISTS */
+        /* 5. टेबल Views */
+        .view-section { flex-grow: 1; overflow-y: auto; margin: 5px; margin-bottom: 80px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; }
+        .view-section.active-view { display: block; }
+
         table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
         thead th { background-color: #000080; color: white; padding: 12px 5px; text-align: left; position: sticky; top: 0; z-index: 10; }
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; }
+
+        /* Calling Table */
+        .calling-row { cursor: pointer; transition: 0.2s; }
+        .calling-row:hover { background-color: #f0f8ff; }
+        .details-row { display: none; background-color: #f9f9f9; border-left: 5px solid #FF9933; }
+        .details-container { padding: 15px; text-align: left; }
         
         .badge { padding: 3px 8px; border-radius: 12px; font-size: 10px; color: white; font-weight: bold; display: inline-block; }
-        .badge-pending { background-color: #dc3545; } .badge-calling { background-color: #ffc107; color: black; } .badge-done { background-color: #28a745; }
+        .badge-pending { background-color: #dc3545; } 
+        .badge-calling { background-color: #ffc107; color: black; } 
+        .badge-done { background-color: #28a745; }
 
-        /* DASHBOARD */
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; background: #f0f8ff; border-bottom: 1px solid #ccc; }
-        .dash-card { background: white; padding: 8px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #000080; }
-        .dash-value { font-size: 18px; font-weight: bold; color: #000080; }
+        .btn-call { background-color: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 11px; }
+        .history-box { max-height: 120px; overflow-y: auto; background: white; border: 1px solid #ddd; padding: 8px; margin-bottom: 10px; border-radius: 5px; font-size: 12px; }
+        .log-item { border-bottom: 1px solid #eee; padding: 4px 0; color: #555; }
+        .log-date { color: #000080; font-weight: bold; font-size: 10px; }
 
-        /* TASK STYLES (ORIGINAL WITH ALERTS) */
-        .task-section-header { background: #e0f2f1; padding: 12px; font-weight: bold; color: #004d40; border-bottom: 2px solid #004d40; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .todo-item { background: white; border-bottom: 1px solid #eee; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-radius: 5px; border-left: 5px solid #ccc; }
+        .input-note { width: 90%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; }
+        .input-pv { width: 90%; padding: 6px 2px; border: 1px solid #000080; border-radius: 4px; text-align: center; font-weight: bold; }
+        .input-remark { width: 95%; padding: 6px 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 12px; background: #f9f9f9; }
+        .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
         
-        .task-fresh { border-left-color: #28a745; } 
-        .task-aged { border-left-color: #ffc107; background: #fffde7; } 
-        .task-critical { border-left-color: #dc3545; background: #ffebee; }
+        .footer-save { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #000080; color: white; padding: 12px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 100; }
+        .report-btn { background: #FF9933; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
+        /* TASK TAB STYLES */
+        .task-section-header { 
+            background: #e0f2f1; padding: 12px; font-weight: bold; color: #004d40; border-bottom: 2px solid #004d40; 
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+        }
+        .progress-bar-container { height: 8px; width: 100%; background: #ddd; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #28a745; width: 0%; transition: width 0.5s; }
+        .toggle-icon { font-size: 18px; transition: transform 0.3s; }
+        .rotate { transform: rotate(180deg); }
+        #autoTaskListContainer { display: none; padding-bottom: 10px; }
+
+        /* To Do List (UPDATED FOR RED ALERTS) */
+        .todo-container { padding: 15px; }
+        .todo-input-group { display: flex; gap: 5px; margin-bottom: 15px; }
+        .todo-input { flex: 1; padding: 10px; border: 2px solid #000080; border-radius: 5px; }
+        .btn-add-todo { background: #000080; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
         
-        .days-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; text-transform: uppercase; }
+        .todo-list { list-style: none; padding: 0; margin: 0; }
+        
+        .todo-item { 
+            background: white; border-bottom: 1px solid #eee; padding: 12px; display: flex; 
+            justify-content: space-between; align-items: center; transition: 0.2s;
+            margin-bottom: 8px; border-radius: 5px; border-left: 5px solid #ccc;
+        }
+
+        /* Task Age Styling */
+        .task-fresh { border-left-color: #28a745; } /* New Task (Green) */
+        .task-aged { border-left-color: #ffc107; background-color: #fffde7; } /* 1-2 Days (Orange) */
+        .task-critical { border-left-color: #dc3545; background-color: #ffebee; } /* 3+ Days (Red Alert) */
+
+        .days-badge {
+            font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; text-transform: uppercase;
+        }
         .badge-fresh { background: #e8f5e9; color: #2e7d32; }
         .badge-aged { background: #fff3e0; color: #ef6c00; border: 1px solid #ef6c00; }
         .badge-critical { background: #ffebee; color: #c62828; border: 1px solid #c62828; font-weight: bold; }
 
-        /* SEMINAR */
-        .seminar-card { background: white; border: 2px solid #000080; border-radius: 10px; padding: 15px; margin: 10px; text-align: center; }
-        .seminar-poster { max-width: 100%; height: auto; max-height: 200px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ddd; }
-        .form-input { width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; margin-top: 5px; }
-        .btn-action { padding: 8px 15px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; color: white; }
+        .todo-item.completed { background-color: #e8f5e9; border-left-color: #ccc; opacity: 0.7; } 
+        .todo-item.completed .todo-text { text-decoration: line-through; color: #888; }
+        
+        .todo-meta { display: flex; flex-direction: column; }
+        .todo-date { font-size: 10px; color: #666; margin-top: 2px; }
 
-        /* REPORTS BUTTONS */
-        .tab-report-btn { width: 90%; margin: 10px auto; display: block; padding: 10px; background: #000080; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        
-        /* HIDDEN MASTER PDF TEMPLATE */
-        #master-pdf-template { display: none; padding: 20px; background: white; font-family: sans-serif; color: #333; }
-        .ai-box { background: #e8f5e9; border: 1px solid #2e7d32; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
-        .ai-title { color: #2e7d32; font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-        .section-header { background: #000080; color: white; padding: 5px 10px; margin-top: 20px; font-weight: bold; }
-        
-        /* Utility */
-        .empty-msg { text-align: center; color: #666; padding: 20px; }
+        .btn-action-todo { background: none; border: none; font-size: 18px; cursor: pointer; }
+
+        .btn-daily-save { width: 100%; padding: 15px; background: #dc3545; color: white; border: none; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+        /* Modals */
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-        .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; max-height: 80vh; overflow-y: auto; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; }
+        .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; max-height: 80vh; overflow-y: auto; }
+        .empty-msg { text-align: center; color: #666; padding: 40px 20px; }
+        .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-close { background: #6c757d; } .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; }
+        
+        /* History Item */
+        .saved-report-item { 
+            background: #f8f9fa; border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 8px; 
+            text-align: left; cursor: default; display: flex; justify-content: space-between; align-items: center; 
+        }
+        .btn-print-hist {
+            background-color: #000080; color: white; border: none; padding: 5px 12px; border-radius: 5px; 
+            font-size: 12px; cursor: pointer;
+        }
 
-        /* HISTORY LIST ITEM */
-        .saved-report-item { background: #f8f9fa; border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
-        .btn-print-hist { background-color: #000080; color: white; border: none; padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; }
+        /* PDF TEMPLATE */
+        #pdf-template { display: none; padding: 20px; background: white; color: black; font-family: 'Segoe UI', sans-serif; }
+        #pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; vertical-align: top; }
+        #pdf-table th { background: #eee; }
+        .pdf-date-tag { font-size: 10px; color: #555; display: inline-block; margin-right: 5px; font-weight: bold; }
 
     </style>
 </head>
@@ -111,168 +171,172 @@
 
     <div class="header-section">
         <div class="header-top">
-            <h2>🇮🇳 RCM Manager</h2>
-            <button class="btn-master-report" onclick="generateMasterReport()">🏆 Master Report</button>
+            <h2>🇮🇳 RCM Planner</h2>
+            <button class="report-btn" onclick="openReportsModal()">📊 Reports</button>
         </div>
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Plan</button>
             <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calls</button>
             <button class="tab-btn" onclick="switchTab('tasks', this)">🎯 Task</button>
-            <button class="tab-btn" onclick="switchTab('seminar', this)">🎟️ Seminar</button>
         </div>
     </div>
 
     <div class="control-section">
         <div class="btn-group">
-            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel</button>
+            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel (Auto Save)</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ Reset</button>
+            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ Delete All</button>
         </div>
         <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
 
     <div id="planningView" class="view-section active-view">
-        <div style="padding:10px;">
-            <button class="tab-report-btn" onclick="generateSpecificReport('plan')">📄 Download Plan Report</button>
-        </div>
         <table class="plan-table">
             <thead>
                 <tr>
-                    <th style="width:15%">Name</th>
-                    <th style="width:15%">Target</th>
-                    <th style="width:25%">Plan</th>
-                    <th style="width:15%">Save</th>
+                    <th style="width:12%">ID</th>
+                    <th style="width:25%">Name</th>
+                    <th style="width:12%">PV</th>
+                    <th style="width:16%">Target</th>
+                    <th style="width:22%">Plan</th>
+                    <th style="width:13%">Save</th>
                 </tr>
             </thead>
             <tbody id="planningBody">
-                <tr><td colspan="4" class="empty-msg">Data Not Loaded</td></tr>
+                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा.</td></tr>
             </tbody>
         </table>
+        <button class="footer-save" onclick="saveFinalReport()">💾 Final Save (Planning)</button>
     </div>
 
     <div id="callingView" class="view-section">
         <div class="dashboard-grid">
-            <div class="dash-card"><div class="dash-title">Days Left</div><div class="dash-value" id="stat-days-left">0</div></div>
-            <div class="dash-card"><div class="dash-title">To Call</div><div class="dash-value" id="stat-remaining">0</div></div>
-            <div class="dash-card"><div class="dash-title">Asking Rate</div><div class="dash-value" id="stat-rate">0</div></div>
-            <div class="dash-card"><div class="dash-title">Done Today</div><div class="dash-value" id="stat-today-done">0</div></div>
-        </div>
-        <div style="padding:5px;">
-            <button class="tab-report-btn" onclick="generateSpecificReport('call')">📄 Download Calling Report</button>
+            <div class="dash-card card-green">
+                <div class="dash-title">Days Left</div>
+                <div class="dash-value" id="stat-days-left">0</div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-title">Total Remaining</div>
+                <div class="dash-value" id="stat-remaining">0</div>
+            </div>
+            <div class="dash-card card-orange">
+                <div class="dash-title">Daily Asking Rate</div>
+                <div class="dash-value" id="stat-rate">0</div>
+            </div>
+            <div class="dash-card card-red">
+                <div class="dash-title">Today's Done</div>
+                <div class="dash-value" id="stat-today-done">0</div>
+            </div>
         </div>
         <table class="calling-table">
             <thead>
                 <tr>
-                    <th style="width:45%">Name</th>
+                    <th style="width:15%">ID</th>
+                    <th style="width:40%">Name</th>
                     <th style="width:25%">Status</th>
                     <th style="width:20%">Tap</th>
                 </tr>
             </thead>
-            <tbody id="callingBody"></tbody>
+            <tbody id="callingBody">
+                <tr><td colspan="4" class="empty-msg">No Data. Upload Excel.</td></tr>
+            </tbody>
         </table>
     </div>
 
     <div id="taskView" class="view-section">
         
         <div style="text-align:right; padding:10px;">
-            <button class="btn-main" style="font-size:12px; padding:5px 10px;" onclick="openTaskHistory()">📜 View Task History Report</button>
+            <button class="btn-main btn-open" style="font-size:12px; padding:5px 10px;" onclick="openTaskHistory()">📜 View Task History Report</button>
         </div>
 
-        <div class="task-section-header">
+        <div class="task-section-header" onclick="toggleTaskList()">
+            <span>📞 Call Tasks (Today)</span>
+            <div>
+                <span id="random-progress-text" style="font-size:12px; margin-right:10px;"></span>
+                <span class="toggle-icon" id="task-icon">▼</span>
+            </div>
+        </div>
+        <div id="autoTaskListContainer">
+            <div style="padding: 5px 10px;">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="random-progress-bar"></div>
+                </div>
+            </div>
+            <table class="calling-table">
+                <thead><tr><th>Name</th><th>Mobile</th><th>Action</th></tr></thead>
+                <tbody id="randomTaskBody"><tr><td colspan="3" class="empty-msg">Data Loading...</td></tr></tbody>
+            </table>
+        </div>
+
+        <div class="task-section-header" style="margin-top:20px; background:#e8eaf6; color:#1a237e; border-bottom-color:#1a237e;">
             <span>✅ Manual Tasks (Date Wise)</span>
-            <button class="btn-main" style="font-size:10px; padding:4px;" onclick="generateSpecificReport('task')">📄 Report</button>
+            <span id="todo-progress-text">0/0</span>
         </div>
         
-        <div style="padding:15px;">
-            <div style="display:flex; gap:5px; margin-bottom:15px;">
-                <input type="text" id="newTodoInput" class="form-input" style="margin:0;" placeholder="New Task...">
-                <button class="btn-main" style="background:#000080; color:white;" onclick="addManualTask()">Add</button>
+        <div class="todo-container">
+            <div class="todo-input-group">
+                <input type="text" id="newTodoInput" class="todo-input" placeholder="New Task...">
+                <button class="btn-add-todo" onclick="addManualTask()">Add</button>
             </div>
-            <ul id="todoList" style="list-style:none; padding:0;"></ul>
-            <p style="text-align:center; font-size:11px; color:#666;">🔴 Red = Critical (>3 Days) | 🟠 Orange = 1-2 Days</p>
+            <ul id="todoList" class="todo-list"></ul>
+            <p style="font-size:11px; color:#666; text-align:center;">🔴 Red = 3+ Days Old | 🟠 Orange = 1-2 Days Old</p>
         </div>
-        <button class="tab-report-btn" style="background:#dc3545;" onclick="saveDailyTaskReport()">🌙 End Day & Save Report<br><span style="font-size:12px; font-weight:normal;">(Completed -> History | Pending -> Next Day)</span></button>
+
+        <button class="btn-daily-save" onclick="saveDailyTaskReport()">🌙 End Day & Save Report<br><span style="font-size:12px; font-weight:normal;">(Completed -> History | Pending -> Next Day)</span></button>
     </div>
 
-    <div id="seminarView" class="view-section">
-        <div class="seminar-card" id="eventSetupCard">
-            <div id="eventDisplay" style="display:none;">
-                <img id="displayPoster" class="seminar-poster" src="">
-                <h3 id="displayTitle" style="color:#000080; margin:5px 0;"></h3>
-                <p>📍 <span id="displayPlace"></span> | 📅 <span id="displayDate"></span></p>
-                <div style="display:flex; justify-content:center; gap:10px;">
-                    <button class="btn-action" style="background:#666;" onclick="editEvent()">✏️ Edit</button>
-                    <button class="btn-action" style="background:#138808;" onclick="generateSpecificReport('seminar')">📄 Report</button>
-                </div>
-            </div>
-            <div id="eventForm">
-                <h4>🗓️ New Seminar</h4>
-                <input type="text" id="evtName" class="form-input" placeholder="Program Name">
-                <input type="date" id="evtDate" class="form-input">
-                <input type="time" id="evtTime" class="form-input">
-                <input type="text" id="evtPlace" class="form-input" placeholder="Place">
-                <div style="margin-top:10px;">
-                    <input type="file" id="evtPoster" accept="image/*" style="display:none" onchange="document.getElementById('poster-btn-text').innerText = '✅ Image Selected'">
-                    <button class="btn-action" style="background:#000080; width:100%; border:1px dashed white;" onclick="document.getElementById('evtPoster').click()">
-                        <span id="poster-btn-text">🖼️ Upload Poster</span>
-                    </button>
-                </div>
-                <button class="btn-action" style="background:#FF9933; width:100%; margin-top:10px;" onclick="saveEventDetails()">Save Event</button>
-            </div>
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color:#000080; margin-top:0;">🤖 Report Center</h3>
+            <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF (With Time)</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button>
+            <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
-
-        <div style="padding:10px; background:#e0f2f1; border-bottom:2px solid #004d40;">
-            <h4>👤 Add Invitee</h4>
-            <div style="display:flex; gap:5px;">
-                <input type="text" id="invName" class="form-input" placeholder="Name" style="flex:1">
-                <input type="tel" id="invMobile" class="form-input" placeholder="Mobile" style="width:100px;">
-                <button class="btn-action" style="background:#000080;" onclick="addInvitee()">➕</button>
-            </div>
-        </div>
-
-        <table style="margin-top:10px;">
-            <thead><tr><th>Name</th><th>Mobile</th><th>Action</th></tr></thead>
-            <tbody id="seminarListBody"></tbody>
-        </table>
     </div>
 
     <div id="historyModal" class="modal">
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">📜 Task Report History</h3>
             <div id="historyList" style="text-align: left; max-height:300px; overflow-y:auto;">Loading...</div>
-            <button class="btn-action" style="background:#666; margin-top:10px;" onclick="document.getElementById('historyModal').style.display='none'">Close</button>
+            <button class="action-btn btn-close" onclick="document.getElementById('historyModal').style.display='none'">Close</button>
         </div>
     </div>
 
-    <div id="master-pdf-template">
-        <h1 style="text-align:center; color:#000080;">🏆 RCM Master Progress Report</h1>
-        <p style="text-align:center; color:#555;" id="m-report-date"></p>
-        <div class="ai-box"><div class="ai-title">🤖 AI Smart Analysis & Insights</div><div id="ai-content" style="font-size:13px; line-height:1.6;"></div></div>
-        <div class="section-header">1. Planning Summary</div><div id="m-plan-stats" style="padding:10px;"></div>
-        <div class="section-header">2. Calling Status</div><div id="m-call-stats" style="padding:10px;"></div>
-        <div class="section-header">3. Pending Tasks</div><div id="m-task-list" style="padding:10px; font-size:12px;"></div>
-        <div class="section-header">4. Seminar Status</div><div id="m-sem-stats" style="padding:10px;"></div>
-    </div>
-
-    <div id="gen-pdf-template" style="display:none; padding:20px; background:white;">
-        <h2 id="gen-pdf-title" style="text-align:center; color:#000080;">Report</h2>
-        <table id="gen-pdf-table" style="width:100%; border-collapse:collapse; margin-top:15px; font-size:12px;">
-            <thead><tr id="gen-pdf-head" style="background:#eee;"></tr></thead>
-            <tbody id="gen-pdf-body"></tbody>
+    <div id="pdf-template">
+        <h2 style="text-align:center; color:#000080;">🇮🇳 RCM Mission Report</h2>
+        <p id="pdf-date">Generated on: </p>
+        <table id="pdf-table">
+            <thead>
+                <tr>
+                    <th style="width:10%">ID</th>
+                    <th style="width:25%">Name</th>
+                    <th style="width:15%">Target</th>
+                    <th style="width:15%">Status</th>
+                    <th style="width:35%">Notes & Date</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-body"></tbody>
         </table>
     </div>
 
     <div id="hist-pdf-template" style="display:none; padding:20px; background:white;">
-        <h2 style="text-align:center; color:#000080;">🇮🇳 Daily Task History</h2>
-        <h4 id="hist-pdf-date" style="text-align:center;"></h4>
+        <h2 style="text-align:center; color:#000080;">🇮🇳 Daily Task Report</h2>
+        <h4 id="hist-pdf-date" style="text-align:center;">Date: </h4>
+        
+        <h3>📞 Call Summary</h3>
         <p>Total Calls: <span id="hist-pdf-calls"></span></p>
-        <h3>Tasks Completed:</h3>
-        <table style="width:100%; border-collapse:collapse; margin-top:10px;"><tbody id="hist-pdf-tasks"></tbody></table>
+        
+        <h3>✅ Task Checklist</h3>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+            <thead><tr style="background:#eee;"><th style="border:1px solid #333; padding:5px;">Task</th><th style="border:1px solid #333; padding:5px;">Status</th></tr></thead>
+            <tbody id="hist-pdf-tasks"></tbody>
+        </table>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, doc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, setDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB4rpjLDm8Q_L-xjvs1E_mV9KUBdwIGaeA",
@@ -286,38 +350,40 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // DATA STORES
         window.associateData = [];
-        window.manualTodos = [];
-        window.currentEvent = null;
-        window.invitees = [];
+        window.dailyIndices = [];
+        window.manualTodos = []; // Now stores { text, done, createdAt }
+        
+        const MISSION_DEADLINE = new Date("2026-01-20");
 
-        // INIT
-        window.onload = function() {
-            loadLocalData();
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('rcm_data_master');
+            if(savedData) window.associateData = JSON.parse(savedData);
+            
+            const savedTodos = localStorage.getItem('rcm_todos_master');
+            if(savedTodos) window.manualTodos = JSON.parse(savedTodos);
+            
+            // Fix for old data without dates
+            window.manualTodos.forEach(t => {
+                if(!t.createdAt) t.createdAt = new Date().toISOString().split('T')[0];
+            });
+
+            const savedDaily = localStorage.getItem('rcm_daily_' + new Date().toLocaleDateString());
+            if(savedDaily) window.dailyIndices = JSON.parse(savedDaily);
+            
+            loadAllTables();
         }
 
-        function loadLocalData() {
-            if(localStorage.getItem('rcm_data_master')) window.associateData = JSON.parse(localStorage.getItem('rcm_data_master'));
-            if(localStorage.getItem('rcm_todos_master')) window.manualTodos = JSON.parse(localStorage.getItem('rcm_todos_master'));
-            if(localStorage.getItem('rcm_sem_event')) window.currentEvent = JSON.parse(localStorage.getItem('rcm_sem_event'));
-            if(localStorage.getItem('rcm_sem_invitees')) window.invitees = JSON.parse(localStorage.getItem('rcm_sem_invitees'));
-            window.manualTodos.forEach(t => { if(!t.createdAt) t.createdAt = new Date().toISOString().split('T')[0]; });
-            renderAll();
-        }
-
-        function saveData() {
+        function saveToLocal() {
             localStorage.setItem('rcm_data_master', JSON.stringify(window.associateData));
             localStorage.setItem('rcm_todos_master', JSON.stringify(window.manualTodos));
-            localStorage.setItem('rcm_sem_event', JSON.stringify(window.currentEvent));
-            localStorage.setItem('rcm_sem_invitees', JSON.stringify(window.invitees));
         }
 
-        function renderAll() {
-            renderPlanning(); renderCalling(); renderTodos(); renderSeminar(); updateDash();
-        }
+        const planningBody = document.getElementById('planningBody');
+        const callingBody = document.getElementById('callingBody');
+        const randomTaskBody = document.getElementById('randomTaskBody');
 
-        // --- 1. PLANNING ---
+        // EXCEL UPLOAD
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -326,274 +392,425 @@
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                window.associateData = jsonData.map(row => ({
-                    id: row['ID'] || row['Id'] || 'N/A', name: row['Name'] || 'Unknown', mobile: row['Mobile'] || '', pv: row['PV'] || 0, target: '', remark: '', status: 'Pending', callHistory: []
-                }));
-                saveData(); renderAll(); alert("Data Uploaded!");
+                if (jsonData.length === 0) { alert("File Empty!"); return; }
+
+                const uniqueIds = new Set();
+                window.associateData = []; 
+                jsonData.forEach(row => {
+                    const id = row['ID'] || row['IdNo'] || row['Id'] || 'N/A';
+                    if (id !== 'N/A' && !uniqueIds.has(id)) {
+                        uniqueIds.add(id);
+                        window.associateData.push({
+                            id: id, name: row['Name'] || row['Associate Name'] || 'Unknown',
+                            mobile: row['Mobile'] || row['MobileNo'] || '',
+                            city: row['City'] || row['Gaon'] || '',
+                            pv: parseInt(row['PV'] || row['OctPv'] || row['Old PV'] || 0),
+                            target: '', remark: '', callHistory: [], status: 'Pending'
+                        });
+                    }
+                });
+                saveToLocal();
+                alert(`${window.associateData.length} Records Loaded & Saved!`);
+                loadAllTables();
+                generateDailyList();
             };
             reader.readAsArrayBuffer(file);
         });
 
-        function renderPlanning() {
-            const b = document.getElementById('planningBody');
-            b.innerHTML = window.associateData.length ? '' : '<tr><td colspan="4" class="empty-msg">No Data</td></tr>';
-            window.associateData.forEach((d,i) => {
-                b.innerHTML += `<tr><td>${d.name}</td><td><input style="width:60px;" type="number" value="${d.target}" onchange="window.updateRow(${i},'target',this.value)"></td><td><input type="text" value="${d.remark}" placeholder="Plan" onchange="window.updateRow(${i},'remark',this.value)"></td><td>✅</td></tr>`;
-            });
-        }
-        window.updateRow = (i,k,v) => { window.associateData[i][k] = v; saveData(); };
-
-        // --- 2. CALLING ---
-        function renderCalling() {
-            const b = document.getElementById('callingBody');
-            b.innerHTML = '';
-            window.associateData.forEach((d,i) => {
-                let badge = d.status === 'Done' ? 'badge-done' : 'badge-pending';
-                b.innerHTML += `<tr onclick="window.toggleDet(${i})"><td>${d.name}</td><td><span class="badge ${badge}">${d.status}</span></td><td>🔽</td></tr><tr id="det-${i}" style="display:none; background:#f9f9f9;"><td colspan="3"><a href="tel:${d.mobile}">📞 Call ${d.mobile}</a><br><input type="text" placeholder="Result..." onchange="window.addCallNote(${i}, this.value)"></td></tr>`;
-            });
-        }
-        window.toggleDet = (i) => { let el=document.getElementById(`det-${i}`); el.style.display=el.style.display==='none'?'table-row':'none'; };
-        window.addCallNote = (i, val) => {
-            if(!val) return;
-            window.associateData[i].status = 'Done';
-            window.associateData[i].callHistory.unshift({date: new Date().toLocaleDateString(), note: val});
-            saveData(); renderAll();
+        // RESET
+        window.resetAllData = function() {
+            const code = prompt("🚨 DELETE ALL DATA? Code:");
+            if (code === '2708') {
+                localStorage.clear();
+                window.associateData = []; window.manualTodos = [];
+                loadAllTables(); alert("Deleted.");
+            } else if (code !== null) alert("❌ Wrong Code!");
         }
 
-        // --- 3. TASKS (RED ALERT & ORIGINAL LOGIC) ---
-        window.addManualTask = () => {
-            let t = document.getElementById('newTodoInput').value;
-            if(t) { window.manualTodos.push({text:t, done:false, createdAt: new Date().toISOString().split('T')[0]}); saveData(); renderTodos(); document.getElementById('newTodoInput').value=''; }
+        // LOAD TABLES
+        function loadAllTables() {
+            renderPlanningTable();
+            renderCallingTable();
+            renderRandomTaskTable();
+            renderTodoList();
+            updateDashboard();
         }
-        
+
+        function updateDashboard() {
+            if (window.associateData.length === 0) return;
+            const today = new Date();
+            const timeDiff = MISSION_DEADLINE - today;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            
+            let doneCount = 0, todayDoneCount = 0;
+            const todayStr = today.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+
+            window.associateData.forEach(row => {
+                if (row.status === 'Done') doneCount++;
+                if (row.callHistory && row.callHistory.length > 0) {
+                    if (row.callHistory[0].date.includes(todayStr)) todayDoneCount++;
+                }
+            });
+
+            const remaining = window.associateData.length - doneCount;
+            const dailyRate = (daysLeft > 0) ? Math.ceil(remaining / daysLeft) : remaining;
+
+            document.getElementById('stat-days-left').innerText = daysLeft > 0 ? daysLeft : "0";
+            document.getElementById('stat-remaining').innerText = remaining;
+            document.getElementById('stat-rate').innerText = dailyRate;
+            document.getElementById('stat-today-done').innerText = todayDoneCount;
+            return dailyRate;
+        }
+
+        function generateDailyList() {
+            const todayKey = 'rcm_daily_' + new Date().toLocaleDateString();
+            const storedIndices = localStorage.getItem(todayKey);
+            if (storedIndices && JSON.parse(storedIndices).length > 0) {
+                window.dailyIndices = JSON.parse(storedIndices);
+            } else {
+                const dailyRate = updateDashboard();
+                if (!dailyRate || dailyRate <= 0) return;
+                let pendingIndices = window.associateData.map((_, i) => i).filter(i => window.associateData[i].status !== 'Done');
+                window.dailyIndices = pendingIndices.slice(0, dailyRate);
+                localStorage.setItem(todayKey, JSON.stringify(window.dailyIndices));
+            }
+            renderRandomTaskTable();
+        }
+
+        function renderPlanningTable() {
+            planningBody.innerHTML = '';
+            if (window.associateData.length === 0) { planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">No Data Saved.</td></tr>'; return; }
+            window.associateData.forEach((row, index) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.id}</td><td>${row.name}<br><small style="color:gray">${row.city}</small></td><td>${row.pv}</td><td><input type="number" class="input-pv" value="${row.target}" oninput="window.updateData(${index}, 'target', this.value)"></td><td><input type="text" class="input-remark" value="${row.remark}" placeholder="Plan..." oninput="window.updateData(${index}, 'remark', this.value)"></td><td><button class="btn-row-save" onclick="window.saveInd(${index})">Save</button></td>`;
+                planningBody.appendChild(tr);
+            });
+        }
+
+        function renderCallingTable() {
+            callingBody.innerHTML = '';
+            if (window.associateData.length === 0) return;
+            window.associateData.forEach((row, index) => {
+                let badgeClass = row.status === 'Done' ? 'badge-done' : (row.status === 'Calling' ? 'badge-calling' : 'badge-pending');
+                let tr = document.createElement('tr');
+                tr.className = 'calling-row';
+                tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') window.toggleDetail(index); };
+                tr.innerHTML = `<td>${row.id}</td> <td>${row.name}</td><td id="status-cell-${index}"><span class="badge ${badgeClass}">${row.status}</span></td> <td>🔽</td>`;
+                callingBody.appendChild(tr);
+                let historyHtml = (row.callHistory || []).map(h => `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`).join('') || '<div style="color:#aaa;">No history.</div>';
+                let detailTr = document.createElement('tr');
+                detailTr.id = `detail-${index}`;
+                detailTr.className = 'details-row';
+                detailTr.innerHTML = `<td colspan="4"><div class="details-container"><div><strong>Mobile:</strong> ${row.mobile} | <strong>City:</strong> ${row.city}</div><div style="margin:10px 0;"><a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 Call Now</a></div><div class="history-box" id="hist-box-${index}">${historyHtml}</div><div class="note-input-group"><input type="text" class="input-note" id="call-note-${index}" placeholder="Type result..."><button class="btn-add-note" onclick="window.addCallNote(${index})">Add Note</button></div></div></td>`;
+                callingBody.appendChild(detailTr);
+            });
+        }
+
+        window.toggleTaskList = function() {
+            const list = document.getElementById('autoTaskListContainer');
+            const icon = document.getElementById('task-icon');
+            if (list.style.display === 'block') { list.style.display = 'none'; icon.classList.remove('rotate'); } else { list.style.display = 'block'; icon.classList.add('rotate'); }
+        }
+
+        function renderRandomTaskTable() {
+            randomTaskBody.innerHTML = '';
+            let completed = 0;
+            if(window.dailyIndices.length === 0) { randomTaskBody.innerHTML = '<tr><td colspan="3" class="empty-msg">No calls today.</td></tr>'; return; }
+            window.dailyIndices.forEach(realIndex => {
+                const row = window.associateData[realIndex];
+                if(row && row.status === 'Done') completed++;
+                if(!row) return;
+                let tr = document.createElement('tr');
+                tr.style.background = row.status === 'Done' ? '#e8f5e9' : 'white';
+                tr.innerHTML = `<td>${row.name}</td><td><a href="tel:${row.mobile}" onclick="window.markCalling(${realIndex})">📞</a></td><td>${row.status === 'Done' ? '✅' : `<button class="btn-call" onclick="switchTab('calling', null); window.toggleDetail(${realIndex});">Open</button>`}</td>`;
+                randomTaskBody.appendChild(tr);
+            });
+            const pct = window.dailyIndices.length > 0 ? Math.round((completed / window.dailyIndices.length) * 100) : 0;
+            document.getElementById('task-count').innerText = window.dailyIndices.length;
+            document.getElementById('random-progress-text').innerText = `${completed}/${window.dailyIndices.length}`;
+            document.getElementById('random-progress-bar').style.width = `${pct}%`;
+        }
+
+        // --- NEW TASK LOGIC (Date Wise + Color Coding) ---
+        window.addManualTask = function() {
+            const input = document.getElementById('newTodoInput');
+            const text = input.value.trim();
+            if(!text) return;
+            
+            // Add CreatedAt date
+            window.manualTodos.push({ 
+                text: text, 
+                done: false,
+                createdAt: new Date().toISOString().split('T')[0] 
+            });
+            saveToLocal(); input.value = ''; renderTodoList();
+        }
+
+        window.toggleTodo = function(index) { window.manualTodos[index].done = !window.manualTodos[index].done; saveToLocal(); renderTodoList(); }
+        window.deleteTodo = function(index) { if(confirm("Delete?")) { window.manualTodos.splice(index, 1); saveToLocal(); renderTodoList(); } }
+
         function getDaysOld(dateStr) {
             const created = new Date(dateStr);
             const today = new Date();
-            created.setHours(0,0,0,0); today.setHours(0,0,0,0);
-            return Math.ceil(Math.abs(today - created) / (1000 * 60 * 60 * 24)); 
+            // Reset times to midnight for accurate day calculation
+            created.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            const diffTime = Math.abs(today - created);
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
         }
 
-        function renderTodos() {
-            const l = document.getElementById('todoList'); l.innerHTML = '';
+        function renderTodoList() {
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+            let doneCount = 0;
             
-            // Sort: Pending first (oldest), then Done
+            // Sort: Pending first (Oldest first), then Done
             window.manualTodos.sort((a,b) => {
                 if (a.done === b.done) return a.createdAt.localeCompare(b.createdAt);
                 return a.done ? 1 : -1;
             });
 
-            window.manualTodos.forEach((t,i) => {
-                let days = getDaysOld(t.createdAt);
-                let ageClass = 'task-fresh', badgeClass = 'badge-fresh', ageText = "New";
+            window.manualTodos.forEach((task, index) => {
+                if(task.done) doneCount++;
+                
+                // Color Logic
+                const daysOld = getDaysOld(task.createdAt);
+                let ageClass = 'task-fresh';
+                let badgeClass = 'badge-fresh';
+                let ageText = "New";
 
-                if (!t.done) {
-                    if (days >= 3) { ageClass = 'task-critical'; badgeClass = 'badge-critical'; ageText = `${days} Days Pending`; }
-                    else if (days >= 1) { ageClass = 'task-aged'; badgeClass = 'badge-aged'; ageText = `${days} Days Pending`; }
+                if (!task.done) {
+                    if (daysOld >= 3) {
+                        ageClass = 'task-critical';
+                        badgeClass = 'badge-critical';
+                        ageText = `${daysOld} Days Pending`;
+                    } else if (daysOld >= 1) {
+                        ageClass = 'task-aged';
+                        badgeClass = 'badge-aged';
+                        ageText = `${daysOld} Days Pending`;
+                    }
                 }
 
                 let li = document.createElement('li');
-                li.className = `todo-item ${t.done ? 'completed' : ageClass}`;
+                li.className = `todo-item ${task.done ? 'completed' : ageClass}`;
                 li.innerHTML = `
-                    <div style="flex:1;">
-                        <span style="${t.done?'text-decoration:line-through':''}">${t.text}</span>
-                        ${!t.done && days > 0 ? `<span class="days-badge ${badgeClass}">${ageText}</span>` : ''}
-                        <div style="font-size:10px; color:#666;">📅 ${t.createdAt}</div>
+                    <div style="display:flex; align-items:center; width:100%;">
+                        <input type="checkbox" style="transform:scale(1.3); margin-right:10px;" ${task.done ? 'checked' : ''} onclick="window.toggleTodo(${index})">
+                        <div style="flex:1" class="todo-meta">
+                            <div style="display:flex; align-items:center;">
+                                <span class="todo-text">${task.text}</span>
+                                ${!task.done && daysOld > 0 ? `<span class="days-badge ${badgeClass}">${ageText}</span>` : ''}
+                            </div>
+                            <span class="todo-date">📅 ${task.createdAt}</span>
+                        </div>
                     </div>
-                    <input type="checkbox" style="transform:scale(1.2);" ${t.done?'checked':''} onclick="window.toggleTask(${i})">
-                `;
-                l.appendChild(li);
+                    <button class="btn-action-todo" style="color:red;" onclick="window.deleteTodo(${index})">🗑</button>`;
+                list.appendChild(li);
             });
+            document.getElementById('todo-progress-text').innerText = `${doneCount}/${window.manualTodos.length}`;
         }
-        window.toggleTask = (i) => { window.manualTodos[i].done = !window.manualTodos[i].done; saveData(); renderTodos(); };
-        
-        window.saveDailyTaskReport = async () => {
-            if(!confirm("End Day? Completed tasks -> History, Pending -> Carry Forward.")) return;
-            const doneTasks = window.manualTodos.filter(t => t.done);
-            const today = new Date().toLocaleDateString();
-            
+
+        window.switchTab = function(tabName, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            else { /* auto */ }
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
+            if(tabName === 'planning') document.getElementById('planningView').classList.add('active-view');
+            else if(tabName === 'calling') { document.getElementById('callingView').classList.add('active-view'); renderCallingTable(); }
+            else if(tabName === 'tasks') { document.getElementById('taskView').classList.add('active-view'); renderRandomTaskTable(); renderTodoList(); }
+            updateDashboard();
+        }
+
+        window.toggleDetail = function(index) { const row = document.getElementById(`detail-${index}`); if(row) row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row'; }
+        window.updateData = function(index, field, value) { window.associateData[index][field] = value; saveToLocal(); }
+        window.markCalling = function(index) { window.associateData[index].status = 'Calling'; saveToLocal(); const cell = document.getElementById(`status-cell-${index}`); if(cell) cell.innerHTML = `<span class="badge badge-calling">Calling...</span>`; }
+
+        window.addCallNote = async function(index) {
+            const noteInput = document.getElementById(`call-note-${index}`);
+            const note = noteInput.value;
+            if(!note) { alert("Note empty"); return; }
+            const now = new Date();
+            const timeStamp = now.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute:'numeric', hour12: true });
+            if(!window.associateData[index].callHistory) window.associateData[index].callHistory = [];
+            window.associateData[index].callHistory.unshift({ date: timeStamp, note: note });
+            window.associateData[index].status = 'Done';
+            const histBox = document.getElementById(`hist-box-${index}`);
+            histBox.innerHTML = `<div class="log-item"><span class="log-date">${timeStamp}</span> ${note}</div>` + histBox.innerHTML;
+            const cell = document.getElementById(`status-cell-${index}`);
+            if(cell) cell.innerHTML = `<span class="badge badge-done">Done</span>`;
+            noteInput.value = '';
+            saveToLocal(); updateDashboard(); renderRandomTaskTable();
             try {
-                // Save ONLY completed to history
+                const row = window.associateData[index];
+                await setDoc(doc(db, "rcm_targets", row.id.toString()), {
+                    name: row.name, mobile: row.mobile, city: row.city, old_pv: row.pv, target: row.target, remark: row.remark, callHistory: row.callHistory, status: 'Done', lastUpdated: serverTimestamp()
+                }, { merge: true });
+            } catch(e) { console.error(e); }
+        }
+
+        window.saveInd = async function(index) {
+            const row = window.associateData[index];
+            const btn = document.querySelectorAll('.btn-row-save')[index];
+            btn.innerText = "⏳"; saveToLocal();
+            try {
+                await setDoc(doc(db, "rcm_targets", row.id.toString()), { name: row.name, mobile: row.mobile, old_pv: row.pv, target: row.target, remark: row.remark, callHistory: row.callHistory || [], status: row.status || 'Pending', lastUpdated: serverTimestamp() });
+                btn.innerText = "✅"; setTimeout(() => btn.innerText = "Save", 1500);
+            } catch(e) { btn.innerText = "❌"; }
+        }
+
+        window.saveFinalReport = async function() {
+            if(!window.associateData.length) return alert("No Data");
+            const name = prompt("Report Name:", `Plan ${new Date().toLocaleDateString()}`);
+            if(!name) return;
+            const btn = document.querySelector('.footer-save');
+            btn.innerText = "⏳ Saving...";
+            try {
+                await addDoc(collection(db, "saved_reports"), { reportName: name, createdAt: serverTimestamp(), data: window.associateData });
+                btn.innerText = "✅ Saved"; setTimeout(() => btn.innerText = "💾 Final Save All", 2000);
+            } catch(e) { btn.innerText = "Error"; }
+        }
+
+        // --- END DAY & SAVE REPORT (Updated for Carry Forward) ---
+        window.saveDailyTaskReport = async function() {
+            const today = new Date().toLocaleDateString();
+            const btn = document.querySelector('.btn-daily-save');
+            
+            if(!confirm("Are you sure you want to end the day?\n✅ Completed tasks will move to History.\n⏳ Pending tasks will carry forward to tomorrow.")) return;
+
+            btn.innerText = "⏳ Saving...";
+            
+            // 1. Separate Done vs Pending
+            const doneTasks = window.manualTodos.filter(t => t.done);
+            const pendingTasks = window.manualTodos.filter(t => !t.done);
+
+            try {
+                // 2. Save Report to Firestore
                 await addDoc(collection(db, "daily_task_reports"), {
                     date: today,
-                    completedCalls: window.associateData.filter(d => d.status==='Done').length,
-                    totalCalls: window.associateData.length,
-                    tasks: doneTasks, 
+                    totalCalls: window.dailyIndices.length,
+                    completedCalls: window.associateData.filter((d,i) => window.dailyIndices.includes(i) && d.status==='Done').length,
+                    completedTasks: doneTasks, // Only save completed tasks to history report
+                    pendingTasksCount: pendingTasks.length,
                     createdAt: serverTimestamp()
                 });
-                
-                // Keep ONLY pending for tomorrow
-                window.manualTodos = window.manualTodos.filter(t => !t.done);
-                saveData(); renderTodos();
-                alert("✅ New Day Started! Completed tasks saved to History.");
-            } catch(e) { alert("Error saving to cloud: " + e.message); }
+
+                // 3. Update Local State: Remove Done, Keep Pending
+                window.manualTodos = pendingTasks;
+                saveToLocal();
+                renderTodoList();
+
+                btn.innerText = "✅ New Day Started!";
+                setTimeout(() => btn.innerHTML = "🌙 End Day & Save Report<br><span style='font-size:12px; font-weight:normal;'>(Completed -> History | Pending -> Next Day)</span>", 3000);
+            } catch(e) { alert("Error saving"); btn.innerText = "Error"; }
         }
 
-        window.openTaskHistory = async () => {
+        // OPEN TASK HISTORY
+        window.openTaskHistory = async function() {
             document.getElementById('historyModal').style.display = 'flex';
             const list = document.getElementById('historyList');
-            list.innerHTML = "Loading History...";
-            
+            list.innerHTML = "Loading...";
             try {
-                const q = query(collection(db, "daily_task_reports"), orderBy("createdAt", "desc"));
-                const snap = await getDocs(q);
+                const sn = await getDocs(query(collection(db, "daily_task_reports"), orderBy("createdAt", "desc")));
+                list.innerHTML = "";
+                if(sn.empty) { list.innerHTML = "No history."; return; }
+                sn.forEach(doc => {
+                    const d = doc.data();
+                    const div = document.createElement('div');
+                    div.className = 'saved-report-item';
+                    
+                    // Count completed tasks (Check for different field names for compatibility)
+                    let tasksList = d.completedTasks || d.tasks || [];
+                    let tasksDoneCount = d.completedTasks ? d.completedTasks.length : (d.tasks ? d.tasks.filter(t=>t.done).length : 0);
 
-                if(snap.empty) { list.innerHTML = "No history found."; }
-                else {
-                    list.innerHTML = "";
-                    snap.forEach(doc => {
-                        const d = doc.data();
-                        let taskCount = d.tasks ? d.tasks.length : 0;
-                        let div = document.createElement('div');
-                        div.className = 'saved-report-item';
-                        div.innerHTML = `
-                            <div>
-                                <div style="font-weight:bold; color:#000080;">📅 ${d.date}</div>
-                                <div style="font-size:11px; color:#555;">📞 Calls: ${d.completedCalls}/${d.totalCalls || '?'} | ✅ Done: ${taskCount}</div>
-                            </div>
-                            <button class="btn-print-hist" onclick='window.printHistoryReport(${JSON.stringify(d).replace(/'/g, "&apos;")})'>🖨 Print</button>
-                        `;
-                        list.appendChild(div);
-                    });
-                }
-            } catch(e) { list.innerHTML = "Error: " + e.message; }
+                    div.innerHTML = `
+                        <div>
+                            <strong>📅 ${d.date}</strong><br>
+                            📞 Calls: ${d.completedCalls}/${d.totalCalls} | ✅ Tasks Done: ${tasksDoneCount}
+                        </div>
+                        <button class="btn-print-hist" onclick='printHistoryReport(${JSON.stringify(d).replace(/'/g, "&apos;")})'>🖨 Print</button>
+                    `;
+                    list.appendChild(div);
+                });
+            } catch(e) { list.innerHTML = "Error"; console.log(e); }
         }
 
-        window.printHistoryReport = (data) => {
+        window.printHistoryReport = function(data) {
             document.getElementById('hist-pdf-date').innerText = "Date: " + data.date;
-            document.getElementById('hist-pdf-calls').innerText = `${data.completedCalls} / ${data.totalCalls || 'NA'} Completed`;
+            document.getElementById('hist-pdf-calls').innerText = `${data.completedCalls} / ${data.totalCalls} Completed`;
+            
             const taskBody = document.getElementById('hist-pdf-tasks');
             taskBody.innerHTML = '';
             
-            let tasks = data.tasks || [];
-            if(tasks.length > 0) {
-                tasks.forEach(t => { taskBody.innerHTML += `<tr><td style="border:1px solid #333; padding:5px;">${t.text}</td><td style="border:1px solid #333; padding:5px;">Completed</td></tr>`; });
-            } else { taskBody.innerHTML = `<tr><td colspan="2" style="border:1px solid #333; padding:5px;">No Completed Tasks Recorded</td></tr>`; }
+            // Handle both new structure (completedTasks only) and old structure (all tasks)
+            let tasksToShow = data.completedTasks || data.tasks || [];
+
+            if(tasksToShow.length > 0) {
+                tasksToShow.forEach(t => {
+                    // If it's the old structure, only show done ones or mark status
+                    let status = t.done ? 'Done' : 'Pending';
+                    if(data.completedTasks) status = 'Completed'; // In new structure, only completed are saved here
+
+                    taskBody.innerHTML += `<tr><td style="border:1px solid #333; padding:5px;">${t.text}</td><td style="border:1px solid #333; padding:5px;">${status}</td></tr>`;
+                });
+            } else {
+                taskBody.innerHTML = `<tr><td colspan="2" style="border:1px solid #333; padding:5px;">No Completed Tasks</td></tr>`;
+            }
 
             const element = document.getElementById('hist-pdf-template');
             element.style.display = 'block';
-            var opt = { margin: 0.3, filename: `History_${data.date}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+            var opt = { margin: 0.3, filename: `Task_Report_${data.date}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
             html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
-        }
-
-        // --- 4. SEMINAR ---
-        window.saveEventDetails = () => {
-             let f = document.getElementById('evtPoster').files[0];
-             let reader = new FileReader();
-             reader.onload = (e) => {
-                 window.currentEvent = {name: document.getElementById('evtName').value, date: document.getElementById('evtDate').value, place: document.getElementById('evtPlace').value, poster: f ? e.target.result : (window.currentEvent?.poster||'')};
-                 saveData(); renderSeminar();
-             };
-             if(f) reader.readAsDataURL(f); else reader.onload({}); 
-        }
-        function renderSeminar() {
-            if(window.currentEvent) {
-                document.getElementById('eventForm').style.display='none'; document.getElementById('eventDisplay').style.display='block';
-                document.getElementById('displayTitle').innerText=window.currentEvent.name;
-                if(window.currentEvent.poster) document.getElementById('displayPoster').src=window.currentEvent.poster;
-            } else { document.getElementById('eventForm').style.display='block'; document.getElementById('eventDisplay').style.display='none'; }
-            const b = document.getElementById('seminarListBody'); b.innerHTML='';
-            window.invitees.forEach(inv => { b.innerHTML += `<tr><td>${inv.name}</td><td><a href="tel:${inv.mobile}">📞</a></td><td><button style="color:red;border:none;background:none;" onclick="window.delInv(${inv.id})">🗑</button></td></tr>`; });
-        }
-        window.addInvitee = () => { window.invitees.unshift({id: Date.now(), name: document.getElementById('invName').value, mobile: document.getElementById('invMobile').value}); saveData(); renderSeminar(); }
-        window.delInv = (id) => { window.invitees = window.invitees.filter(x=>x.id!==id); saveData(); renderSeminar(); }
-
-        // --- UTILS ---
-        window.switchTab = (t,b) => {
-            document.querySelectorAll('.view-section').forEach(x=>x.style.display='none');
-            document.getElementById(t+'View').style.display='block';
-            document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
-            b.classList.add('active');
-        }
-        window.updateDash = () => {
-             let done = window.associateData.filter(d=>d.status==='Done').length;
-             document.getElementById('stat-today-done').innerText = done;
-             document.getElementById('stat-remaining').innerText = window.associateData.length - done;
-        }
-
-        // ==========================================
-        // 🚀 REPORTING LOGIC
-        // ==========================================
-        window.generateSpecificReport = (type) => {
-            const el = document.getElementById('gen-pdf-template');
-            const head = document.getElementById('gen-pdf-head');
-            const body = document.getElementById('gen-pdf-body');
-            body.innerHTML = '';
-            let filename = "Report.pdf";
-
-            if (type === 'plan') {
-                document.getElementById('gen-pdf-title').innerText = "RCM Planning Report";
-                head.innerHTML = `<th>Name</th><th>Target</th><th>Remark</th>`;
-                window.associateData.forEach(d => body.innerHTML += `<tr><td style="border:1px solid #333;padding:5px;">${d.name}</td><td style="border:1px solid #333;padding:5px;">${d.target}</td><td style="border:1px solid #333;padding:5px;">${d.remark}</td></tr>`);
-                filename = "Plan_Report.pdf";
-            } 
-            else if (type === 'call') {
-                document.getElementById('gen-pdf-title').innerText = "RCM Calling Report";
-                head.innerHTML = `<th>Name</th><th>Mobile</th><th>Status</th><th>Last Note</th>`;
-                window.associateData.forEach(d => {
-                    let note = d.callHistory.length ? d.callHistory[0].note : '-';
-                    body.innerHTML += `<tr><td style="border:1px solid #333;padding:5px;">${d.name}</td><td style="border:1px solid #333;padding:5px;">${d.mobile}</td><td style="border:1px solid #333;padding:5px;">${d.status}</td><td style="border:1px solid #333;padding:5px;">${note}</td></tr>`;
-                });
-                filename = "Call_Report.pdf";
-            }
-            else if (type === 'task') {
-                document.getElementById('gen-pdf-title').innerText = "Pending Task Report";
-                head.innerHTML = `<th>Task</th><th>Days Old</th><th>Status</th>`;
-                window.manualTodos.forEach(t => {
-                    let days = Math.floor((new Date() - new Date(t.createdAt))/(1000*60*60*24));
-                    body.innerHTML += `<tr><td style="border:1px solid #333;padding:5px;">${t.text}</td><td style="border:1px solid #333;padding:5px;">${days} days</td><td style="border:1px solid #333;padding:5px;">${t.done?'Done':'Pending'}</td></tr>`;
-                });
-                filename = "Task_Report.pdf";
-            }
-            else if (type === 'seminar') {
-                document.getElementById('gen-pdf-title').innerText = "Seminar Invitation List";
-                head.innerHTML = `<th>Name</th><th>Mobile</th><th>Status</th>`;
-                window.invitees.forEach(i => body.innerHTML += `<tr><td style="border:1px solid #333;padding:5px;">${i.name}</td><td style="border:1px solid #333;padding:5px;">${i.mobile}</td><td style="border:1px solid #333;padding:5px;">Invited</td></tr>`);
-                filename = "Seminar_Report.pdf";
-            }
-            el.style.display = 'block';
-            html2pdf().from(el).save(filename).then(() => el.style.display='none');
-        }
-
-        window.generateMasterReport = () => {
-            const template = document.getElementById('master-pdf-template');
-            document.getElementById('m-report-date').innerText = "Date: " + new Date().toLocaleString();
-
-            let totalAssoc = window.associateData.length;
-            let callsDone = window.associateData.filter(d => d.status === 'Done').length;
-            let callPerc = totalAssoc ? Math.round((callsDone/totalAssoc)*100) : 0;
-            let pendingTasks = window.manualTodos.filter(t => !t.done).length;
-            let criticalTasks = window.manualTodos.filter(t => !t.done && (new Date() - new Date(t.createdAt))/(1000*60*60*24) >= 3).length;
-            let totalInvites = window.invitees.length;
-            let eventName = window.currentEvent ? window.currentEvent.name : "No Event";
-
-            let aiText = "<ul>";
-            if(callPerc < 30) aiText += "<li>⚠️ <strong>Calling Alert:</strong> Only " + callPerc + "% calls done. Need to increase speed immediately.</li>";
-            else if(callPerc > 80) aiText += "<li>✅ <strong>Excellent Calling:</strong> You have covered " + callPerc + "% of your list. Great job!</li>";
-            else aiText += "<li>ℹ️ <strong>Calling Status:</strong> Progress is steady (" + callPerc + "%). Keep going.</li>";
-            if(criticalTasks > 0) aiText += "<li>🔴 <strong>Critical Tasks:</strong> You have " + criticalTasks + " tasks pending for more than 3 days. Clear them first!</li>";
-            if(pendingTasks === 0) aiText += "<li>✨ <strong>Task Master:</strong> You have zero pending tasks. Fantastic organization!</li>";
-            if(window.currentEvent && totalInvites < 10) aiText += "<li>🎟️ <strong>Seminar Boost Needed:</strong> Only " + totalInvites + " people invited for '" + eventName + "'. Target at least 20.</li>";
-            aiText += "</ul>";
-            document.getElementById('ai-content').innerHTML = aiText;
-
-            document.getElementById('m-plan-stats').innerHTML = `Total Associates: <strong>${totalAssoc}</strong>`;
-            document.getElementById('m-call-stats').innerHTML = `Calls Completed: <strong>${callsDone} / ${totalAssoc}</strong> (${callPerc}%)`;
-            let tList = ""; window.manualTodos.filter(t=>!t.done).forEach(t => tList += `<div>[ ] ${t.text}</div>`);
-            document.getElementById('m-task-list').innerHTML = tList || "No Pending Tasks.";
-            document.getElementById('m-sem-stats').innerHTML = `Event: <strong>${eventName}</strong> <br> Total Invitees: <strong>${totalInvites}</strong>`;
-
-            template.style.display = 'block';
-            var opt = { margin: 0.5, filename: 'Master_AI_Report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
-            html2pdf().set(opt).from(template).save().then(() => template.style.display = 'none');
         }
 
         window.filterAll = function() {
             const s = document.getElementById('searchInput').value.toUpperCase();
-            [document.getElementById('planningBody'), document.getElementById('callingBody')].forEach(body => {
+            [planningBody, callingBody].forEach(body => {
                 const rows = body.querySelectorAll('tr:not(.details-row)');
                 rows.forEach(tr => { tr.style.display = tr.innerText.toUpperCase().indexOf(s) > -1 ? '' : 'none'; });
             });
         }
+        
+        window.openReportsModal = function() {
+            document.getElementById('reportModal').style.display = 'flex';
+            let called = 0;
+            window.associateData.forEach(d => { if(d.status === 'Done') called++; });
+            document.getElementById('aiAnalysis').innerHTML = `
+                <strong>Total Associates:</strong> ${window.associateData.length}<br>
+                <strong>Calls Completed:</strong> <span style="color:green; font-size:18px;">${called}</span><br>
+                <strong>Pending:</strong> <span style="color:red">${window.associateData.length - called}</span>
+            `;
+        }
+
+        // PDF & EXCEL
+        window.generatePDF = function() {
+            const pdfBody = document.getElementById('pdf-body');
+            pdfBody.innerHTML = '';
+            document.getElementById('pdf-date').innerText = "Generated: " + new Date().toLocaleString();
+            window.associateData.forEach(d => {
+                let note = d.remark || '';
+                if(d.callHistory && d.callHistory.length > 0) { note += (note ? '<br>' : '') + '📞 <span class="pdf-date-tag">[' + d.callHistory[0].date + ']</span> ' + d.callHistory[0].note; }
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${d.id}</td><td>${d.name}</td><td>${d.target || '-'}</td><td>${d.status || 'Pending'}</td><td>${note}</td>`;
+                pdfBody.appendChild(tr);
+            });
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block'; 
+            var opt = { margin: 0.3, filename: 'RCM_Report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
+        }
+
+        window.generateExcel = function() {
+            const ws = XLSX.utils.json_to_sheet(window.associateData.map(i => ({
+                ID:i.id, Name:i.name, Target:i.target, Remark:i.remark, Status:i.status, LastNote: (i.callHistory && i.callHistory.length) ? i.callHistory[0].note : '', LastCallTime: (i.callHistory && i.callHistory.length) ? i.callHistory[0].date : ''
+            })));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data");
+            XLSX.writeFile(wb, "Report.xlsx");
+        }
+
+        // Init
+        loadFromLocalStorage();
+
     </script>
 </body>
 </html>
