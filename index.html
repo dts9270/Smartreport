@@ -103,11 +103,12 @@
         .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
         .btn-close { background: #6c757d; } .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; }
 
-        /* PDF TEMPLATE (Hidden) */
+        /* PDF TEMPLATE */
         #pdf-template { display: none; padding: 20px; background: white; color: black; font-family: 'Segoe UI', sans-serif; }
         #pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
-        #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; }
+        #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; vertical-align: top; }
         #pdf-table th { background: #eee; }
+        .pdf-date-tag { font-size: 10px; color: #555; display: inline-block; margin-right: 5px; font-weight: bold; }
 
     </style>
 </head>
@@ -192,7 +193,7 @@
         <div class="modal-content">
             <h3 style="color:#000080; margin-top:0;">🤖 Report Center</h3>
             <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF with Marathi Notes</button>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF with Date & Time</button>
             <button class="action-btn btn-excel" onclick="generateExcel()">📊 Download Excel</button>
             <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
@@ -212,12 +213,11 @@
         <table id="pdf-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Target</th>
-                    <th>Status</th>
-                    <th>Notes (Plan & Calls)</th>
-                </tr>
+                    <th style="width:10%">ID</th>
+                    <th style="width:25%">Name</th>
+                    <th style="width:15%">Target</th>
+                    <th style="width:15%">Status</th>
+                    <th style="width:35%">Notes & Date</th> </tr>
             </thead>
             <tbody id="pdf-body"></tbody>
         </table>
@@ -517,18 +517,18 @@
             `;
         }
 
-        // --- PDF GENERATION WITH MARATHI SUPPORT ---
+        // --- PDF GENERATION WITH DATE & TIME IN NOTES ---
         window.generatePDF = function() {
             const pdfBody = document.getElementById('pdf-body');
             pdfBody.innerHTML = '';
             document.getElementById('pdf-date').innerText = "Generated: " + new Date().toLocaleString();
 
-            // Populate hidden HTML table
             window.associateData.forEach(d => {
-                // Combine notes
+                // Combine notes with Date Time
                 let note = d.remark || '';
                 if(d.callHistory && d.callHistory.length > 0) {
-                    note += (note ? '<br>' : '') + '📞 ' + d.callHistory[0].note;
+                    // Added Date & Time in small tag
+                    note += (note ? '<br>' : '') + '📞 <span class="pdf-date-tag">[' + d.callHistory[0].date + ']</span> ' + d.callHistory[0].note;
                 }
 
                 let tr = document.createElement('tr');
@@ -543,26 +543,26 @@
             });
 
             const element = document.getElementById('pdf-template');
-            element.style.display = 'block'; // Show temp
+            element.style.display = 'block'; 
             
-            // Generate PDF using html2pdf (Screenshots HTML -> supports Marathi)
             var opt = {
-                margin:       0.5,
-                filename:     'RCM_Mission_Report.pdf',
+                margin:       0.3,
+                filename:     'RCM_Mission_Report_With_Dates.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                element.style.display = 'none'; // Hide again
+                element.style.display = 'none'; 
             });
         }
 
         window.generateExcel = function() {
             const ws = XLSX.utils.json_to_sheet(window.associateData.map(i => ({
                 ID:i.id, Name:i.name, Target:i.target, Remark:i.remark, Status:i.status, 
-                LastNote: (i.callHistory && i.callHistory.length) ? i.callHistory[0].note : ''
+                LastNote: (i.callHistory && i.callHistory.length) ? i.callHistory[0].note : '',
+                LastCallTime: (i.callHistory && i.callHistory.length) ? i.callHistory[0].date : ''
             })));
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Data");
