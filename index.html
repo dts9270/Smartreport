@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Pro - Master App</title>
+    <title>RCM Pro - All Data</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -18,7 +18,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* --- MAIN THEME (TIRANGA) --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0; height: 100vh;
@@ -26,20 +25,14 @@
             background-attachment: fixed;
             display: flex; flex-direction: column; overflow-x: hidden;
         }
+        .btn, a { text-decoration: none; }
 
-        .btn { text-decoration: none; } 
-        a { text-decoration: none; }
-
-        /* HEADER & MENU */
-        .header-section {
-            background-color: rgba(255, 255, 255, 0.98);
-            padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15); flex-shrink: 0;
-            border-bottom: 3px solid #000080;
-        }
+        /* HEADER */
+        .header-section { background: rgba(255, 255, 255, 0.98); padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15); flex-shrink: 0; border-bottom: 3px solid #000080; }
         .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
         .header-top h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
 
-        /* LEFT SIDEBAR MENU */
+        /* SIDEBAR */
         .menu-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #000080; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; backdrop-filter: blur(3px); }
         .left-sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: white; z-index: 1600; transition: left 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
@@ -49,15 +42,14 @@
         .menu-item { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; color: #333; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .menu-item:hover { background: #f8f9fa; color: #FF9933; }
         .menu-item.active { background: #fff3e0; color: #e65100; border-right: 5px solid #FF9933; }
-        .menu-item i { width: 25px; text-align: center; font-size: 18px; }
 
-        /* MAIN CONTAINER */
+        /* CONTAINER */
         .main-container { padding: 10px; padding-bottom: 80px; }
         .view-section { display: none; animation: fadeIn 0.3s; }
         .view-section.active-view { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* UI COMPONENTS */
+        /* CONTROLS */
         .control-section { padding: 10px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; background:rgba(255,255,255,0.9); border-radius:10px; margin-bottom:10px;}
         .btn-group { display: flex; gap: 10px; width: 95%; max-width: 500px; flex-wrap: wrap; justify-content: center; }
         .btn-main { padding: 8px 15px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
@@ -83,31 +75,30 @@
         .input-pv, .input-remark { width: 90%; padding: 5px; border: 1px solid #000080; border-radius: 4px; text-align: center; }
         .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
 
-        /* Task Tab */
+        /* MODULES */
         .task-section-header { background: #e0f2f1; padding: 12px; font-weight: bold; color: #004d40; border-bottom: 2px solid #004d40; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-radius:8px; }
         .progress-bar-container { height: 8px; width: 100%; background: #ddd; border-radius: 4px; margin-top: 5px; overflow: hidden; }
         .progress-bar { height: 100%; background: #28a745; width: 0%; transition: width 0.5s; }
         .todo-item { background: white; border-bottom: 1px solid #eee; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
         .todo-item.completed { background-color: #e8f5e9; } .todo-item.completed .todo-text { text-decoration: line-through; color: #888; }
 
-        /* New Leads UI */
         .pro-card { background: rgba(255, 255, 255, 0.95); border-radius: 12px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8); position: relative; }
         .pro-card.status-joined { border-left: 5px solid #138808; } .pro-card.status-hot { border-left: 5px solid #FF9933; } .pro-card.status-new { border-left: 5px solid #000080; }
         .card-actions { margin-top: 10px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #eee; padding-top: 8px; }
         .act-btn { width: 35px; height: 35px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        /* Bulk Tab UI */
         #bulkView { background: radial-gradient(ellipse at top left, #fce7f3, #f3e8ff, #dbeafe); border-radius: 15px; padding: 15px; }
         .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
 
-        /* FollowUp Tab UI */
         .fu-bottom-nav { display: flex; justify-content: space-around; margin-bottom:10px; background:white; padding:10px; border-radius:10px; }
         .fu-nav-item { font-size: 12px; font-weight: bold; color: #555; text-decoration: none; cursor: pointer; }
         .fu-nav-item.active { color: #000080; border-bottom: 2px solid #000080; }
         .fu-task-card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; border-left: 5px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
 
-        .footer-save { position: fixed; bottom: 15px; right: 15px; width: 60px; height: 60px; background: #000080; color: white; border-radius: 50%; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: none; z-index: 900; display:flex; align-items:center; justify-content:center; font-size:24px; }
-        .fab { position: fixed; bottom: 90px; right: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, #000080, #1e3a8a); border-radius: 50%; color: white; font-size: 24px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 900; }
+        .footer-btn-group { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 900; }
+        .footer-btn { width: 50px; height: 50px; border-radius: 50%; color: white; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s; }
+        .footer-btn:active { transform: scale(0.9); }
+        .btn-save-float { background: #000080; } .btn-report-float { background: #FF9933; } .btn-add-float { background: #138808; }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; align-items: center; justify-content: center; }
         .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 20px; padding: 25px; max-height: 85vh; overflow-y: auto; text-align: center; border-top: 5px solid #FF9933; border-bottom: 5px solid #138808; }
@@ -119,7 +110,6 @@
         #pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
         #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; vertical-align: top; }
         #pdf-table th { background: #eee; }
-
     </style>
 </head>
 <body>
@@ -128,7 +118,7 @@
         <div class="header-top">
             <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             <h2>🇮🇳 RCM PRO</h2>
-            <button class="menu-btn" onclick="openReportsModal()" style="font-size:18px;"><i class="fas fa-chart-pie"></i></button>
+            <button class="menu-btn" onclick="location.reload()" style="font-size:18px;"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
@@ -149,7 +139,6 @@
             <div class="menu-item" onclick="openSavedList()"><i class="fas fa-folder-open"></i> Saved Reports</div>
             <div class="menu-item" style="color:red;" onclick="resetAllData()"><i class="fas fa-trash"></i> Reset All Data</div>
         </div>
-        <div style="padding:10px; font-size:11px; text-align:center; color:#999;">Designed for Success 🚀</div>
     </div>
 
     <div class="main-container">
@@ -163,9 +152,9 @@
         </div>
 
         <div id="planningView" class="view-section active-view">
-            <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <table style="width:100%;">
                 <thead style="background:#000080; color:white;"><tr><th style="padding:10px;">ID</th><th>Name</th><th>PV</th><th>Tgt</th><th>Plan</th><th>Save</th></tr></thead>
-                <tbody id="planningBody"><tr><td colspan="6" class="empty-msg">👆 Please Upload Excel File</td></tr></tbody>
+                <tbody id="planningBody"><tr><td colspan="6" class="empty-msg">👆 Upload Excel (LocalStorage Data)</td></tr></tbody>
             </table>
         </div>
 
@@ -176,19 +165,12 @@
                 <div class="dash-card card-orange"><div class="dash-title">Daily Rate</div><div class="dash-value" id="stat-rate">0</div></div>
                 <div class="dash-card"><div class="dash-title">Today's Done</div><div class="dash-value" id="stat-today-done">0</div></div>
             </div>
-            <table style="width:100%;">
-                <thead style="background:#eee;"><tr><th>Name</th><th>Status</th><th>Tap</th></tr></thead>
-                <tbody id="callingBody"><tr><td colspan="3" class="empty-msg">No Data.</td></tr></tbody>
-            </table>
+            <table style="width:100%;"><thead style="background:#eee;"><tr><th>Name</th><th>Status</th><th>Tap</th></tr></thead><tbody id="callingBody"></tbody></table>
         </div>
 
         <div id="taskView" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h5 style="margin:0; font-weight:bold; color:#000080;">Today's Mission</h5>
-                <button class="btn btn-sm btn-outline-primary" onclick="openTaskHistory()">History</button>
-            </div>
             <div class="task-section-header" onclick="toggleTaskList()" style="background:#e3f2fd; color:#0d47a1;">
-                <strong>📞 Auto Call List (<span id="task-count">0</span>)</strong> <span>▼</span>
+                <strong>📞 Daily Call Target (<span id="task-count">0</span>)</strong> <span>▼</span>
             </div>
             <div id="autoTaskListContainer" style="display:block; margin-top:10px;">
                 <div style="height:5px; background:#eee; margin-bottom:5px;"><div id="random-progress-bar" style="height:100%; width:0%; background:#28a745;"></div></div>
@@ -204,7 +186,6 @@
                 </div>
                 <ul id="todoList" style="list-style:none; padding:0; margin-top:10px;"></ul>
             </div>
-            <button class="action-btn btn-excel" onclick="saveDailyTaskReport()" style="margin-top:10px;">✅ End Day & Save</button>
         </div>
 
         <div id="leadsView" class="view-section">
@@ -218,8 +199,7 @@
                 <input type="text" class="modern-input" id="leadSearch" placeholder="Search Lead..." oninput="renderLeads()" style="margin:0;">
                 <select class="modern-input" id="leadFilter" onchange="renderLeads()" style="width:80px; margin:0;"><option value="All">All</option><option value="Hot">Hot</option></select>
             </div>
-            <div id="leadsList"></div>
-            <button class="fab" onclick="openLeadModal()">+</button>
+            <div id="leadsList">Loading...</div>
         </div>
 
         <div id="followupView" class="view-section" style="padding:10px;">
@@ -234,12 +214,11 @@
                     <strong style="color:#c62828;">PENDING</strong>
                     <strong style="color:#c62828;">₹<span id="totalUdhari">0</span></strong>
                 </div>
-                <div id="fuTaskListContainer"></div>
+                <div id="fuTaskListContainer">Loading...</div>
             </div>
             <div id="fu-add" class="fu-section">
                 <div class="card p-3 shadow-sm border-0">
                     <h6 class="fw-bold">New Sale</h6>
-                    <input type="hidden" id="editDocId">
                     <input type="text" class="form-control mb-2" id="cName" placeholder="Customer Name">
                     <input type="tel" class="form-control mb-2" id="cPhone" placeholder="Mobile">
                     <div class="input-group mb-2">
@@ -278,55 +257,65 @@
 
     </div>
 
-    <button id="mainSaveBtn" class="footer-save" onclick="saveFinalReport()"><i class="fas fa-save"></i></button>
+    <div class="footer-btn-group">
+        <button id="addBtn" class="footer-btn btn-add-float" onclick="openLeadModal()" style="display:none;"><i class="fas fa-plus"></i></button>
+        <button id="reportBtn" class="footer-btn btn-report-float" onclick="generateCurrentTabPDF()"><i class="fas fa-file-pdf"></i></button>
+        <button id="mainSaveBtn" class="footer-btn btn-save-float" onclick="saveFinalReport()"><i class="fas fa-save"></i></button>
+    </div>
 
     <div id="leadModal" class="modal"><div class="modal-content"><span style="float:right; cursor:pointer;" onclick="closeLeadModal()">&times;</span><h3>Lead Details</h3><input type="hidden" id="leadId"><input type="text" class="modern-input" id="lpName" placeholder="Name"><input type="number" class="modern-input" id="lpMobile" placeholder="Mobile"><input type="text" class="modern-input" id="lpCity" placeholder="City"><select class="modern-input" id="lpStatus"><option value="New">New</option><option value="Joined">Joined</option></select><input type="text" class="modern-input" id="lpNote" placeholder="Note"><button class="action-btn btn-excel" onclick="saveLead()">Save</button></div></div>
-
     <div id="waModal" class="modal"><div class="modal-content"><span style="float:right; cursor:pointer;" onclick="document.getElementById('waModal').style.display='none'">&times;</span><h3>WhatsApp</h3><div class="wa-options"><button class="wa-btn" onclick="sendWA('Intro')">👋 Intro</button><button class="wa-btn" onclick="sendWA('Plan')">🎥 Plan</button><button class="wa-btn" onclick="sendWA('FollowUp')">📞 FollowUp</button></div></div></div>
-
     <div id="reportModal" class="modal"><div class="modal-content"><h3>Reports</h3><button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF</button><button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button><button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button></div></div>
-    
     <div id="historyModal" class="modal"><div class="modal-content"><h3>History</h3><div id="historyList" style="text-align:left; max-height:300px; overflow-y:auto;"></div><button class="action-btn btn-close" onclick="document.getElementById('historyModal').style.display='none'">Close</button></div></div>
     <div id="savedListModal" class="modal"><div class="modal-content"><h3>Saved Files</h3><div id="savedReportsList" style="text-align:left;"></div><button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button></div></div>
-
-    <div id="pdf-template" style="display:none;"><h2 style="text-align:center;">RCM Report</h2><p id="pdf-date"></p><table id="pdf-table"><thead><tr><th>ID</th><th>Name</th><th>Target</th><th>Status</th><th>Notes</th></tr></thead><tbody id="pdf-body"></tbody></table></div>
+    <div id="pdf-template" style="display:none;"><h2 style="text-align:center;">RCM Report</h2><p id="pdf-date"></p><table id="pdf-table"><thead><tr><th>Name</th><th>Info</th><th>Status</th><th>Notes</th></tr></thead><tbody id="pdf-body"></tbody></table></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, doc, setDoc, deleteDoc, getDocs, query, orderBy, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyB4rpjLDm8Q_L-xjvs1E_mV9KUBdwIGaeA", authDomain: "smartreport-7ce05.firebaseapp.com", projectId: "smartreport-7ce05", storageBucket: "smartreport-7ce05.firebasestorage.app", messagingSenderId: "679934692192", appId: "1:679934692192:web:a8bf0a52fdac79eebc2c05" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // --- MULTI-DATABASE CONNECTION SETUP ---
+        
+        // 1. MAIN APP (Planning/Calling)
+        const appMain = initializeApp({ apiKey: "AIzaSyB4rpjLDm8Q_L-xjvs1E_mV9KUBdwIGaeA", authDomain: "smartreport-7ce05.firebaseapp.com", projectId: "smartreport-7ce05", storageBucket: "smartreport-7ce05.firebasestorage.app", messagingSenderId: "679934692192", appId: "1:679934692192:web:a8bf0a52fdac79eebc2c05" }, "mainApp");
+        const dbMain = getFirestore(appMain);
 
+        // 2. LEADS APP (For New Leads - list-b182e)
+        const appLeads = initializeApp({ apiKey: "AIzaSyB-AA1oAWceBEr6NCDbXATdpKdO8ks7jks", authDomain: "list-b182e.firebaseapp.com", projectId: "list-b182e", storageBucket: "list-b182e.firebasestorage.app", messagingSenderId: "996772285132", appId: "1:996772285132:web:cad03cafda172833f59069" }, "leadsApp");
+        const dbLeads = getFirestore(appLeads);
+
+        // 3. FOLLOWUP APP (For Clients - rcmcrm-5ad88)
+        const appFollowUp = initializeApp({ apiKey: "AIzaSyAYfRLpyfVHNYFyTYZaSylGxyoW4UFH-yw", authDomain: "rcmcrm-5ad88.firebaseapp.com", projectId: "rcmcrm-5ad88", storageBucket: "rcmcrm-5ad88.firebasestorage.app", messagingSenderId: "172188965998", appId: "1:172188965998:web:33d65df1549fdb1acb1a7f" }, "followUpApp");
+        const dbFollowUp = getFirestore(appFollowUp);
+
+        // GLOBALS
         window.associateData = []; window.dailyIndices = []; window.manualTodos = []; window.prospectsData = []; window.fuClients = []; window.bulkData = []; window.currentCart = []; let selectedLead = {};
         const MISSION_DEADLINE = new Date("2026-01-20");
         const SHEET_ID = "1eR5THz-4AV3HkfnNJ5Un48ksz0I0jrepJSED3qHFg6k";
+        let currentTab = 'planning';
 
-        window.toggleSidebar = function() {
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            if (sb.classList.contains('open')) { sb.classList.remove('open'); ov.style.display = 'none'; } 
-            else { sb.classList.add('open'); ov.style.display = 'block'; }
-        }
+        window.toggleSidebar = function() { const sb = document.getElementById('sidebar'); const ov = document.getElementById('overlay'); if (sb.classList.contains('open')) { sb.classList.remove('open'); ov.style.display = 'none'; } else { sb.classList.add('open'); ov.style.display = 'block'; } }
 
         window.switchTab = function(t, b) {
+            currentTab = t;
             if(window.innerWidth < 768) toggleSidebar(); 
             document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
             if(b.classList.contains('menu-item')) b.classList.add('active');
+            
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
             document.getElementById(t+'View').classList.add('active-view');
             
             const mainCtrl = document.getElementById('mainControls');
             const saveBtn = document.getElementById('mainSaveBtn');
-            if(t === 'leads' || t === 'followup' || t === 'bulk') { mainCtrl.style.display = 'none'; saveBtn.style.display = 'none'; } 
-            else { mainCtrl.style.display = 'block'; saveBtn.style.display = 'flex'; }
+            const addBtn = document.getElementById('addBtn');
+            
+            mainCtrl.style.display = 'block'; saveBtn.style.display = 'flex'; addBtn.style.display = 'none';
 
-            if(t==='leads') renderLeads(); 
-            if(t==='followup') renderUI(); 
-            if(t==='bulk') renderBulkTable();
-            if(t==='tasks') { renderRandomTaskTable(); renderTodoList(); }
-            if(t==='calling') renderCallingTable();
+            if(t === 'leads') { mainCtrl.style.display = 'none'; saveBtn.style.display = 'none'; addBtn.style.display = 'flex'; renderLeads(); } 
+            else if (t === 'followup') { mainCtrl.style.display = 'none'; saveBtn.style.display = 'none'; renderUI(); }
+            else if (t === 'bulk') { mainCtrl.style.display = 'none'; saveBtn.style.display = 'none'; renderBulkTable(); }
+            else if(t === 'tasks') { renderRandomTaskTable(); renderTodoList(); }
+            else if(t === 'calling') { renderCallingTable(); }
         }
 
         function loadFromLocalStorage() {
@@ -337,9 +326,31 @@
         }
         function saveToLocal() { localStorage.setItem('rcm_data_master', JSON.stringify(window.associateData)); localStorage.setItem('rcm_todos_master', JSON.stringify(window.manualTodos)); }
 
-        onSnapshot(collection(db, "rcm_prospects"), (sn) => { window.prospectsData = []; sn.forEach(d => { let x=d.data(); x.id=d.id; window.prospectsData.push(x); }); renderLeads(); });
-        onSnapshot(collection(db, "clients"), (sn) => { window.fuClients = []; let tU=0; sn.forEach(d => { let x=d.data(); x.docId=d.id; if(!['Cash','Online','Paid'].includes(x.paymentStatus)) tU+=parseInt(x.amount||0); window.fuClients.push(x); }); document.getElementById('totalUdhari').innerText=tU; renderUI(); });
+        // --- REAL-TIME LISTENERS (Fetching Old Data from Correct DBs) ---
+        
+        // 1. Leads (from dbLeads)
+        onSnapshot(collection(dbLeads, "rcm_prospects"), (sn) => { 
+            window.prospectsData = []; 
+            sn.forEach(d => { let x=d.data(); x.id=d.id; window.prospectsData.push(x); }); 
+            if(currentTab==='leads') renderLeads(); 
+        });
+        
+        // 2. FollowUp (from dbFollowUp)
+        onSnapshot(collection(dbFollowUp, "clients"), (sn) => { 
+            window.fuClients = []; let tU=0; 
+            sn.forEach(d => { 
+                let x=d.data(); x.docId=d.id; 
+                if(!['Cash','Online','Paid'].includes(x.paymentStatus)) tU+=parseInt(x.amount||0); 
+                window.fuClients.push(x); 
+            }); 
+            if(document.getElementById('totalUdhari')) document.getElementById('totalUdhari').innerText=tU; 
+            if(currentTab==='followup') renderUI(); 
+        });
 
+        // 3. Saved Reports (from dbMain)
+        // Used in openSavedList()
+
+        // --- CORE FUNCTIONS ---
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0]; if(!file)return;
             const r = new FileReader(); r.onload = (ev) => {
@@ -363,45 +374,90 @@
 
         window.resetAllData = function() { if(prompt("Code")==='2708'){ localStorage.clear(); window.associateData=[]; loadAllTables(); alert("Deleted"); } }
         function loadAllTables() { renderPlanningTable(); renderCallingTable(); renderRandomTaskTable(); renderTodoList(); updateDashboard(); }
-        function updateDashboard() { if(!window.associateData.length)return; const rem = window.associateData.filter(r=>r.status!=='Done').length; const rate = Math.ceil(rem/Math.max(1, Math.ceil((MISSION_DEADLINE - new Date())/(1000*60*60*24)))); document.getElementById('stat-rate').innerText = rate; return rate; }
         
+        function updateDashboard() { 
+            if(!window.associateData.length)return; 
+            const today = new Date();
+            const timeDiff = MISSION_DEADLINE - today;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            let done = 0, todayDone = 0; const tStr = today.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+            window.associateData.forEach(r => { if(r.status === 'Done') done++; if(r.callHistory?.length && r.callHistory[0].date.includes(tStr)) todayDone++; });
+            const rem = window.associateData.length - done; 
+            const rate = daysLeft > 0 ? Math.ceil(rem / daysLeft) : rem;
+            document.getElementById('stat-days-left').innerText = daysLeft > 0 ? daysLeft : "0"; 
+            document.getElementById('stat-remaining').innerText = rem; document.getElementById('stat-rate').innerText = rate; document.getElementById('stat-today-done').innerText = todayDone;
+            return rate; 
+        }
+        
+        function generateDailyList() { 
+            const k='rcm_daily_'+new Date().toLocaleDateString(); 
+            const s=localStorage.getItem(k); 
+            if(s) window.dailyIndices=JSON.parse(s); 
+            else { 
+                const rate=updateDashboard(); if(!rate)return; 
+                let p=window.associateData.map((_,i)=>i).filter(i=>window.associateData[i].status!=='Done'); 
+                window.dailyIndices=p.slice(0,rate); 
+                localStorage.setItem(k,JSON.stringify(window.dailyIndices)); 
+            } 
+            renderRandomTaskTable();
+        }
+
         function renderPlanningTable() { const b=document.getElementById('planningBody'); b.innerHTML=''; window.associateData.forEach((r,i)=>{ b.innerHTML+=`<tr><td>${r.id}</td><td>${r.name}</td><td>${r.pv}</td><td><input class="input-pv" value="${r.target}" oninput="window.uData(${i},'target',this.value)"></td><td><input class="input-remark" value="${r.remark}" oninput="window.uData(${i},'remark',this.value)"></td><td><button class="btn-row-save" onclick="window.saveInd(${i})">Save</button></td></tr>`; }); }
         function renderCallingTable() { const b=document.getElementById('callingBody'); b.innerHTML=''; window.associateData.forEach((r,i)=>{ let c=r.status==='Done'?'green':(r.status==='Calling'?'orange':'red'); b.innerHTML+=`<tr class="calling-row" onclick="window.togDet(${i})"><td>${r.name}</td><td style="color:${c};font-weight:bold;">${r.status}</td><td>🔽</td></tr><tr id="d-${i}" class="details-row"><td colspan="3"><a href="tel:${r.mobile}" class="btn-call" onclick="window.mkCall(${i})">📞 Call</a> <input id="n-${i}" class="input-note" placeholder="Note"><button class="btn-add-note" style="margin-left:5px;" onclick="window.addNote(${i})">Add</button></td></tr>`; }); }
         
         window.uData=(i,f,v)=>{window.associateData[i][f]=v;saveToLocal();}
         window.togDet=(i)=>{const r=document.getElementById(`d-${i}`);if(r)r.style.display=r.style.display==='table-row'?'none':'table-row';}
         window.mkCall=(i)=>{window.associateData[i].status='Calling';saveToLocal();renderCallingTable();}
-        window.addNote=async(i)=>{const v=document.getElementById(`n-${i}`).value;if(!v)return;window.associateData[i].status='Done';saveToLocal();renderCallingTable();try{await setDoc(doc(db,"rcm_targets",window.associateData[i].id.toString()),{note:v,status:'Done',updated:serverTimestamp()},{merge:true});}catch(e){}}
-        window.saveInd=async(i)=>{try{await setDoc(doc(db,"rcm_targets",window.associateData[i].id.toString()),{target:window.associateData[i].target,remark:window.associateData[i].remark,updated:serverTimestamp()},{merge:true});alert("Saved");}catch(e){}}
+        window.addNote=async(i)=>{const v=document.getElementById(`n-${i}`).value;if(!v)return;window.associateData[i].status='Done';saveToLocal();renderCallingTable();try{await setDoc(doc(dbMain,"rcm_targets",window.associateData[i].id.toString()),{note:v,status:'Done',updated:serverTimestamp()},{merge:true});}catch(e){}}
+        window.saveInd=async(i)=>{try{await setDoc(doc(dbMain,"rcm_targets",window.associateData[i].id.toString()),{target:window.associateData[i].target,remark:window.associateData[i].remark,updated:serverTimestamp()},{merge:true});alert("Saved");}catch(e){}}
 
-        function generateDailyList() { const k='rcm_daily_'+new Date().toLocaleDateString(); if(localStorage.getItem(k)) window.dailyIndices=JSON.parse(localStorage.getItem(k)); else { const rate=updateDashboard(); if(!rate)return; window.dailyIndices=window.associateData.map((_,i)=>i).filter(i=>window.associateData[i].status!=='Done').slice(0,rate); localStorage.setItem(k,JSON.stringify(window.dailyIndices)); } }
         function renderRandomTaskTable() { const b=document.getElementById('randomTaskBody'); b.innerHTML=''; window.dailyIndices.forEach(i=>{ const r=window.associateData[i]; if(!r)return; b.innerHTML+=`<tr><td>${r.name}</td><td>${r.mobile}</td><td><a href="tel:${r.mobile}" onclick="window.mkCall(${i})">📞</a></td></tr>`; }); document.getElementById('task-count').innerText=window.dailyIndices.length; }
         window.toggleTaskList=()=>{const e=document.getElementById('autoTaskListContainer');e.style.display=e.style.display==='block'?'none':'block';}
         window.addManualTask=()=>{const v=document.getElementById('newTodoInput').value; if(v){window.manualTodos.push({text:v,done:false});saveToLocal();renderTodoList();document.getElementById('newTodoInput').value='';}}
         window.toggleTodo=(i)=>{window.manualTodos[i].done=!window.manualTodos[i].done;saveToLocal();renderTodoList();}
         function renderTodoList(){const l=document.getElementById('todoList');l.innerHTML='';window.manualTodos.forEach((t,i)=>{l.innerHTML+=`<li style="display:flex;justify-content:space-between;padding:5px;border-bottom:1px solid #eee;"><span style="text-decoration:${t.done?'line-through':'none'}">${t.text}</span><input type="checkbox" ${t.done?'checked':''} onclick="window.toggleTodo(${i})"></li>`});}
-        window.saveDailyTaskReport=async()=>{try{await addDoc(collection(db,"daily_task_reports"),{date:new Date().toLocaleDateString(),tasks:window.manualTodos,created:serverTimestamp()});alert("Report Saved");}catch(e){}}
+        window.saveDailyTaskReport=async()=>{try{await addDoc(collection(dbMain,"daily_task_reports"),{date:new Date().toLocaleDateString(),tasks:window.manualTodos,created:serverTimestamp()});alert("Report Saved");}catch(e){}}
 
-        window.renderLeads=()=>{const l=document.getElementById('leadsList');l.innerHTML='';window.prospectsData.forEach(p=>{l.innerHTML+=`<div class="pro-card"><strong>${p.name}</strong><br><small>${p.mobile}</small><div class="card-actions"><a href="tel:${p.mobile}" class="act-btn" style="background:#e0e7ff;">📞</a></div></div>`;});}
+        window.renderLeads=()=>{const l=document.getElementById('leadsList');l.innerHTML='';window.prospectsData.forEach(p=>{l.innerHTML+=`<div class="pro-card"><strong>${p.name}</strong><br><small>${p.mobile}</small><div class="card-actions"><a href="tel:${p.mobile}" class="act-btn" style="background:#e0e7ff;">📞</a><button class="act-btn" style="background:#fee2e2; color:red;" onclick="window.delLead('${p.id}')">🗑️</button></div></div>`;});}
         window.openLeadModal=()=>{document.getElementById('leadModal').style.display='flex';}
         window.closeLeadModal=()=>{document.getElementById('leadModal').style.display='none';}
-        window.saveLead=async()=>{const d={name:document.getElementById('lpName').value,mobile:document.getElementById('lpMobile').value,city:document.getElementById('lpCity').value,status:document.getElementById('lpStatus').value}; await addDoc(collection(db,"rcm_prospects"),d); closeLeadModal();}
-        
+        window.saveLead=async()=>{const d={name:document.getElementById('lpName').value,mobile:document.getElementById('lpMobile').value,city:document.getElementById('lpCity').value,status:document.getElementById('lpStatus').value}; await addDoc(collection(dbLeads,"rcm_prospects"),d); closeLeadModal();}
+        window.delLead=async(id)=>{if(confirm("Delete?") && prompt("Code:")==='2026') await deleteDoc(doc(dbLeads,"rcm_prospects",id));}
+
         function loadProducts(){const d=document.getElementById('cProd');fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`).then(r=>r.text()).then(c=>{c.split('\n').slice(1).forEach(r=>{let i=r.replace(/"/g,'').split(',');if(i[0])d.add(new Option(`${i[0]} - ${i[2]||0}`,i[0]));document.getElementById('cProd').lastChild.dataset.price=i[2]||0;})});}
         window.switchFuTab=(div,btn)=>{document.querySelectorAll('.fu-section').forEach(s=>s.classList.remove('active'));document.getElementById(div).classList.add('active');document.querySelectorAll('.fu-nav-item').forEach(n=>n.classList.remove('active'));btn.classList.add('active');}
         window.renderUI=()=>{const l=document.getElementById('fuListContainer');l.innerHTML='';window.fuClients.forEach(c=>{l.innerHTML+=`<div class="fu-client-card"><strong>${c.name}</strong> - ${c.paymentStatus}<br><small>${c.product} (₹${c.amount})</small></div>`}); const t=document.getElementById('fuTaskListContainer');t.innerHTML='';window.fuClients.filter(c=>c.status!=='Done'&&c.nextFollowUp).forEach(c=>{t.innerHTML+=`<div class="fu-task-card"><span>${c.name}</span><button class="btn-sm btn-success" onclick="window.completeTask('${c.docId}')">✔</button></div>`});}
         window.addToCart=()=>{const d=document.getElementById('cProd');const p=parseInt(d.options[d.selectedIndex].dataset.price||0);const q=document.getElementById('cQty').value;window.currentCart.push({name:d.value,price:p*q,qty:q});let t=0;document.getElementById('cartList').innerHTML=window.currentCart.map(i=>{t+=i.price;return`<div>${i.name}</div>`}).join('');document.getElementById('cartTotal').innerText=t;}
-        window.saveClient=async()=>{let d={name:document.getElementById('cName').value,phone:document.getElementById('cPhone').value,amount:parseInt(document.getElementById('cartTotal').innerText),product:window.currentCart.map(i=>i.name).join(','),paymentStatus:document.getElementById('payStatus').value,nextFollowUp:new Date(Date.now()+86400000*parseInt(document.getElementById('followUpTiming').value)).toISOString().split('T')[0],status:'Pending'};await addDoc(collection(db,"clients"),d);alert("Saved");window.currentCart=[];renderUI();}
-        window.completeTask=async(id)=>{if(confirm("Done?"))await setDoc(doc(db,"clients",id),{status:'Done'},{merge:true});}
+        window.saveClient=async()=>{let d={name:document.getElementById('cName').value,phone:document.getElementById('cPhone').value,amount:parseInt(document.getElementById('cartTotal').innerText),product:window.currentCart.map(i=>i.name).join(','),paymentStatus:document.getElementById('payStatus').value,nextFollowUp:new Date(Date.now()+86400000*parseInt(document.getElementById('followUpTiming').value)).toISOString().split('T')[0],status:'Pending'};await addDoc(collection(dbFollowUp,"clients"),d);alert("Saved");window.currentCart=[];renderUI();}
+        window.completeTask=async(id)=>{if(confirm("Done?"))await setDoc(doc(dbFollowUp,"clients",id),{status:'Done'},{merge:true});}
 
         window.sendBulkWA=(i)=>{const item=window.bulkData[i];let msg=document.getElementById('bulkMsgInput').value;if(!msg)return;window.open(`https://wa.me/91${item.number}?text=${encodeURIComponent(msg)}`);window.bulkData[i].status='sent';renderBulkTable();}
         function renderBulkTable(){const b=document.getElementById('bulkTableBody');b.innerHTML='';window.bulkData.forEach((r,i)=>{const btn=r.status==='sent'?'Sent':`<button class="px-2 py-1 bg-blue-500 text-white rounded" onclick="window.sendBulkWA(${i})">Send</button>`;b.innerHTML+=`<tr class="bg-white border-b"><td class="p-2">${r.name}</td><td class="p-2">${r.number}</td><td class="p-2 text-right">${btn}</td></tr>`;});document.getElementById('bulkTotal').innerText=window.bulkData.length;document.getElementById('bulkSent').innerText=window.bulkData.filter(x=>x.status==='sent').length;}
 
         window.filterAll=()=>{const s=document.getElementById('searchInput').value.toUpperCase();[planningBody,callingBody].forEach(b=>{b.querySelectorAll('tr').forEach(r=>{if(!r.classList.contains('details-row'))r.style.display=r.innerText.toUpperCase().includes(s)?'':'none';});});}
         window.openReportsModal=()=>{document.getElementById('reportModal').style.display='flex';}
-        window.openSavedList=async()=>{document.getElementById('savedListModal').style.display='flex';const b=document.getElementById('savedReportsList');b.innerHTML='Loading...';const sn=await getDocs(query(collection(db,"saved_reports"),orderBy("createdAt","desc")));b.innerHTML='';sn.forEach(d=>{const x=d.data();b.innerHTML+=`<div class="saved-report-item" onclick="window.associateData=this.dataset.d;loadAllTables();document.getElementById('savedListModal').style.display='none';"><strong>${x.reportName}</strong></div>`;b.lastChild.dataset.d=JSON.stringify(x.data);});}
-        window.saveFinalReport=async()=>{const n=prompt("Name","Plan");if(!n)return;await addDoc(collection(db,"saved_reports"),{reportName:n,createdAt:serverTimestamp(),data:window.associateData});alert("Saved");}
-        window.generatePDF=()=>{const b=document.getElementById('pdf-body');b.innerHTML='';window.associateData.forEach(d=>{b.innerHTML+=`<tr><td>${d.name}</td><td>${d.target}</td><td>${d.status}</td><td>${d.remark}</td></tr>`;});document.getElementById('pdf-template').style.display='block';html2pdf().from(document.getElementById('pdf-template')).save().then(()=>document.getElementById('pdf-template').style.display='none');}
+        window.openSavedList=async()=>{document.getElementById('savedListModal').style.display='flex';const b=document.getElementById('savedReportsList');b.innerHTML='Loading...';const sn=await getDocs(query(collection(dbMain,"saved_reports"),orderBy("createdAt","desc")));b.innerHTML='';sn.forEach(d=>{const x=d.data();b.innerHTML+=`<div class="saved-report-item" onclick="window.associateData=this.dataset.d;loadAllTables();document.getElementById('savedListModal').style.display='none';"><strong>${x.reportName}</strong></div>`;b.lastChild.dataset.d=JSON.stringify(x.data);});}
+        window.saveFinalReport=async()=>{const n=prompt("Name","Plan");if(!n)return;await addDoc(collection(dbMain,"saved_reports"),{reportName:n,createdAt:serverTimestamp(),data:window.associateData});alert("Saved");}
+        
+        window.generateCurrentTabPDF=function(){
+            const b=document.getElementById('pdf-body'); b.innerHTML='';
+            document.getElementById('pdf-date').innerText=new Date().toLocaleString();
+            let data = [];
+            if(currentTab === 'planning' || currentTab === 'calling' || currentTab === 'tasks') data = window.associateData;
+            else if(currentTab === 'leads') data = window.prospectsData;
+            else if(currentTab === 'followup') data = window.fuClients;
+
+            data.forEach(d=>{
+                let name = d.name || 'Unknown';
+                let info = d.mobile || d.target || '';
+                let status = d.status || d.paymentStatus || '';
+                let note = d.remark || d.note || (d.callHistory && d.callHistory.length ? d.callHistory[0].note : '');
+                b.innerHTML+=`<tr><td>${name}</td><td>${info}</td><td>${status}</td><td>${note}</td></tr>`;
+            });
+            document.getElementById('pdf-template').style.display='block';
+            html2pdf().from(document.getElementById('pdf-template')).save().then(()=>document.getElementById('pdf-template').style.display='none');
+        }
+
         window.prepWA=(m,n)=>{selectedLead={mobile:m,name:n};document.getElementById('waModal').style.display='flex';}
         window.sendWA=(t)=>{let m="";if(t==='Intro')m=`Hello ${selectedLead.name}`;window.open(`https://wa.me/91${selectedLead.mobile}?text=${encodeURIComponent(m)}`);}
         
@@ -409,7 +465,7 @@
             document.getElementById('historyModal').style.display = 'flex';
             const list = document.getElementById('historyList'); list.innerHTML = "Loading...";
             try {
-                const sn = await getDocs(query(collection(db, "daily_task_reports"), orderBy("created", "desc")));
+                const sn = await getDocs(query(collection(dbMain, "daily_task_reports"), orderBy("created", "desc")));
                 list.innerHTML = "";
                 sn.forEach(doc => {
                     const d = doc.data();
@@ -423,4 +479,3 @@
     </script>
 </body>
 </html>
-
