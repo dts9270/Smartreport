@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RCM Pro - Mission 15 Days</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -69,7 +68,7 @@
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
         td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; }
 
-        /* Calling Table Styles */
+        /* Calling Table */
         .calling-row { cursor: pointer; transition: 0.2s; }
         .calling-row:hover { background-color: #f0f8ff; }
         .details-row { display: none; background-color: #f9f9f9; border-left: 5px solid #FF9933; }
@@ -85,12 +84,10 @@
         .log-item { border-bottom: 1px solid #eee; padding: 4px 0; color: #555; }
         .log-date { color: #000080; font-weight: bold; font-size: 10px; }
 
-        /* Note Input */
+        /* Inputs & Buttons */
         .note-input-group { display: flex; gap: 5px; }
         .input-note { flex: 1; padding: 8px; border: 1px solid #000080; border-radius: 4px; }
         .btn-add-note { background: #000080; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-
-        /* Planning Inputs */
         .input-pv { width: 90%; padding: 6px 2px; border: 1px solid #000080; border-radius: 4px; text-align: center; font-weight: bold; }
         .input-remark { width: 95%; padding: 6px 2px; border: 1px solid #aaa; border-radius: 4px; font-size: 12px; background: #f9f9f9; }
         .btn-row-save { background-color: #138808; color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; cursor: pointer; width: 100%; }
@@ -105,6 +102,12 @@
         .saved-report-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; }
         .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
         .btn-close { background: #6c757d; } .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; }
+
+        /* PDF TEMPLATE (Hidden) */
+        #pdf-template { display: none; padding: 20px; background: white; color: black; font-family: 'Segoe UI', sans-serif; }
+        #pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; }
+        #pdf-table th { background: #eee; }
 
     </style>
 </head>
@@ -149,7 +152,6 @@
     </div>
 
     <div id="callingView" class="view-section">
-        
         <div class="dashboard-grid">
             <div class="dash-card card-green">
                 <div class="dash-title">Today's Calls</div>
@@ -188,10 +190,10 @@
 
     <div id="reportModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">🤖 Analysis Report</h3>
+            <h3 style="color:#000080; margin-top:0;">🤖 Report Center</h3>
             <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF Download</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel Download</button>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF with Marathi Notes</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Download Excel</button>
             <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
     </div>
@@ -202,6 +204,23 @@
             <div id="savedReportsList" style="text-align: left;">Loading...</div>
             <button class="action-btn btn-close" onclick="document.getElementById('savedListModal').style.display='none'">Close</button>
         </div>
+    </div>
+
+    <div id="pdf-template">
+        <h2 style="text-align:center; color:#000080;">🇮🇳 RCM Mission 15 Days Report</h2>
+        <p id="pdf-date">Generated on: </p>
+        <table id="pdf-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Notes (Plan & Calls)</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-body"></tbody>
+        </table>
     </div>
 
     <script type="module">
@@ -224,7 +243,7 @@
         const planningBody = document.getElementById('planningBody');
         const callingBody = document.getElementById('callingBody');
 
-        // --- EXCEL UPLOAD ---
+        // EXCEL UPLOAD
         document.getElementById('uploadExcel').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -236,7 +255,6 @@
 
                 if (jsonData.length === 0) { alert("File Empty!"); return; }
 
-                // Duplicate Removal Logic
                 const uniqueIds = new Set();
                 window.associateData = [];
 
@@ -263,7 +281,6 @@
             reader.readAsArrayBuffer(file);
         });
 
-        // --- LOAD TABLES & DASHBOARD ---
         function loadAllTables() {
             renderPlanningTable();
             renderCallingTable();
@@ -272,19 +289,15 @@
 
         function updateDashboard() {
             if (window.associateData.length === 0) return;
-
             const total = window.associateData.length;
             let doneCount = 0;
             let todayCount = 0;
             let monthCount = 0;
-
             const todayStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); 
             const currentMonth = new Date().toLocaleDateString('en-IN', { month: 'short' });
 
             window.associateData.forEach(row => {
-                if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) {
-                    doneCount++;
-                }
+                if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) doneCount++;
                 if (row.callHistory && row.callHistory.length > 0) {
                     const lastCall = row.callHistory[0].date; 
                     if (lastCall.includes(todayStr)) todayCount++;
@@ -329,7 +342,6 @@
             window.associateData.forEach((row, index) => {
                 let badgeClass = 'badge-pending';
                 let badgeText = 'Pending';
-                
                 if (row.status === 'Calling') { badgeClass = 'badge-calling'; badgeText = 'Calling...'; }
                 else if (row.status === 'Done' || (row.callHistory && row.callHistory.length > 0)) { 
                     badgeClass = 'badge-done'; badgeText = 'Done'; row.status = 'Done';
@@ -375,12 +387,10 @@
             });
         }
 
-        // --- ACTIONS ---
         window.switchTab = function(tabName, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
-            
             if(tabName === 'planning') document.getElementById('planningView').classList.add('active-view');
             else {
                 document.getElementById('callingView').classList.add('active-view');
@@ -507,33 +517,52 @@
             `;
         }
 
-        // --- UPDATED PDF GENERATION WITH NOTES ---
+        // --- PDF GENERATION WITH MARATHI SUPPORT ---
         window.generatePDF = function() {
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF();
-            
-            const rows = window.associateData.map(d => {
-                // Determine what note to show: Planning remark OR Call note
+            const pdfBody = document.getElementById('pdf-body');
+            pdfBody.innerHTML = '';
+            document.getElementById('pdf-date').innerText = "Generated: " + new Date().toLocaleString();
+
+            // Populate hidden HTML table
+            window.associateData.forEach(d => {
+                // Combine notes
                 let note = d.remark || '';
                 if(d.callHistory && d.callHistory.length > 0) {
-                    note += (note ? ' | ' : '') + 'Call: ' + d.callHistory[0].note;
+                    note += (note ? '<br>' : '') + '📞 ' + d.callHistory[0].note;
                 }
-                return [d.id, d.name, d.target, d.status || 'Pending', note];
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${d.id}</td>
+                    <td>${d.name}</td>
+                    <td>${d.target || '-'}</td>
+                    <td>${d.status || 'Pending'}</td>
+                    <td>${note}</td>
+                `;
+                pdfBody.appendChild(tr);
             });
 
-            doc.text("RCM Mission Report", 14, 15);
-            doc.autoTable({ 
-                head:[['ID','Name','Target','Status', 'Notes']], 
-                body:rows, 
-                startY: 20,
-                columnStyles: { 4: { cellWidth: 'auto' } } // Auto wrap notes
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block'; // Show temp
+            
+            // Generate PDF using html2pdf (Screenshots HTML -> supports Marathi)
+            var opt = {
+                margin:       0.5,
+                filename:     'RCM_Mission_Report.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none'; // Hide again
             });
-            doc.save('RCM_Mission_Report.pdf');
         }
 
         window.generateExcel = function() {
             const ws = XLSX.utils.json_to_sheet(window.associateData.map(i => ({
-                ID:i.id, Name:i.name, Target:i.target, Remark:i.remark, Status:i.status, LastNote: (i.callHistory && i.callHistory.length) ? i.callHistory[0].note : ''
+                ID:i.id, Name:i.name, Target:i.target, Remark:i.remark, Status:i.status, 
+                LastNote: (i.callHistory && i.callHistory.length) ? i.callHistory[0].note : ''
             })));
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Data");
