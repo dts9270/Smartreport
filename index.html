@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM प्रो - स्मार्ट प्लॅनर</title>
+    <title>RCM प्रो - स्मार्ट प्लॅनर (Cloud Sync)</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -56,6 +56,7 @@
         
         .btn-main { padding: 8px 15px; border-radius: 8px; border: 2px solid #000080; font-weight: bold; cursor: pointer; font-size: 13px; }
         .btn-upload { background: white; color: #000080; border-style: dashed; flex: 2; }
+        .btn-sync { background: #000080; color: white; border-color: #000080; flex: 2; } /* New Sync Button Style */
         .btn-reset { background: #dc3545; color: white; border-color: #dc3545; flex: 1; }
         
         input[type="file"] { display: none; }
@@ -183,9 +184,12 @@
 
     <div class="control-section">
         <div class="btn-group">
-            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 एक्सेल अपलोड (ऑटो सेव्ह)</button>
+            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 एक्सेल</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ सर्व डेटा हटवा</button>
+            
+            <button class="btn-main btn-sync" id="btn-cloud-load" onclick="loadFromCloud()">☁️ Cloud सिंक (Get Data)</button>
+            
+            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ हटवा</button>
         </div>
         <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
@@ -203,7 +207,7 @@
                 </tr>
             </thead>
             <tbody id="planningBody">
-                <tr><td colspan="6" class="empty-msg">👆 कृपया एक्सेल अपलोड करा.</td></tr>
+                <tr><td colspan="6" class="empty-msg">👆 कृपया 'Cloud सिंक' दाबा किंवा एक्सेल अपलोड करा.</td></tr>
             </tbody>
         </table>
         <button class="footer-save" onclick="saveFinalReport()">💾 अंतिम सेव्ह (नियोजन)</button>
@@ -238,7 +242,7 @@
                 </tr>
             </thead>
             <tbody id="callingBody">
-                <tr><td colspan="4" class="empty-msg">डेटा नाही. एक्सेल अपलोड करा.</td></tr>
+                <tr><td colspan="4" class="empty-msg">डेटा नाही. 'Cloud सिंक' बटण वापरा.</td></tr>
             </tbody>
         </table>
     </div>
@@ -371,6 +375,46 @@
             if(savedDaily) window.dailyIndices = JSON.parse(savedDaily);
             
             loadAllTables();
+        }
+
+        // --- NEW CLOUD LOAD FUNCTION ---
+        window.loadFromCloud = async function() {
+            const btn = document.getElementById('btn-cloud-load');
+            btn.innerText = "⏳ Loading...";
+            try {
+                const snapshot = await getDocs(collection(db, "rcm_targets"));
+                if (snapshot.empty) { 
+                    alert("क्लाऊडवर डेटा नाही! आधी एका मोबाईलवरून सेव्ह करा."); 
+                    btn.innerText = "☁️ Cloud सिंक (Get Data)"; 
+                    return; 
+                }
+                
+                window.associateData = [];
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    window.associateData.push({
+                        id: doc.id,
+                        name: data.name,
+                        mobile: data.mobile || '',
+                        city: data.city || '',
+                        pv: data.old_pv || 0,
+                        target: data.target || '',
+                        remark: data.remark || '',
+                        callHistory: data.callHistory || [],
+                        status: data.status || 'Pending'
+                    });
+                });
+                
+                saveToLocal(); // Save to new phone's local storage
+                loadAllTables(); // Update view
+                generateDailyList();
+                alert(`✅ ${window.associateData.length} रेकॉर्ड्स क्लाऊडवरून लोड झाले!`);
+                btn.innerText = "☁️ Cloud सिंक (Get Data)";
+            } catch(e) { 
+                console.error(e); 
+                alert("❌ एरर: डेटा लोड करताना समस्या आली."); 
+                btn.innerText = "Error"; 
+            }
         }
 
         function saveToLocal() {
