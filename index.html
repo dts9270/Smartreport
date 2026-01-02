@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Pro - Smart Planner</title>
+    <title>RCM प्रो - स्मार्ट प्लॅनर</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -105,7 +105,7 @@
         .rotate { transform: rotate(180deg); }
         #autoTaskListContainer { display: none; padding-bottom: 10px; }
 
-        /* To Do List (UPDATED FOR RED ALERTS) */
+        /* To Do List */
         .todo-container { padding: 15px; }
         .todo-input-group { display: flex; gap: 5px; margin-bottom: 15px; }
         .todo-input { flex: 1; padding: 10px; border: 2px solid #000080; border-radius: 5px; }
@@ -120,9 +120,9 @@
         }
 
         /* Task Age Styling */
-        .task-fresh { border-left-color: #28a745; } /* New Task (Green) */
-        .task-aged { border-left-color: #ffc107; background-color: #fffde7; } /* 1-2 Days (Orange) */
-        .task-critical { border-left-color: #dc3545; background-color: #ffebee; } /* 3+ Days (Red Alert) */
+        .task-fresh { border-left-color: #28a745; } 
+        .task-aged { border-left-color: #ffc107; background-color: #fffde7; } 
+        .task-critical { border-left-color: #dc3545; background-color: #ffebee; } 
 
         .days-badge {
             font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; text-transform: uppercase;
@@ -171,21 +171,21 @@
 
     <div class="header-section">
         <div class="header-top">
-            <h2>🇮🇳 RCM Planner</h2>
-            <button class="report-btn" onclick="openReportsModal()">📊 Reports</button>
+            <h2>🇮🇳 RCM प्लॅनर</h2>
+            <button class="report-btn" onclick="openReportsModal()">📊 अहवाल</button>
         </div>
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Plan</button>
-            <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calls</button>
-            <button class="tab-btn" onclick="switchTab('tasks', this)">🎯 Task</button>
+            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 नियोजन</button>
+            <button class="tab-btn" onclick="switchTab('calling', this)">📞 कॉल्स</button>
+            <button class="tab-btn" onclick="switchTab('tasks', this)">🎯 कामे</button>
         </div>
     </div>
 
     <div class="control-section">
         <div class="btn-group">
-            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel (Auto Save)</button>
+            <button class="btn-main btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 एक्सेल अपलोड (ऑटो सेव्ह)</button>
             <input type="file" id="uploadExcel" accept=".xlsx, .xls" />
-            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ Delete All</button>
+            <button class="btn-main btn-reset" onclick="resetAllData()">🗑️ सर्व डेटा हटवा</button>
         </div>
         <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
@@ -195,36 +195,36 @@
             <thead>
                 <tr>
                     <th style="width:12%">ID</th>
-                    <th style="width:25%">Name</th>
+                    <th style="width:25%">नाव</th>
                     <th style="width:12%">PV</th>
-                    <th style="width:16%">Target</th>
-                    <th style="width:22%">Plan</th>
-                    <th style="width:13%">Save</th>
+                    <th style="width:16%">टार्गेट</th>
+                    <th style="width:22%">प्लॅन</th>
+                    <th style="width:13%">सेव्ह</th>
                 </tr>
             </thead>
             <tbody id="planningBody">
-                <tr><td colspan="6" class="empty-msg">👆 कृपया Excel अपलोड करा.</td></tr>
+                <tr><td colspan="6" class="empty-msg">👆 कृपया एक्सेल अपलोड करा.</td></tr>
             </tbody>
         </table>
-        <button class="footer-save" onclick="saveFinalReport()">💾 Final Save (Planning)</button>
+        <button class="footer-save" onclick="saveFinalReport()">💾 अंतिम सेव्ह (नियोजन)</button>
     </div>
 
     <div id="callingView" class="view-section">
         <div class="dashboard-grid">
             <div class="dash-card card-green">
-                <div class="dash-title">Days Left</div>
+                <div class="dash-title">उर्वरित दिवस</div>
                 <div class="dash-value" id="stat-days-left">0</div>
             </div>
             <div class="dash-card">
-                <div class="dash-title">Total Remaining</div>
+                <div class="dash-title">एकूण बाकी</div>
                 <div class="dash-value" id="stat-remaining">0</div>
             </div>
             <div class="dash-card card-orange">
-                <div class="dash-title">Daily Asking Rate</div>
+                <div class="dash-title">दैनंदिन कॉल टार्गेट</div>
                 <div class="dash-value" id="stat-rate">0</div>
             </div>
             <div class="dash-card card-red">
-                <div class="dash-title">Today's Done</div>
+                <div class="dash-title">आज पूर्ण</div>
                 <div class="dash-value" id="stat-today-done">0</div>
             </div>
         </div>
@@ -232,13 +232,13 @@
             <thead>
                 <tr>
                     <th style="width:15%">ID</th>
-                    <th style="width:40%">Name</th>
-                    <th style="width:25%">Status</th>
-                    <th style="width:20%">Tap</th>
+                    <th style="width:40%">नाव</th>
+                    <th style="width:25%">स्थिती</th>
+                    <th style="width:20%">पहा</th>
                 </tr>
             </thead>
             <tbody id="callingBody">
-                <tr><td colspan="4" class="empty-msg">No Data. Upload Excel.</td></tr>
+                <tr><td colspan="4" class="empty-msg">डेटा नाही. एक्सेल अपलोड करा.</td></tr>
             </tbody>
         </table>
     </div>
@@ -246,11 +246,11 @@
     <div id="taskView" class="view-section">
         
         <div style="text-align:right; padding:10px;">
-            <button class="btn-main btn-open" style="font-size:12px; padding:5px 10px;" onclick="openTaskHistory()">📜 View Task History Report</button>
+            <button class="btn-main btn-open" style="font-size:12px; padding:5px 10px;" onclick="openTaskHistory()">📜 कामाचा इतिहास (अहवाल)</button>
         </div>
 
         <div class="task-section-header" onclick="toggleTaskList()">
-            <span>📞 Call Tasks (Today)</span>
+            <span>📞 कॉलिंग टास्क (आज)</span>
             <div>
                 <span id="random-progress-text" style="font-size:12px; margin-right:10px;"></span>
                 <span class="toggle-icon" id="task-icon">▼</span>
@@ -263,57 +263,57 @@
                 </div>
             </div>
             <table class="calling-table">
-                <thead><tr><th>Name</th><th>Mobile</th><th>Action</th></tr></thead>
-                <tbody id="randomTaskBody"><tr><td colspan="3" class="empty-msg">Data Loading...</td></tr></tbody>
+                <thead><tr><th>नाव</th><th>मोबाईल</th><th>कृती</th></tr></thead>
+                <tbody id="randomTaskBody"><tr><td colspan="3" class="empty-msg">डेटा लोड होत आहे...</td></tr></tbody>
             </table>
         </div>
 
         <div class="task-section-header" style="margin-top:20px; background:#e8eaf6; color:#1a237e; border-bottom-color:#1a237e;">
-            <span>✅ Manual Tasks (Date Wise)</span>
+            <span>✅ इतर कामे (तारीख वार)</span>
             <span id="todo-progress-text">0/0</span>
         </div>
         
         <div class="todo-container">
             <div class="todo-input-group">
-                <input type="text" id="newTodoInput" class="todo-input" placeholder="New Task...">
-                <button class="btn-add-todo" onclick="addManualTask()">Add</button>
+                <input type="text" id="newTodoInput" class="todo-input" placeholder="नवीन काम...">
+                <button class="btn-add-todo" onclick="addManualTask()">जोडा</button>
             </div>
             <ul id="todoList" class="todo-list"></ul>
-            <p style="font-size:11px; color:#666; text-align:center;">🔴 Red = 3+ Days Old | 🟠 Orange = 1-2 Days Old</p>
+            <p style="font-size:11px; color:#666; text-align:center;">🔴 लाल = ३+ दिवस जुने | 🟠 केशरी = १-२ दिवस जुने</p>
         </div>
 
-        <button class="btn-daily-save" onclick="saveDailyTaskReport()">🌙 End Day & Save Report<br><span style="font-size:12px; font-weight:normal;">(Completed -> History | Pending -> Next Day)</span></button>
+        <button class="btn-daily-save" onclick="saveDailyTaskReport()">🌙 दिवस समाप्त & अहवाल सेव्ह करा<br><span style="font-size:12px; font-weight:normal;">(पूर्ण -> इतिहास | बाकी -> उद्यासाठी)</span></button>
     </div>
 
     <div id="reportModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">🤖 Report Center</h3>
-            <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">Loading...</div>
-            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF (With Time)</button>
-            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Excel</button>
-            <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
+            <h3 style="color:#000080; margin-top:0;">🤖 अहवाल केंद्र</h3>
+            <div id="aiAnalysis" style="background:#f0f8ff; padding:10px; border-radius:5px; text-align:left;">लोड होत आहे...</div>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 PDF (वेळेसह)</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 एक्सेल</button>
+            <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">बंद करा</button>
         </div>
     </div>
 
     <div id="historyModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:#000080; margin-top:0;">📜 Task Report History</h3>
-            <div id="historyList" style="text-align: left; max-height:300px; overflow-y:auto;">Loading...</div>
-            <button class="action-btn btn-close" onclick="document.getElementById('historyModal').style.display='none'">Close</button>
+            <h3 style="color:#000080; margin-top:0;">📜 कामाचा इतिहास</h3>
+            <div id="historyList" style="text-align: left; max-height:300px; overflow-y:auto;">लोड होत आहे...</div>
+            <button class="action-btn btn-close" onclick="document.getElementById('historyModal').style.display='none'">बंद करा</button>
         </div>
     </div>
 
     <div id="pdf-template">
-        <h2 style="text-align:center; color:#000080;">🇮🇳 RCM Mission Report</h2>
+        <h2 style="text-align:center; color:#000080;">🇮🇳 RCM मिशन अहवाल</h2>
         <p id="pdf-date">Generated on: </p>
         <table id="pdf-table">
             <thead>
                 <tr>
                     <th style="width:10%">ID</th>
-                    <th style="width:25%">Name</th>
-                    <th style="width:15%">Target</th>
-                    <th style="width:15%">Status</th>
-                    <th style="width:35%">Notes & Date</th>
+                    <th style="width:25%">नाव</th>
+                    <th style="width:15%">टार्गेट</th>
+                    <th style="width:15%">स्थिती</th>
+                    <th style="width:35%">नोट्स आणि तारीख</th>
                 </tr>
             </thead>
             <tbody id="pdf-body"></tbody>
@@ -321,15 +321,15 @@
     </div>
 
     <div id="hist-pdf-template" style="display:none; padding:20px; background:white;">
-        <h2 style="text-align:center; color:#000080;">🇮🇳 Daily Task Report</h2>
-        <h4 id="hist-pdf-date" style="text-align:center;">Date: </h4>
+        <h2 style="text-align:center; color:#000080;">🇮🇳 दैनंदिन कामाचा अहवाल</h2>
+        <h4 id="hist-pdf-date" style="text-align:center;">दिनांक: </h4>
         
-        <h3>📞 Call Summary</h3>
-        <p>Total Calls: <span id="hist-pdf-calls"></span></p>
+        <h3>📞 कॉल्स सारांश</h3>
+        <p>एकूण कॉल्स: <span id="hist-pdf-calls"></span></p>
         
-        <h3>✅ Task Checklist</h3>
+        <h3>✅ कामांची यादी</h3>
         <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-            <thead><tr style="background:#eee;"><th style="border:1px solid #333; padding:5px;">Task</th><th style="border:1px solid #333; padding:5px;">Status</th></tr></thead>
+            <thead><tr style="background:#eee;"><th style="border:1px solid #333; padding:5px;">काम</th><th style="border:1px solid #333; padding:5px;">स्थिती</th></tr></thead>
             <tbody id="hist-pdf-tasks"></tbody>
         </table>
     </div>
@@ -352,7 +352,7 @@
 
         window.associateData = [];
         window.dailyIndices = [];
-        window.manualTodos = []; // Now stores { text, done, createdAt }
+        window.manualTodos = []; 
         
         const MISSION_DEADLINE = new Date("2026-01-20");
 
@@ -363,7 +363,6 @@
             const savedTodos = localStorage.getItem('rcm_todos_master');
             if(savedTodos) window.manualTodos = JSON.parse(savedTodos);
             
-            // Fix for old data without dates
             window.manualTodos.forEach(t => {
                 if(!t.createdAt) t.createdAt = new Date().toISOString().split('T')[0];
             });
@@ -392,7 +391,7 @@
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-                if (jsonData.length === 0) { alert("File Empty!"); return; }
+                if (jsonData.length === 0) { alert("फाइल रिकामी आहे!"); return; }
 
                 const uniqueIds = new Set();
                 window.associateData = []; 
@@ -410,7 +409,7 @@
                     }
                 });
                 saveToLocal();
-                alert(`${window.associateData.length} Records Loaded & Saved!`);
+                alert(`${window.associateData.length} रेकॉर्ड लोड आणि सेव्ह झाले!`);
                 loadAllTables();
                 generateDailyList();
             };
@@ -419,12 +418,12 @@
 
         // RESET
         window.resetAllData = function() {
-            const code = prompt("🚨 DELETE ALL DATA? Code:");
+            const code = prompt("🚨 सर्व डेटा हटवायचा आहे का? कोड टाका:");
             if (code === '2708') {
                 localStorage.clear();
                 window.associateData = []; window.manualTodos = [];
-                loadAllTables(); alert("Deleted.");
-            } else if (code !== null) alert("❌ Wrong Code!");
+                loadAllTables(); alert("डेटा हटवला.");
+            } else if (code !== null) alert("❌ चुकीचा कोड!");
         }
 
         // LOAD TABLES
@@ -479,10 +478,10 @@
 
         function renderPlanningTable() {
             planningBody.innerHTML = '';
-            if (window.associateData.length === 0) { planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">No Data Saved.</td></tr>'; return; }
+            if (window.associateData.length === 0) { planningBody.innerHTML = '<tr><td colspan="6" class="empty-msg">डेटा नाही.</td></tr>'; return; }
             window.associateData.forEach((row, index) => {
                 let tr = document.createElement('tr');
-                tr.innerHTML = `<td>${row.id}</td><td>${row.name}<br><small style="color:gray">${row.city}</small></td><td>${row.pv}</td><td><input type="number" class="input-pv" value="${row.target}" oninput="window.updateData(${index}, 'target', this.value)"></td><td><input type="text" class="input-remark" value="${row.remark}" placeholder="Plan..." oninput="window.updateData(${index}, 'remark', this.value)"></td><td><button class="btn-row-save" onclick="window.saveInd(${index})">Save</button></td>`;
+                tr.innerHTML = `<td>${row.id}</td><td>${row.name}<br><small style="color:gray">${row.city}</small></td><td>${row.pv}</td><td><input type="number" class="input-pv" value="${row.target}" oninput="window.updateData(${index}, 'target', this.value)"></td><td><input type="text" class="input-remark" value="${row.remark}" placeholder="प्लॅन..." oninput="window.updateData(${index}, 'remark', this.value)"></td><td><button class="btn-row-save" onclick="window.saveInd(${index})">सेव्ह</button></td>`;
                 planningBody.appendChild(tr);
             });
         }
@@ -490,18 +489,27 @@
         function renderCallingTable() {
             callingBody.innerHTML = '';
             if (window.associateData.length === 0) return;
+            
+            const statusMap = {
+                'Pending': 'बाकी',
+                'Calling': 'कॉलिंग',
+                'Done': 'पूर्ण'
+            };
+
             window.associateData.forEach((row, index) => {
                 let badgeClass = row.status === 'Done' ? 'badge-done' : (row.status === 'Calling' ? 'badge-calling' : 'badge-pending');
+                let displayStatus = statusMap[row.status] || row.status;
+
                 let tr = document.createElement('tr');
                 tr.className = 'calling-row';
                 tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') window.toggleDetail(index); };
-                tr.innerHTML = `<td>${row.id}</td> <td>${row.name}</td><td id="status-cell-${index}"><span class="badge ${badgeClass}">${row.status}</span></td> <td>🔽</td>`;
+                tr.innerHTML = `<td>${row.id}</td> <td>${row.name}</td><td id="status-cell-${index}"><span class="badge ${badgeClass}">${displayStatus}</span></td> <td>🔽</td>`;
                 callingBody.appendChild(tr);
-                let historyHtml = (row.callHistory || []).map(h => `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`).join('') || '<div style="color:#aaa;">No history.</div>';
+                let historyHtml = (row.callHistory || []).map(h => `<div class="log-item"><span class="log-date">${h.date}</span> ${h.note}</div>`).join('') || '<div style="color:#aaa;">इतिहास नाही.</div>';
                 let detailTr = document.createElement('tr');
                 detailTr.id = `detail-${index}`;
                 detailTr.className = 'details-row';
-                detailTr.innerHTML = `<td colspan="4"><div class="details-container"><div><strong>Mobile:</strong> ${row.mobile} | <strong>City:</strong> ${row.city}</div><div style="margin:10px 0;"><a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 Call Now</a></div><div class="history-box" id="hist-box-${index}">${historyHtml}</div><div class="note-input-group"><input type="text" class="input-note" id="call-note-${index}" placeholder="Type result..."><button class="btn-add-note" onclick="window.addCallNote(${index})">Add Note</button></div></div></td>`;
+                detailTr.innerHTML = `<td colspan="4"><div class="details-container"><div><strong>मोबाईल:</strong> ${row.mobile} | <strong>शहर:</strong> ${row.city}</div><div style="margin:10px 0;"><a href="tel:${row.mobile}" class="btn-call" onclick="window.markCalling(${index})">📞 कॉल करा</a></div><div class="history-box" id="hist-box-${index}">${historyHtml}</div><div class="note-input-group"><input type="text" class="input-note" id="call-note-${index}" placeholder="परिणाम लिहा..."><button class="btn-add-note" onclick="window.addCallNote(${index})">टीप जोडा</button></div></div></td>`;
                 callingBody.appendChild(detailTr);
             });
         }
@@ -515,18 +523,17 @@
         function renderRandomTaskTable() {
             randomTaskBody.innerHTML = '';
             let completed = 0;
-            if(window.dailyIndices.length === 0) { randomTaskBody.innerHTML = '<tr><td colspan="3" class="empty-msg">No calls today.</td></tr>'; return; }
+            if(window.dailyIndices.length === 0) { randomTaskBody.innerHTML = '<tr><td colspan="3" class="empty-msg">आज कॉल्स नाहीत.</td></tr>'; return; }
             window.dailyIndices.forEach(realIndex => {
                 const row = window.associateData[realIndex];
                 if(row && row.status === 'Done') completed++;
                 if(!row) return;
                 let tr = document.createElement('tr');
                 tr.style.background = row.status === 'Done' ? '#e8f5e9' : 'white';
-                tr.innerHTML = `<td>${row.name}</td><td><a href="tel:${row.mobile}" onclick="window.markCalling(${realIndex})">📞</a></td><td>${row.status === 'Done' ? '✅' : `<button class="btn-call" onclick="switchTab('calling', null); window.toggleDetail(${realIndex});">Open</button>`}</td>`;
+                tr.innerHTML = `<td>${row.name}</td><td><a href="tel:${row.mobile}" onclick="window.markCalling(${realIndex})">📞</a></td><td>${row.status === 'Done' ? '✅' : `<button class="btn-call" onclick="switchTab('calling', null); window.toggleDetail(${realIndex});">उघडा</button>`}</td>`;
                 randomTaskBody.appendChild(tr);
             });
             const pct = window.dailyIndices.length > 0 ? Math.round((completed / window.dailyIndices.length) * 100) : 0;
-            document.getElementById('task-count').innerText = window.dailyIndices.length;
             document.getElementById('random-progress-text').innerText = `${completed}/${window.dailyIndices.length}`;
             document.getElementById('random-progress-bar').style.width = `${pct}%`;
         }
@@ -547,7 +554,7 @@
         }
 
         window.toggleTodo = function(index) { window.manualTodos[index].done = !window.manualTodos[index].done; saveToLocal(); renderTodoList(); }
-        window.deleteTodo = function(index) { if(confirm("Delete?")) { window.manualTodos.splice(index, 1); saveToLocal(); renderTodoList(); } }
+        window.deleteTodo = function(index) { if(confirm("हटवायचे आहे का?")) { window.manualTodos.splice(index, 1); saveToLocal(); renderTodoList(); } }
 
         function getDaysOld(dateStr) {
             const created = new Date(dateStr);
@@ -577,17 +584,17 @@
                 const daysOld = getDaysOld(task.createdAt);
                 let ageClass = 'task-fresh';
                 let badgeClass = 'badge-fresh';
-                let ageText = "New";
+                let ageText = "नवीन";
 
                 if (!task.done) {
                     if (daysOld >= 3) {
                         ageClass = 'task-critical';
                         badgeClass = 'badge-critical';
-                        ageText = `${daysOld} Days Pending`;
+                        ageText = `${daysOld} दिवस बाकी`;
                     } else if (daysOld >= 1) {
                         ageClass = 'task-aged';
                         badgeClass = 'badge-aged';
-                        ageText = `${daysOld} Days Pending`;
+                        ageText = `${daysOld} दिवस बाकी`;
                     }
                 }
 
@@ -623,12 +630,18 @@
 
         window.toggleDetail = function(index) { const row = document.getElementById(`detail-${index}`); if(row) row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row'; }
         window.updateData = function(index, field, value) { window.associateData[index][field] = value; saveToLocal(); }
-        window.markCalling = function(index) { window.associateData[index].status = 'Calling'; saveToLocal(); const cell = document.getElementById(`status-cell-${index}`); if(cell) cell.innerHTML = `<span class="badge badge-calling">Calling...</span>`; }
+        
+        window.markCalling = function(index) { 
+            window.associateData[index].status = 'Calling'; 
+            saveToLocal(); 
+            const cell = document.getElementById(`status-cell-${index}`); 
+            if(cell) cell.innerHTML = `<span class="badge badge-calling">कॉलिंग...</span>`; 
+        }
 
         window.addCallNote = async function(index) {
             const noteInput = document.getElementById(`call-note-${index}`);
             const note = noteInput.value;
-            if(!note) { alert("Note empty"); return; }
+            if(!note) { alert("टीप रिकामी आहे"); return; }
             const now = new Date();
             const timeStamp = now.toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute:'numeric', hour12: true });
             if(!window.associateData[index].callHistory) window.associateData[index].callHistory = [];
@@ -637,7 +650,7 @@
             const histBox = document.getElementById(`hist-box-${index}`);
             histBox.innerHTML = `<div class="log-item"><span class="log-date">${timeStamp}</span> ${note}</div>` + histBox.innerHTML;
             const cell = document.getElementById(`status-cell-${index}`);
-            if(cell) cell.innerHTML = `<span class="badge badge-done">Done</span>`;
+            if(cell) cell.innerHTML = `<span class="badge badge-done">पूर्ण</span>`;
             noteInput.value = '';
             saveToLocal(); updateDashboard(); renderRandomTaskTable();
             try {
@@ -654,19 +667,19 @@
             btn.innerText = "⏳"; saveToLocal();
             try {
                 await setDoc(doc(db, "rcm_targets", row.id.toString()), { name: row.name, mobile: row.mobile, old_pv: row.pv, target: row.target, remark: row.remark, callHistory: row.callHistory || [], status: row.status || 'Pending', lastUpdated: serverTimestamp() });
-                btn.innerText = "✅"; setTimeout(() => btn.innerText = "Save", 1500);
+                btn.innerText = "✅"; setTimeout(() => btn.innerText = "सेव्ह", 1500);
             } catch(e) { btn.innerText = "❌"; }
         }
 
         window.saveFinalReport = async function() {
-            if(!window.associateData.length) return alert("No Data");
-            const name = prompt("Report Name:", `Plan ${new Date().toLocaleDateString()}`);
+            if(!window.associateData.length) return alert("डेटा नाही");
+            const name = prompt("अहवालाचे नाव:", `Plan ${new Date().toLocaleDateString()}`);
             if(!name) return;
             const btn = document.querySelector('.footer-save');
-            btn.innerText = "⏳ Saving...";
+            btn.innerText = "⏳ सेव्ह करत आहे...";
             try {
                 await addDoc(collection(db, "saved_reports"), { reportName: name, createdAt: serverTimestamp(), data: window.associateData });
-                btn.innerText = "✅ Saved"; setTimeout(() => btn.innerText = "💾 Final Save All", 2000);
+                btn.innerText = "✅ सेव्ह झाले"; setTimeout(() => btn.innerText = "💾 अंतिम सेव्ह (नियोजन)", 2000);
             } catch(e) { btn.innerText = "Error"; }
         }
 
@@ -675,9 +688,9 @@
             const today = new Date().toLocaleDateString();
             const btn = document.querySelector('.btn-daily-save');
             
-            if(!confirm("Are you sure you want to end the day?\n✅ Completed tasks will move to History.\n⏳ Pending tasks will carry forward to tomorrow.")) return;
+            if(!confirm("तुम्हाला नक्की दिवस समाप्त करायचा आहे का?\n✅ पूर्ण झालेली कामे इतिहासात जातील.\n⏳ बाकी कामे उद्यासाठी राहतील.")) return;
 
-            btn.innerText = "⏳ Saving...";
+            btn.innerText = "⏳ सेव्ह करत आहे...";
             
             // 1. Separate Done vs Pending
             const doneTasks = window.manualTodos.filter(t => t.done);
@@ -699,8 +712,8 @@
                 saveToLocal();
                 renderTodoList();
 
-                btn.innerText = "✅ New Day Started!";
-                setTimeout(() => btn.innerHTML = "🌙 End Day & Save Report<br><span style='font-size:12px; font-weight:normal;'>(Completed -> History | Pending -> Next Day)</span>", 3000);
+                btn.innerText = "✅ नवीन दिवस सुरू झाला!";
+                setTimeout(() => btn.innerHTML = "🌙 दिवस समाप्त & अहवाल सेव्ह करा<br><span style='font-size:12px; font-weight:normal;'>(पूर्ण -> इतिहास | बाकी -> उद्यासाठी)</span>", 3000);
             } catch(e) { alert("Error saving"); btn.innerText = "Error"; }
         }
 
@@ -708,26 +721,26 @@
         window.openTaskHistory = async function() {
             document.getElementById('historyModal').style.display = 'flex';
             const list = document.getElementById('historyList');
-            list.innerHTML = "Loading...";
+            list.innerHTML = "लोड होत आहे...";
             try {
                 const sn = await getDocs(query(collection(db, "daily_task_reports"), orderBy("createdAt", "desc")));
                 list.innerHTML = "";
-                if(sn.empty) { list.innerHTML = "No history."; return; }
+                if(sn.empty) { list.innerHTML = "इतिहास नाही."; return; }
                 sn.forEach(doc => {
                     const d = doc.data();
                     const div = document.createElement('div');
                     div.className = 'saved-report-item';
                     
-                    // Count completed tasks (Check for different field names for compatibility)
+                    // Count completed tasks
                     let tasksList = d.completedTasks || d.tasks || [];
                     let tasksDoneCount = d.completedTasks ? d.completedTasks.length : (d.tasks ? d.tasks.filter(t=>t.done).length : 0);
 
                     div.innerHTML = `
                         <div>
                             <strong>📅 ${d.date}</strong><br>
-                            📞 Calls: ${d.completedCalls}/${d.totalCalls} | ✅ Tasks Done: ${tasksDoneCount}
+                            📞 कॉल्स: ${d.completedCalls}/${d.totalCalls} | ✅ कामे पूर्ण: ${tasksDoneCount}
                         </div>
-                        <button class="btn-print-hist" onclick='printHistoryReport(${JSON.stringify(d).replace(/'/g, "&apos;")})'>🖨 Print</button>
+                        <button class="btn-print-hist" onclick='printHistoryReport(${JSON.stringify(d).replace(/'/g, "&apos;")})'>🖨 प्रिंट</button>
                     `;
                     list.appendChild(div);
                 });
@@ -735,25 +748,23 @@
         }
 
         window.printHistoryReport = function(data) {
-            document.getElementById('hist-pdf-date').innerText = "Date: " + data.date;
-            document.getElementById('hist-pdf-calls').innerText = `${data.completedCalls} / ${data.totalCalls} Completed`;
+            document.getElementById('hist-pdf-date').innerText = "दिनांक: " + data.date;
+            document.getElementById('hist-pdf-calls').innerText = `${data.completedCalls} / ${data.totalCalls} पूर्ण`;
             
             const taskBody = document.getElementById('hist-pdf-tasks');
             taskBody.innerHTML = '';
             
-            // Handle both new structure (completedTasks only) and old structure (all tasks)
             let tasksToShow = data.completedTasks || data.tasks || [];
 
             if(tasksToShow.length > 0) {
                 tasksToShow.forEach(t => {
-                    // If it's the old structure, only show done ones or mark status
-                    let status = t.done ? 'Done' : 'Pending';
-                    if(data.completedTasks) status = 'Completed'; // In new structure, only completed are saved here
+                    let status = t.done ? 'पूर्ण' : 'बाकी';
+                    if(data.completedTasks) status = 'पूर्ण'; 
 
                     taskBody.innerHTML += `<tr><td style="border:1px solid #333; padding:5px;">${t.text}</td><td style="border:1px solid #333; padding:5px;">${status}</td></tr>`;
                 });
             } else {
-                taskBody.innerHTML = `<tr><td colspan="2" style="border:1px solid #333; padding:5px;">No Completed Tasks</td></tr>`;
+                taskBody.innerHTML = `<tr><td colspan="2" style="border:1px solid #333; padding:5px;">पूर्ण झालेली कामे नाहीत</td></tr>`;
             }
 
             const element = document.getElementById('hist-pdf-template');
@@ -775,9 +786,9 @@
             let called = 0;
             window.associateData.forEach(d => { if(d.status === 'Done') called++; });
             document.getElementById('aiAnalysis').innerHTML = `
-                <strong>Total Associates:</strong> ${window.associateData.length}<br>
-                <strong>Calls Completed:</strong> <span style="color:green; font-size:18px;">${called}</span><br>
-                <strong>Pending:</strong> <span style="color:red">${window.associateData.length - called}</span>
+                <strong>एकूण असोसिएट्स:</strong> ${window.associateData.length}<br>
+                <strong>कॉल्स पूर्ण:</strong> <span style="color:green; font-size:18px;">${called}</span><br>
+                <strong>बाकी:</strong> <span style="color:red">${window.associateData.length - called}</span>
             `;
         }
 
@@ -790,7 +801,7 @@
                 let note = d.remark || '';
                 if(d.callHistory && d.callHistory.length > 0) { note += (note ? '<br>' : '') + '📞 <span class="pdf-date-tag">[' + d.callHistory[0].date + ']</span> ' + d.callHistory[0].note; }
                 let tr = document.createElement('tr');
-                tr.innerHTML = `<td>${d.id}</td><td>${d.name}</td><td>${d.target || '-'}</td><td>${d.status || 'Pending'}</td><td>${note}</td>`;
+                tr.innerHTML = `<td>${d.id}</td><td>${d.name}</td><td>${d.target || '-'}</td><td>${d.status === 'Pending' ? 'बाकी' : (d.status === 'Done' ? 'पूर्ण' : 'कॉलिंग')}</td><td>${note}</td>`;
                 pdfBody.appendChild(tr);
             });
             const element = document.getElementById('pdf-template');
