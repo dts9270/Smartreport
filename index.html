@@ -3,119 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RCM Live Auto-Save</title>
+    <title>RCM Pro - Live Sync</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        /* 1. बेसिक थीम (तिरंगा) */
+        /* 1. तिरंगा थीम & लेआउट */
         body {
-            font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; height: 100vh;
             background: linear-gradient(180deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
-            background-attachment: fixed; height: 100vh; display: flex; flex-direction: column;
+            background-attachment: fixed;
+            display: flex; flex-direction: column; overflow-x: hidden;
         }
 
-        /* 2. हेडर */
-        .header { background: white; padding: 12px; border-bottom: 3px solid #000080; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header h2 { margin: 0; color: #000080; font-size: 18px; text-transform: uppercase; }
-        
-        /* LIVE STATUS INDICATOR */
-        .live-status { font-size: 11px; padding: 4px 10px; border-radius: 15px; background: #e8f5e9; color: #2e7d32; border: 1px solid #2e7d32; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .blink-dot { height: 8px; width: 8px; background-color: #28a745; border-radius: 50%; display: inline-block; animation: blinker 1.5s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
-
-        /* 3. TABS (कामे आणि यादी) */
-        .nav-tabs { display: flex; background: #eee; padding: 5px; gap: 5px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: #ddd; font-weight: bold; cursor: pointer; border-radius: 5px; color: #555; }
-        .tab-btn.active { background: #000080; color: white; }
-
-        /* 4. MAIN VIEW AREA */
-        .view-section { flex-grow: 1; overflow-y: auto; padding: 10px; padding-bottom: 80px; display: none; }
-        .view-section.active { display: block; }
-
-        /* 5. TASK STYLES */
-        .task-input-box { display: flex; gap: 5px; margin-bottom: 15px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .task-input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; outline: none; font-size: 16px; }
-        .btn-add { background: #FF9933; color: white; border: none; padding: 0 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-
-        .task-list { list-style: none; padding: 0; margin: 0; }
-        .task-item { 
-            background: white; border-bottom: 1px solid #eee; padding: 15px; display: flex; 
-            justify-content: space-between; align-items: center; margin-bottom: 8px; border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: 0.2s;
+        /* 2. हेडर & LIVE STATUS */
+        .header-section {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.15); flex-shrink: 0;
+            border-bottom: 3px solid #000080;
         }
-        .task-item.completed { opacity: 0.6; background: #f9f9f9; }
-        .task-item.completed span { text-decoration: line-through; color: #888; }
-        .task-checkbox { transform: scale(1.5); margin-right: 15px; accent-color: #28a745; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+        .header-top h2 { margin: 0; color: #000080; font-size: 18px; font-weight: 800; text-transform: uppercase; }
 
-        /* 6. LIST CARD STYLES */
-        .data-card { background: white; padding: 12px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid #000080; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .card-name { font-weight: bold; font-size: 15px; color: #333; }
+        .live-badge {
+            font-size: 10px; padding: 4px 8px; border-radius: 12px; background: #e8f5e9; color: #2e7d32; 
+            border: 1px solid #2e7d32; display: flex; align-items: center; gap: 5px; font-weight: bold;
+        }
+        .blink-dot { width: 8px; height: 8px; background: #28a745; border-radius: 50%; animation: blink 1.5s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .nav-tabs { display: flex; width: 100%; background: #eee; }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none; background: #eee;
+            font-weight: bold; font-size: 13px; cursor: pointer;
+            border-bottom: 4px solid transparent; transition: 0.3s;
+        }
+        .tab-btn.active { background: white; color: #000080; border-bottom-color: #FF9933; }
+
+        /* 3. DASHBOARD */
+        .dashboard-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px;
+            background: #f0f8ff; border-bottom: 1px solid #ccc;
+        }
+        .dash-card {
+            background: white; padding: 8px; border-radius: 8px; text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #000080;
+        }
+        .dash-title { font-size: 10px; color: #666; font-weight: bold; text-transform: uppercase; }
+        .dash-value { font-size: 18px; font-weight: bold; color: #000080; margin-top: 4px; }
+
+        /* 4. कंट्रोल सेक्शन */
+        .control-section { padding: 10px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
         
-        .status-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; color: white; font-weight: bold; }
-        .bg-pending { background: #dc3545; } .bg-done { background: #28a745; }
+        /* Upload Button Styled nicely */
+        .btn-upload { background: white; color: #000080; border: 2px dashed #000080; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        
+        input[type="text"]#searchInput { padding: 10px; width: 90%; border: 2px solid #000080; border-radius: 25px; text-align: center; outline: none; font-size: 16px; }
 
-        .btn-action-group { margin-top: 10px; display: flex; gap: 10px; }
-        .btn-act { flex: 1; padding: 8px; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .btn-call { background: #28a745; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; }
-        .btn-mark { background: #000080; }
-        .btn-note { background: #FF9933; }
+        /* 5. टेबल Views */
+        .view-section { flex-grow: 1; overflow-y: auto; margin: 5px; margin-bottom: 60px; background: rgba(255, 255, 255, 0.95); border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; }
+        .view-section.active-view { display: block; }
 
-        /* 7. UPLOAD BUTTON (Fixed) */
-        .float-upload { position: fixed; bottom: 20px; right: 20px; background: #000080; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); cursor: pointer; z-index: 100; transition: transform 0.2s; }
-        .float-upload:active { transform: scale(0.9); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+        thead th { background-color: #000080; color: white; padding: 12px 5px; text-align: left; position: sticky; top: 0; z-index: 10; }
+        td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        td:nth-child(1) { font-weight: 900; color: #333; font-size: 11px; }
 
-        /* Search Bar */
-        #searchBox { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 25px; outline: none; text-align: center; font-size: 14px; margin-bottom: 10px; box-sizing: border-box; }
-        #searchBox:focus { border-color: #000080; }
+        /* Calling Table */
+        .calling-row { cursor: pointer; transition: 0.2s; }
+        .calling-row:hover { background-color: #f0f8ff; }
+        .details-row { display: none; background-color: #f9f9f9; border-left: 5px solid #FF9933; }
+        .details-container { padding: 15px; text-align: left; }
+        
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 10px; color: white; font-weight: bold; display: inline-block; }
+        .badge-pending { background-color: #dc3545; } 
+        .badge-done { background-color: #28a745; }
+
+        .btn-call { background-color: #28a745; color: white; border: none; padding: 5px 15px; border-radius: 20px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 11px; margin-right: 5px; }
+        .history-box { max-height: 100px; overflow-y: auto; background: white; border: 1px solid #ddd; padding: 5px; margin-bottom: 5px; border-radius: 5px; font-size: 11px; color: #555; }
+        
+        /* Inputs in table */
+        .input-mini { width: 90%; border: 1px solid #ccc; padding: 5px; border-radius: 4px; text-align: center; }
+        .input-note { width: 70%; padding: 6px; border: 1px solid #aaa; border-radius: 4px; }
+        
+        /* TASKS TAB */
+        .task-input-group { display: flex; padding: 10px; gap: 5px; }
+        .task-input { flex: 1; padding: 10px; border: 2px solid #000080; border-radius: 5px; }
+        .btn-add-task { background: #000080; color: white; border: none; padding: 0 20px; border-radius: 5px; font-weight: bold; }
+        
+        .task-list { list-style: none; padding: 0 10px; margin: 0; }
+        .task-item { background: white; border-bottom: 1px solid #eee; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-radius: 5px; border-left: 5px solid #ccc; }
+        .task-item.done { border-left-color: #28a745; opacity: 0.7; background: #f0f0f0; }
+        .task-item.done span { text-decoration: line-through; }
+
+        /* Report Modal */
+        .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
+        .action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-pdf { background: #dc3545; } .btn-excel { background: #28a745; } .btn-close { background: #555; }
+
+        /* PDF Template */
+        #pdf-template { display: none; padding: 20px; background: white; color: black; }
+        #pdf-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        #pdf-table th, #pdf-table td { border: 1px solid #333; padding: 5px; text-align: left; }
 
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>🇮🇳 RCM Live</h2>
-        <div class="live-status">
-            <span class="blink-dot"></span> <span id="status-text">Online Sync</span>
+    <div class="header-section">
+        <div class="header-top">
+            <h2>🇮🇳 RCM Live</h2>
+            <div class="live-badge"><div class="blink-dot"></div> <span id="sync-status">Live Sync</span></div>
+            <button onclick="document.getElementById('reportModal').style.display='flex'" style="background:none; border:none; font-size:20px;">📊</button>
+        </div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('planning', this)">📝 Plan</button>
+            <button class="tab-btn" onclick="switchTab('calling', this)">📞 Calls</button>
+            <button class="tab-btn" onclick="switchTab('tasks', this)">🎯 Tasks</button>
         </div>
     </div>
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('tasks', this)">🎯 कामे (Tasks)</button>
-        <button class="tab-btn" onclick="switchTab('list', this)">📞 यादी (List)</button>
+    <div class="control-section">
+        <button class="btn-upload" onclick="document.getElementById('uploadExcel').click()">📂 Upload Excel (Auto Upload)</button>
+        <input type="file" id="uploadExcel" accept=".xlsx, .xls" style="display:none">
+        <input type="text" id="searchInput" onkeyup="filterAll()" placeholder="🔍 नाव किंवा ID शोधा...">
     </div>
 
-    <div id="tasksView" class="view-section active">
-        <div class="task-input-box">
-            <input type="text" id="newTaskInput" class="task-input" placeholder="नवीन काम लिहा...">
-            <button class="btn-add" onclick="addTask()">ADD</button>
+    <div id="planningView" class="view-section active-view">
+        <table class="plan-table">
+            <thead>
+                <tr>
+                    <th style="width:15%">ID</th>
+                    <th style="width:30%">Name</th>
+                    <th style="width:15%">PV</th>
+                    <th style="width:20%">Target</th>
+                    <th style="width:20%">Plan</th>
+                </tr>
+            </thead>
+            <tbody id="planningBody">
+                <tr><td colspan="5" style="text-align:center; padding:20px;">Loading Data...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="callingView" class="view-section">
+        <div class="dashboard-grid">
+            <div class="dash-card"><div class="dash-title">Total</div><div class="dash-value" id="stat-total">0</div></div>
+            <div class="dash-card"><div class="dash-title">Remaining</div><div class="dash-value" id="stat-remaining">0</div></div>
+            <div class="dash-card"><div class="dash-title">Done Today</div><div class="dash-value" id="stat-done-today">0</div></div>
+            <div class="dash-card"><div class="dash-title">Pending</div><div class="dash-value" id="stat-pending">0</div></div>
         </div>
-        <div id="loadingTasks" style="text-align:center; color:#888; margin-top:20px;">लोड होत आहे...</div>
+        <table class="calling-table">
+            <thead>
+                <tr>
+                    <th style="width:15%">ID</th>
+                    <th style="width:45%">Name</th>
+                    <th style="width:25%">Status</th>
+                    <th style="width:15%">Opn</th>
+                </tr>
+            </thead>
+            <tbody id="callingBody">
+                <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="tasksView" class="view-section">
+        <div class="task-input-group">
+            <input type="text" id="newTaskInput" class="task-input" placeholder="New Task...">
+            <button class="btn-add-task" onclick="addTask()">ADD</button>
+        </div>
         <ul id="taskList" class="task-list"></ul>
     </div>
 
-    <div id="listView" class="view-section">
-        <input type="text" id="searchBox" placeholder="🔍 नाव शोधा..." onkeyup="filterList()">
-        
-        <div id="loadingList" style="text-align:center; color:#888; display:none;">डेटा लोड होत आहे...</div>
-        <div id="associateContainer">
-            <div style="text-align:center; padding:40px; color:#666;">
-                सध्या यादी रिकामी आहे.<br>
-                खालील 📂 निळ्या बटणावर क्लिक करून Excel अपलोड करा.
-            </div>
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <h3>📊 Reports</h3>
+            <button class="action-btn btn-pdf" onclick="generatePDF()">📄 Download PDF</button>
+            <button class="action-btn btn-excel" onclick="generateExcel()">📊 Download Excel</button>
+            <button class="action-btn btn-close" onclick="document.getElementById('reportModal').style.display='none'">Close</button>
         </div>
     </div>
 
-    <div class="float-upload" onclick="document.getElementById('uploadExcel').click()">📂</div>
-    <input type="file" id="uploadExcel" accept=".xlsx, .xls" style="display:none" />
+    <div id="pdf-template">
+        <h2 style="text-align:center; color:#000080;">RCM Mission Report</h2>
+        <p id="pdf-date"></p>
+        <table id="pdf-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Target</th><th>Status</th><th>Note</th></tr></thead>
+            <tbody id="pdf-body"></tbody>
+        </table>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, updateDoc, doc, deleteDoc, onSnapshot, query, orderBy, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, doc, deleteDoc, setDoc, onSnapshot, query, orderBy, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 1. Firebase सेटिंग
         const firebaseConfig = {
             apiKey: "AIzaSyB4rpjLDm8Q_L-xjvs1E_mV9KUBdwIGaeA",
             authDomain: "smartreport-7ce05.firebaseapp.com",
@@ -128,202 +213,256 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // UI एलिमेंट्स
-        const statusText = document.getElementById('status-text');
+        // Global Data Store
+        window.associateData = [];
+        window.allTasks = [];
+
+        const statusEl = document.getElementById('sync-status');
+        function setSaving() { statusEl.innerText = "Saving..."; statusEl.style.color = "orange"; }
+        function setLive() { statusEl.innerText = "Live Sync"; statusEl.style.color = "#2e7d32"; }
+
+        // ==========================================
+        // 1. LISTENERS (Auto-Update UI from Cloud)
+        // ==========================================
         
-        function showSaving() { statusText.innerText = "Saving..."; statusText.style.color = "#FF9933"; }
-        function showSaved() { statusText.innerText = "Online Sync"; statusText.style.color = "#2e7d32"; }
-
-        // ==========================================
-        // 2. कामे (TASKS) - पूर्णपणे ऑटो-सेव्ह
-        // ==========================================
-        const taskListEl = document.getElementById('taskList');
-        
-        // डेटाबेस ऐकणे (Real-time Listener)
-        const q = query(collection(db, "rcm_live_tasks"), orderBy("createdAt", "desc"));
-        
-        onSnapshot(q, (snapshot) => {
-            document.getElementById('loadingTasks').style.display = 'none';
-            taskListEl.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const task = doc.data();
-                const li = document.createElement('li');
-                li.className = `task-item ${task.done ? 'completed' : ''}`;
-                li.innerHTML = `
-                    <div style="display:flex; align-items:center; flex:1">
-                        <input type="checkbox" class="task-checkbox" ${task.done ? 'checked' : ''} onclick="window.toggleTask('${doc.id}', ${task.done})">
-                        <div style="cursor:pointer" onclick="window.toggleTask('${doc.id}', ${task.done})">
-                            <span style="font-weight:bold; font-size:15px;">${task.text}</span> <br>
-                            <small style="font-size:11px; color:#888;">📅 ${task.date || ''}</small>
-                        </div>
-                    </div>
-                    <button onclick="window.deleteTask('${doc.id}')" style="background:none; border:none; color:#dc3545; font-size:18px; padding:10px;">🗑</button>
-                `;
-                taskListEl.appendChild(li);
-            });
-        });
-
-        // नवीन टास्क जोडणे (Add)
-        window.addTask = async function() {
-            const input = document.getElementById('newTaskInput');
-            const text = input.value.trim();
-            if(!text) return;
-
-            showSaving();
-            try {
-                await addDoc(collection(db, "rcm_live_tasks"), {
-                    text: text,
-                    done: false,
-                    date: new Date().toLocaleDateString('en-IN'),
-                    createdAt: serverTimestamp()
-                });
-                input.value = '';
-                showSaved();
-            } catch(e) { alert("एरर: इंटरनेट चेक करा."); }
-        }
-
-        // टिक मार्क करणे (Update)
-        window.toggleTask = async function(id, currentStatus) {
-            showSaving();
-            await updateDoc(doc(db, "rcm_live_tasks", id), { done: !currentStatus });
-            showSaved();
-        }
-
-        // डिलीट करणे (Delete)
-        window.deleteTask = async function(id) {
-            if(confirm("हे काम डिलीट करायचे?")) {
-                showSaving();
-                await deleteDoc(doc(db, "rcm_live_tasks", id));
-                showSaved();
-            }
-        }
-
-        // ==========================================
-        // 3. यादी (ASSOCIATE LIST) - ऑटो-सिंक
-        // ==========================================
-        const associateContainer = document.getElementById('associateContainer');
-        let allAssociates = []; 
-
-        // डेटाबेस ऐकणे (Real-time Listener)
+        // A. PLANNING & CALLING DATA LISTENER
         const qAssociates = query(collection(db, "rcm_live_associates"));
         onSnapshot(qAssociates, (snapshot) => {
-            if(snapshot.empty) return;
-            document.getElementById('loadingList').style.display = 'none';
-            allAssociates = [];
+            window.associateData = [];
             snapshot.forEach(doc => {
-                allAssociates.push({ id: doc.id, ...doc.data() });
+                window.associateData.push({ id: doc.id, ...doc.data() });
             });
-            renderAssociates(allAssociates);
+            renderAllTables();
+            updateDashboard();
+            setLive();
         });
 
-        function renderAssociates(data) {
-            associateContainer.innerHTML = "";
-            if(data.length === 0) { associateContainer.innerHTML = "<p style='text-align:center'>यादी रिकामी आहे.</p>"; return; }
-            
-            // फक्त पहिले ५० दाखवा (स्पीडसाठी)
-            const displayData = data.slice(0, 50); 
-            
-            displayData.forEach(row => {
-                const div = document.createElement('div');
-                div.className = 'data-card';
-                // कार्ड HTML
-                div.innerHTML = `
-                    <div class="card-row">
-                        <span class="card-name">${row.name}</span>
-                        <span class="status-badge ${row.status==='Done'?'bg-done':'bg-pending'}">${row.status === 'Done' ? 'पूर्ण' : 'बाकी'}</span>
+        // B. TASKS LISTENER
+        const qTasks = query(collection(db, "rcm_live_tasks"), orderBy("createdAt", "desc"));
+        onSnapshot(qTasks, (snapshot) => {
+            const list = document.getElementById('taskList');
+            list.innerHTML = "";
+            window.allTasks = [];
+            snapshot.forEach(doc => {
+                const t = doc.data();
+                window.allTasks.push(t);
+                const li = document.createElement('li');
+                li.className = `task-item ${t.done ? 'done' : ''}`;
+                li.innerHTML = `
+                    <div onclick="window.toggleTask('${doc.id}', ${t.done})" style="flex:1">
+                        <span>${t.text}</span><br>
+                        <small style="font-size:10px; color:#888;">${t.date}</small>
                     </div>
-                    <div style="font-size:12px; color:#555;">
-                        ID: ${row.id} | PV: <strong>${row.pv}</strong>
-                    </div>
-                    ${row.remark ? `<div style="font-size:12px; color:#000080; background:#eef; padding:3px; margin-top:5px; border-radius:3px;">📝 ${row.remark}</div>` : ''}
-                    
-                    <div class="btn-action-group">
-                        <a href="tel:${row.mobile}" class="btn-act btn-call">📞 कॉल</a>
-                        <button class="btn-act btn-mark" onclick="window.markDone('${row.id}')">✅ पूर्ण (Done)</button>
-                        <button class="btn-act btn-note" onclick="window.addRemark('${row.id}')">✏️ टीप</button>
-                    </div>
+                    <button onclick="window.deleteTask('${doc.id}')" style="color:red; background:none; border:none; font-size:16px;">🗑</button>
                 `;
-                associateContainer.appendChild(div);
+                list.appendChild(li);
+            });
+        });
+
+        // ==========================================
+        // 2. RENDERING FUNCTIONS
+        // ==========================================
+        function renderAllTables() {
+            const planBody = document.getElementById('planningBody');
+            const callBody = document.getElementById('callingBody');
+            planBody.innerHTML = "";
+            callBody.innerHTML = "";
+
+            if(window.associateData.length === 0) {
+                planBody.innerHTML = '<tr><td colspan="5" style="text-align:center">No Data. Upload Excel.</td></tr>';
+                return;
+            }
+
+            // Limit to 100 for performance if large data
+            const displayData = window.associateData; 
+
+            displayData.forEach(row => {
+                // Planning Row
+                let trP = document.createElement('tr');
+                trP.innerHTML = `
+                    <td>${row.id}</td><td>${row.name}</td><td>${row.pv}</td>
+                    <td><input type="number" class="input-mini" value="${row.target || ''}" onchange="window.updateField('${row.id}', 'target', this.value)"></td>
+                    <td><input type="text" class="input-mini" value="${row.remark || ''}" onchange="window.updateField('${row.id}', 'remark', this.value)"></td>
+                `;
+                planBody.appendChild(trP);
+
+                // Calling Row
+                let trC = document.createElement('tr');
+                trC.className = 'calling-row';
+                let badge = row.status === 'Done' ? 'badge-done' : 'badge-pending';
+                trC.innerHTML = `
+                    <td>${row.id}</td><td>${row.name}</td>
+                    <td><span class="badge ${badge}">${row.status}</span></td>
+                    <td><button onclick="toggleDetail('${row.id}')">▼</button></td>
+                `;
+                callBody.appendChild(trC);
+
+                // Detail Row (Hidden)
+                let trD = document.createElement('tr');
+                trD.id = `detail-${row.id}`;
+                trD.className = 'details-row';
+                let histHtml = (row.history || []).map(h => `<div>• ${h.date}: ${h.note}</div>`).join('');
+                trD.innerHTML = `
+                    <td colspan="4"><div class="details-container">
+                        <strong>Mob:</strong> <a href="tel:${row.mobile}">${row.mobile}</a> | <strong>City:</strong> ${row.city || '-'}
+                        <div style="margin:10px 0;">
+                            <a href="tel:${row.mobile}" class="btn-call">📞 Call</a>
+                            <button class="btn-call" style="background:#000080" onclick="window.markDone('${row.id}')">✅ Mark Done</button>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <input type="text" id="note-${row.id}" class="input-note" placeholder="Result...">
+                            <button onclick="window.addNote('${row.id}')" style="padding:5px;">Add</button>
+                        </div>
+                        <div class="history-box">${histHtml || 'No history'}</div>
+                    </div></td>
+                `;
+                callBody.appendChild(trD);
             });
         }
 
-        // EXCEL अपलोड करणे (Auto Cloud Upload)
+        function updateDashboard() {
+            document.getElementById('stat-total').innerText = window.associateData.length;
+            const done = window.associateData.filter(d => d.status === 'Done').length;
+            document.getElementById('stat-pending').innerText = window.associateData.length - done;
+            // Simple logic for "Done Today" based on history date matching today
+            const today = new Date().toLocaleDateString('en-IN');
+            let todayCount = 0;
+            window.associateData.forEach(d => {
+                if(d.history && d.history.some(h => h.date.includes(today))) todayCount++;
+            });
+            document.getElementById('stat-done-today').innerText = todayCount;
+            document.getElementById('stat-remaining').innerText = window.associateData.length - done;
+        }
+
+        // ==========================================
+        // 3. ACTIONS (AUTO SAVE TO FIREBASE)
+        // ==========================================
+        
+        // Update Field (Target/Remark)
+        window.updateField = async function(id, field, value) {
+            setSaving();
+            await updateDoc(doc(db, "rcm_live_associates", id), { [field]: value });
+        }
+
+        // Mark Done
+        window.markDone = async function(id) {
+            setSaving();
+            await updateDoc(doc(db, "rcm_live_associates", id), { status: 'Done' });
+        }
+
+        // Add Note
+        window.addNote = async function(id) {
+            const val = document.getElementById(`note-${id}`).value;
+            if(!val) return;
+            const row = window.associateData.find(r => r.id == id);
+            const newHist = { date: new Date().toLocaleString('en-IN'), note: val };
+            const updatedHist = row.history ? [newHist, ...row.history] : [newHist];
+            
+            setSaving();
+            await updateDoc(doc(db, "rcm_live_associates", id), { 
+                history: updatedHist,
+                status: 'Done' 
+            });
+            document.getElementById(`note-${id}`).value = '';
+        }
+
+        // Add Task
+        window.addTask = async function() {
+            const val = document.getElementById('newTaskInput').value;
+            if(!val) return;
+            setSaving();
+            await addDoc(collection(db, "rcm_live_tasks"), {
+                text: val, done: false, date: new Date().toLocaleDateString('en-IN'), createdAt: serverTimestamp()
+            });
+            document.getElementById('newTaskInput').value = '';
+        }
+
+        // Toggle Task
+        window.toggleTask = async function(id, status) {
+            await updateDoc(doc(db, "rcm_live_tasks", id), { done: !status });
+        }
+
+        // Delete Task
+        window.deleteTask = async function(id) {
+            if(confirm("Delete?")) await deleteDoc(doc(db, "rcm_live_tasks", id));
+        }
+
+        // EXCEL UPLOAD
         document.getElementById('uploadExcel').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            if(!confirm("Upload Excel? This will sync data to cloud.")) return;
             
-            if(!confirm("Excel अपलोड केल्यावर डेटा Cloud वर जाईल आणि सर्वांना दिसेल. OK?")) return;
-            
-            showSaving();
-            document.getElementById('loadingList').style.display = 'block';
-
+            setSaving();
             const reader = new FileReader();
             reader.onload = async (event) => {
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-
-                // एका वेळी ५०० रेकॉर्ड्स पाठवणे (Batch Write)
+                
                 const batch = writeBatch(db);
-                let count = 0;
-
-                jsonData.forEach((row, index) => {
-                    if(index > 400) return; // डेमोसाठी लिमिट
-                    const id = (row['ID'] || row['IdNo'] || row['Id'] || Math.random().toString()).toString();
-                    const docRef = doc(db, "rcm_live_associates", id);
-                    batch.set(docRef, {
+                jsonData.forEach((row, i) => {
+                    if(i > 450) return; // Batch limit
+                    const id = (row['ID'] || row['Id'] || Math.random().toString()).toString();
+                    const ref = doc(db, "rcm_live_associates", id);
+                    batch.set(ref, {
                         name: row['Name'] || 'Unknown',
                         mobile: row['Mobile'] || '',
                         pv: row['PV'] || 0,
-                        status: 'Pending',
-                        remark: ''
-                    }, { merge: true }); // जुना स्टेटस बदलणार नाही
-                    count++;
+                        city: row['City'] || '',
+                        status: 'Pending'
+                    }, { merge: true });
                 });
-
                 await batch.commit();
-                alert(`${count} जणांची यादी यशस्वीरित्या Cloud वर अपडेट झाली!`);
-                showSaved();
-                document.getElementById('loadingList').style.display = 'none';
+                alert("Upload Complete!");
+                setLive();
             };
             reader.readAsArrayBuffer(file);
         });
 
-        // ✅ मार्क करणे (Auto Sync)
-        window.markDone = async function(docId) {
-            showSaving();
-            await updateDoc(doc(db, "rcm_live_associates", docId), { status: 'Done' });
-            showSaved();
+        // PDF Generation
+        window.generatePDF = function() {
+            const body = document.getElementById('pdf-body');
+            body.innerHTML = "";
+            document.getElementById('pdf-date').innerText = "Date: " + new Date().toLocaleString();
+            
+            window.associateData.forEach(d => {
+                let note = d.history && d.history.length > 0 ? d.history[0].note : '';
+                body.innerHTML += `<tr><td>${d.id}</td><td>${d.name}</td><td>${d.target || '-'}</td><td>${d.status}</td><td>${note}</td></tr>`;
+            });
+
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block';
+            html2pdf().from(element).save("RCM_Report.pdf").then(() => element.style.display='none');
         }
 
-        // ✏️ टीप जोडणे (Auto Sync)
-        window.addRemark = async function(docId) {
-            const note = prompt("काही टीप (Note) लिहा:");
-            if(note) {
-                showSaving();
-                await updateDoc(doc(db, "rcm_live_associates", docId), { remark: note });
-                showSaved();
-            }
+        window.generateExcel = function() {
+            const ws = XLSX.utils.json_to_sheet(window.associateData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report");
+            XLSX.writeFile(wb, "RCM_Report.xlsx");
         }
 
-        // 🔍 सर्च फिल्टर
-        window.filterList = function() {
-            const val = document.getElementById('searchBox').value.toLowerCase();
-            const filtered = allAssociates.filter(a => 
-                (a.name && a.name.toLowerCase().includes(val)) || 
-                (a.id && a.id.toString().includes(val))
-            );
-            renderAssociates(filtered);
+        // Helpers
+        window.toggleDetail = function(id) {
+            const row = document.getElementById(`detail-${id}`);
+            row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
         }
 
-        // TABS बदलणे
         window.switchTab = function(view, btn) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.getElementById(view+'View').classList.add('active');
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
+            document.getElementById(view+'View').classList.add('active-view');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
+        window.filterAll = function() {
+            const val = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr:not(.details-row)');
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(val) ? '' : 'none';
+            });
+        }
     </script>
 </body>
 </html>
