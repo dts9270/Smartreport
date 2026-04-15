@@ -49,7 +49,7 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
     </div>
   </div>  <div id="loginCard">
     <div class="card">
-      <img class="banner" src="https://i.imgur.com/2r3XKpG.jpeg" alt="banner">
+      <img class="banner" src="poster.jpg" alt="banner">
       <div class="title">स्वास्थ्य जांच एवं परामर्श शिविर</div>
       <div class="subtitle">Sign Up / Login करून पुढे जा</div><div class="tabs">
     <button class="tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">User Sign Up</button>
@@ -60,11 +60,13 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
   <div class="form-block" id="signupBlock">
     <input id="signupName" placeholder="नाव">
     <input id="signupMobile" placeholder="मोबाईल नंबर" maxlength="10">
+    <input id="signupPass" placeholder="पासवर्ड" type="password">
     <div class="actions" style="margin-top:10px"><button class="btn" onclick="signupUser()" style="flex:1">Sign Up</button></div>
   </div>
 
   <div class="form-block hidden" id="userLoginBlock">
     <input id="loginMobile" placeholder="नोंदणीकृत मोबाईल नंबर" maxlength="10">
+    <input id="loginPass" placeholder="पासवर्ड" type="password">
     <div class="actions" style="margin-top:10px"><button class="btn" onclick="loginUser()" style="flex:1">User Login</button></div>
   </div>
 
@@ -80,7 +82,7 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
 
   </div>  <div id="mainApp" class="hidden">
     <div class="card">
-      <img class="banner" src="https://i.imgur.com/2r3XKpG.jpeg" alt="banner">
+      <img class="banner" src="poster.jpg" alt="banner">
       <div class="title">आरोग्य शिबिर नोंदणी</div>
       <div class="subtitle">Name आणि Mobile आवश्यक • बाकी optional</div>
       <div class="notice">User ला स्वतःचा data दिसेल. Admin ला full report दिसेल. आता QR आणि Print Slip पण आहे.</div>
@@ -216,14 +218,17 @@ function showLogin(){
 window.signupUser = function(){
   const name = document.getElementById('signupName').value.trim();
   const mobile = document.getElementById('signupMobile').value.trim();
+  const pass = document.getElementById('signupPass').value.trim();
   if(!name){ setAuthMsg('नाव टाका', '#dc2626'); return; }
   if(!isValidMobile(mobile)){ setAuthMsg('योग्य 10 अंकी मोबाईल नंबर टाका', '#dc2626'); return; }
+  if(pass.length < 4){ setAuthMsg('पासवर्ड किमान 4 अक्षरी ठेवा', '#dc2626'); return; }
   const exists = savedUsers.find(u => u.mobile === mobile);
   if(exists){ setAuthMsg('हा user आधीच sign up आहे. User Login वापरा.', '#dc2626'); switchAuthTab('userLogin'); document.getElementById('loginMobile').value = mobile; return; }
-  savedUsers.push({ name, mobile });
+  savedUsers.push({ name, mobile, pass });
   localStorage.setItem('health_users', JSON.stringify(savedUsers));
   document.getElementById('signupName').value = '';
   document.getElementById('signupMobile').value = '';
+  document.getElementById('signupPass').value = '';
   setAuthMsg('Sign Up यशस्वी. आता User Login करा.');
   switchAuthTab('userLogin');
   document.getElementById('loginMobile').value = mobile;
@@ -231,9 +236,11 @@ window.signupUser = function(){
 
 window.loginUser = function(){
   const mobile = document.getElementById('loginMobile').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
   if(!isValidMobile(mobile)){ setAuthMsg('योग्य 10 अंकी मोबाईल नंबर टाका', '#dc2626'); return; }
-  const found = savedUsers.find(u => u.mobile === mobile);
-  if(!found){ setAuthMsg('हा user sign up नाही. आधी Sign Up करा.', '#dc2626'); switchAuthTab('signup'); return; }
+  if(!pass){ setAuthMsg('पासवर्ड टाका', '#dc2626'); return; }
+  const found = savedUsers.find(u => u.mobile === mobile && u.pass === pass);
+  if(!found){ setAuthMsg('मोबाईल किंवा पासवर्ड चुकीचा आहे', '#dc2626'); return; }
   user = { role:'user', name:found.name, mobile:found.mobile };
   localStorage.setItem('user', JSON.stringify(user));
   showMain();
@@ -405,7 +412,9 @@ window.downloadPDF = function(){ const filtered = getFilteredData(); if(!filtere
   w.document.write(html);
   w.document.close();
   w.print();
-};function escapeHtml(v){ return String(v) .replace(/&/g,'&') .replace(/</g,'<') .replace(/>/g,'>') .replace(/"/g,'"') .replace(/'/g,'''); } </script>
+};// poster.jpg ही image हा HTML file ज्या folder मध्ये आहे त्याच folder मध्ये ठेवा
+
+function escapeHtml(v){ return String(v) .replace(/&/g,'&') .replace(/</g,'<') .replace(/>/g,'>') .replace(/"/g,'"') .replace(/'/g,'''); } </script>
 
 </body>
 </html>
