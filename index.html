@@ -2,12 +2,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>आरोग्य शिबिर - Final Polished QR</title>
+<title>आरोग्य शिबिर - Stable Version</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(180deg,#ff9933 0%,#ffffff 48%,#138808 100%);color:#1f2937}
+body{margin:0;font-family:'Segoe UI',Tahoma,Verdana,sans-serif;background:linear-gradient(180deg,#ff9933 0%,#ffffff 48%,#138808 100%);color:#1f2937}
 .app{max-width:560px;margin:auto;min-height:100vh;background:rgba(255,255,255,.97);box-shadow:0 0 22px rgba(0,0,0,.14)}
 .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid #e5e7eb}
 .brand{font-size:18px;font-weight:900;color:#000080}.small{font-size:12px;color:#6b7280}.hidden{display:none!important}
@@ -17,8 +17,7 @@ body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
 .tab-btn{border:none;border-radius:12px;padding:10px;font-weight:800;background:#eef2ff;color:#1e3a8a;cursor:pointer}.tab-btn.active{background:#000080;color:#fff}
 .form-block{margin-top:12px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.searchrow{display:grid;grid-template-columns:1fr 120px;gap:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.searchrow{display:grid;grid-template-columns:1fr 120px;gap:10px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .stat{padding:12px 8px;border-radius:14px;text-align:center;color:#fff;font-weight:900}.s1{background:linear-gradient(135deg,#1d4ed8,#000080)}.s2{background:linear-gradient(135deg,#16a34a,#0f766e)}.s3{background:linear-gradient(135deg,#ea580c,#ff9933)}.s4{background:linear-gradient(135deg,#7c3aed,#4f46e5)}.stat .n{font-size:22px;margin-top:4px}
 input,select,textarea{width:100%;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:14px;outline:none}input:focus,select:focus,textarea:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 3px rgba(29,78,216,.08)}
@@ -29,10 +28,9 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
 .list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}.item{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fcfcff}
 .itemtop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.name{font-size:17px;font-weight:900;color:#111827}.meta{font-size:13px;color:#4b5563;line-height:1.6}
 .badge{padding:5px 10px;border-radius:999px;font-size:11px;color:#fff;font-weight:900;white-space:nowrap}.reg{background:#2563eb}.arr{background:#16a34a}.can{background:#dc2626}
-.center{text-align:center}.footer{padding:0 14px 18px;text-align:center;color:#4b5563;font-size:12px;font-weight:700}
-.notice{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;padding:10px 12px;border-radius:12px;font-size:12px;font-weight:700}
+.center{text-align:center}.footer{padding:0 14px 18px;text-align:center;color:#4b5563;font-size:12px;font-weight:700}.notice{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;padding:10px 12px;border-radius:12px;font-size:12px;font-weight:700}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}.modal.show{display:flex}.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(92vw,380px);text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25)}
-.qr-box{display:flex;justify-content:center;align-items:center;min-height:210px;margin:10px 0}.slip{padding:18px;font-family:Arial,sans-serif;color:#111}.slip h2,.slip h3,.slip p{text-align:center;margin:6px 0}.slip-card{border:2px solid #333;border-radius:14px;padding:14px;margin-top:10px}.slip-row{margin:6px 0;font-size:14px}
+.qr-box{display:flex;justify-content:center;align-items:center;min-height:210px;margin:10px 0}
 @media (max-width:520px){.tabs,.row,.searchrow,.stats{grid-template-columns:1fr}.title{font-size:22px}.topbar{padding:10px 12px}}
 </style>
 </head>
@@ -45,36 +43,36 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
     </div>
     <div class="actions hidden" id="topActions">
       <span class="user-chip" id="userChip">Guest</span>
-      <button class="btn5" onclick="logout()">Logout</button>
+      <button type="button" class="btn5" onclick="logout()">Logout</button>
     </div>
   </div>  <div id="loginCard">
     <div class="card">
-      <img class="banner" src="poster.jpg" alt="banner">
+      <img class="banner hidden" id="loginBanner" src="" alt="banner">
       <div class="title">स्वास्थ्य जांच एवं परामर्श शिविर</div>
       <div class="subtitle">Sign Up / Login करून पुढे जा</div><div class="tabs">
-    <button class="tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">User Sign Up</button>
-    <button class="tab-btn" id="userLoginTabBtn" onclick="switchAuthTab('userLogin')">User Login</button>
-    <button class="tab-btn" id="adminLoginTabBtn" onclick="switchAuthTab('adminLogin')">Admin Login</button>
+    <button type="button" class="tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">User Sign Up</button>
+    <button type="button" class="tab-btn" id="userLoginTabBtn" onclick="switchAuthTab('userLogin')">User Login</button>
+    <button type="button" class="tab-btn" id="adminLoginTabBtn" onclick="switchAuthTab('adminLogin')">Admin Login</button>
   </div>
 
   <div class="form-block" id="signupBlock">
     <input id="signupName" placeholder="नाव">
     <input id="signupMobile" placeholder="मोबाईल नंबर" maxlength="10">
     <input id="signupPass" placeholder="पासवर्ड" type="password">
-    <div class="actions" style="margin-top:10px"><button class="btn" onclick="signupUser()" style="flex:1">Sign Up</button></div>
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn" onclick="signupUser()" style="flex:1">Sign Up</button></div>
   </div>
 
   <div class="form-block hidden" id="userLoginBlock">
     <input id="loginMobile" placeholder="नोंदणीकृत मोबाईल नंबर" maxlength="10">
     <input id="loginPass" placeholder="पासवर्ड" type="password">
-    <div class="actions" style="margin-top:10px"><button class="btn" onclick="loginUser()" style="flex:1">User Login</button></div>
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn" onclick="loginUser()" style="flex:1">User Login</button></div>
   </div>
 
   <div class="form-block hidden" id="adminLoginBlock">
     <input id="adminMobile" placeholder="Admin मोबाईल नंबर" maxlength="10">
     <input id="adminPass" placeholder="Admin Password" type="password">
-    <div class="actions" style="margin-top:10px"><button class="btn2" onclick="loginAdmin()" style="flex:1">Admin Login</button></div>
-    <div class="notice center" style="margin-top:10px">Admin Mobile: 7020970727 • Password: 123</div>
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn2" onclick="loginAdmin()" style="flex:1">Admin Login</button></div>
+    
   </div>
 
   <div class="status-msg" id="authMsg"></div>
@@ -82,11 +80,16 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
 
   </div>  <div id="mainApp" class="hidden">
     <div class="card">
-      <img class="banner" src="poster.jpg" alt="banner">
+      <img class="banner hidden" id="mainBanner" src="" alt="banner">
       <div class="title">आरोग्य शिबिर नोंदणी</div>
-      <div class="subtitle">Name आणि Mobile आवश्यक • बाकी optional</div>
-      <div class="notice">User ला स्वतःचा data दिसेल. Admin ला full report दिसेल. आता QR आणि Print Slip पण आहे.</div>
-    </div><div class="card">
+      <div class="subtitle">Name आणि Mobile आवश्यक • बाकी optional</div><div class="actions hidden" id="adminImageBox" style="margin-top:10px">
+    <input type="file" id="bannerUpload" accept="image/*" style="display:none">
+    <button type="button" class="btn6" id="uploadBannerBtn">Login Image Upload</button>
+    <button type="button" class="btn4" id="removeBannerBtn">Image Remove</button>
+  </div>
+</div>
+
+<div class="card">
   <div class="stats">
     <div class="stat s1"><div>एकूण</div><div class="n" id="totalStat">0</div></div>
     <div class="stat s2"><div>Arrived</div><div class="n" id="arrivedStat">0</div></div>
@@ -110,23 +113,23 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
   </div>
   <textarea id="note" placeholder="Note / तक्रार / तपासणी प्रकार" style="margin-top:10px"></textarea>
   <div class="actions" style="margin-top:10px">
-    <button class="btn" onclick="saveRegistration()">Save Registration</button>
-    <button class="btn2" onclick="clearForm()">Clear</button>
+    <button type="button" class="btn" onclick="saveRegistration()">Save Registration</button>
+    <button type="button" class="btn2" onclick="clearForm()">Clear</button>
   </div>
   <div class="status-msg" id="saveMsg"></div>
 </div>
 
 <div class="card">
   <div class="actions">
-    <button class="btn" onclick="downloadExcel()">Excel Report</button>
-    <button class="btn2" onclick="downloadPDF()">PDF Report</button>
+    <button type="button" class="btn" onclick="downloadExcel()">Excel Report</button>
+    <button type="button" class="btn2" onclick="downloadPDF()">PDF Report</button>
   </div>
 </div>
 
 <div class="card">
   <div class="searchrow">
-    <input id="searchInput" placeholder="नाव / मोबाईल / टोकन शोधा" oninput="render()">
-    <select id="filterStatus" onchange="render()">
+    <input id="searchInput" placeholder="नाव / मोबाईल / टोकन शोधा">
+    <select id="filterStatus">
       <option value="All">All</option>
       <option value="Registered">Registered</option>
       <option value="Arrived">Arrived</option>
@@ -139,67 +142,54 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
   <div class="list" id="list"></div>
 </div>
 
-  </div>  <div class="footer">Final polished QR version • Sign Up + Login • Token • Reports • QR • Print Slip</div>
-</div><div class="modal" id="qrModal">
+  </div></div><div class="modal" id="qrModal">
   <div class="modal-card">
     <h3 style="margin:0;color:#000080">QR Code</h3>
     <div class="small" id="qrPersonName" style="margin-top:4px"></div>
     <div class="qr-box" id="qrCanvas"></div>
     <div class="actions" style="justify-content:center">
-      <button class="btn" onclick="printCurrentQR()">Print QR</button>
-      <button class="btn2" onclick="closeQRModal()">Close</button>
+      <button type="button" class="btn" onclick="printCurrentQR()">Print QR</button>
+      <button type="button" class="btn2" onclick="closeQRModal()">Close</button>
     </div>
   </div>
-</div><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const ref = collection(db, "health_reg");
-
+</div><script>
 let user = JSON.parse(localStorage.getItem('user')) || {};
 let savedUsers = JSON.parse(localStorage.getItem('health_users')) || [];
 let data = [];
 let currentQRData = null;
+let db = null;
+let firestoreFns = null;
 
 function setAuthMsg(msg, color='#15803d'){
   const el = document.getElementById('authMsg');
-  el.innerText = msg;
-  el.style.color = color;
+  if(el){ el.innerText = msg; el.style.color = color; }
 }
-
 function setSaveMsg(msg, color='#15803d'){
   const el = document.getElementById('saveMsg');
-  el.innerText = msg;
-  el.style.color = color;
+  if(el){ el.innerText = msg; el.style.color = color; }
+}
+function isValidMobile(mobile){ return /^\d{10}$/.test(mobile); }
+function escapeHtml(v){ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+
+function loadBannerImage(){
+  const imgData = localStorage.getItem('login_banner_image');
+  const ids = ['loginBanner','mainBanner'];
+  ids.forEach(id => {
+    const img = document.getElementById(id);
+    if(!img) return;
+    if(imgData){ img.src = imgData; img.classList.remove('hidden'); }
+    else { img.src = ''; img.classList.add('hidden'); }
+  });
 }
 
-function isValidMobile(mobile){
-  return /^\d{10}$/.test(mobile);
-}
-
-window.switchAuthTab = function(tab){
-  document.getElementById('signupBlock').classList.add('hidden');
-  document.getElementById('userLoginBlock').classList.add('hidden');
-  document.getElementById('adminLoginBlock').classList.add('hidden');
-  document.getElementById('signupTabBtn').classList.remove('active');
-  document.getElementById('userLoginTabBtn').classList.remove('active');
-  document.getElementById('adminLoginTabBtn').classList.remove('active');
+function switchAuthTab(tab){
+  ['signupBlock','userLoginBlock','adminLoginBlock'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  ['signupTabBtn','userLoginTabBtn','adminLoginTabBtn'].forEach(id => document.getElementById(id).classList.remove('active'));
   if(tab === 'signup'){ document.getElementById('signupBlock').classList.remove('hidden'); document.getElementById('signupTabBtn').classList.add('active'); }
   if(tab === 'userLogin'){ document.getElementById('userLoginBlock').classList.remove('hidden'); document.getElementById('userLoginTabBtn').classList.add('active'); }
   if(tab === 'adminLogin'){ document.getElementById('adminLoginBlock').classList.remove('hidden'); document.getElementById('adminLoginTabBtn').classList.add('active'); }
   setAuthMsg('');
-};
+}
 
 function showMain(){
   document.getElementById('loginCard').classList.add('hidden');
@@ -207,15 +197,20 @@ function showMain(){
   document.getElementById('topActions').classList.remove('hidden');
   document.getElementById('welcomeText').innerText = user.role === 'admin' ? `Admin: ${user.mobile}` : `${user.name || 'User'} • ${user.mobile}`;
   document.getElementById('userChip').innerText = user.role === 'admin' ? 'ADMIN' : (user.name || 'USER');
+  const box = document.getElementById('adminImageBox');
+  if(user.role === 'admin') box.classList.remove('hidden'); else box.classList.add('hidden');
+  loadBannerImage();
+  render();
 }
 
 function showLogin(){
   document.getElementById('loginCard').classList.remove('hidden');
   document.getElementById('mainApp').classList.add('hidden');
   document.getElementById('topActions').classList.add('hidden');
+  loadBannerImage();
 }
 
-window.signupUser = function(){
+function signupUser(){
   const name = document.getElementById('signupName').value.trim();
   const mobile = document.getElementById('signupMobile').value.trim();
   const pass = document.getElementById('signupPass').value.trim();
@@ -223,18 +218,18 @@ window.signupUser = function(){
   if(!isValidMobile(mobile)){ setAuthMsg('योग्य 10 अंकी मोबाईल नंबर टाका', '#dc2626'); return; }
   if(pass.length < 4){ setAuthMsg('पासवर्ड किमान 4 अक्षरी ठेवा', '#dc2626'); return; }
   const exists = savedUsers.find(u => u.mobile === mobile);
-  if(exists){ setAuthMsg('हा user आधीच sign up आहे. User Login वापरा.', '#dc2626'); switchAuthTab('userLogin'); document.getElementById('loginMobile').value = mobile; return; }
+  if(exists){ setAuthMsg('हा user आधीच sign up आहे', '#dc2626'); return; }
   savedUsers.push({ name, mobile, pass });
   localStorage.setItem('health_users', JSON.stringify(savedUsers));
-  document.getElementById('signupName').value = '';
-  document.getElementById('signupMobile').value = '';
-  document.getElementById('signupPass').value = '';
-  setAuthMsg('Sign Up यशस्वी. आता User Login करा.');
+  document.getElementById('signupName').value='';
+  document.getElementById('signupMobile').value='';
+  document.getElementById('signupPass').value='';
+  setAuthMsg('Sign Up यशस्वी. आता Login करा.');
   switchAuthTab('userLogin');
   document.getElementById('loginMobile').value = mobile;
-};
+}
 
-window.loginUser = function(){
+function loginUser(){
   const mobile = document.getElementById('loginMobile').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
   if(!isValidMobile(mobile)){ setAuthMsg('योग्य 10 अंकी मोबाईल नंबर टाका', '#dc2626'); return; }
@@ -244,10 +239,9 @@ window.loginUser = function(){
   user = { role:'user', name:found.name, mobile:found.mobile };
   localStorage.setItem('user', JSON.stringify(user));
   showMain();
-  render();
-};
+}
 
-window.loginAdmin = function(){
+function loginAdmin(){
   const mobile = document.getElementById('adminMobile').value.trim();
   const pass = document.getElementById('adminPass').value.trim();
   if(!isValidMobile(mobile)){ setAuthMsg('योग्य Admin मोबाईल नंबर टाका', '#dc2626'); return; }
@@ -255,26 +249,21 @@ window.loginAdmin = function(){
     user = { role:'admin', name:'Admin', mobile:'7020970727' };
     localStorage.setItem('user', JSON.stringify(user));
     showMain();
-    render();
-  } else {
-    setAuthMsg('Admin login details चुकीचे आहेत', '#dc2626');
-  }
-};
+  } else setAuthMsg('Admin login details चुकीचे आहेत', '#dc2626');
+}
 
-window.logout = function(){
+function logout(){
   localStorage.removeItem('user');
   user = {};
   showLogin();
   switchAuthTab('signup');
-};
+}
 
-if(user && user.mobile){ showMain(); } else { showLogin(); switchAuthTab('signup'); }
-
-onSnapshot(query(ref, orderBy('tokenNo', 'desc')), snap => {
-  data = [];
-  snap.forEach(d => data.push({ docId:d.id, ...d.data() }));
-  render();
-}, err => console.error(err));
+function clearForm(){
+  ['name','mobile','age','note'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('status').value='Registered';
+  setSaveMsg('');
+}
 
 function getBaseData(){
   if(!(user && user.mobile)) return [];
@@ -283,36 +272,36 @@ function getBaseData(){
 
 function getFilteredData(){
   let filtered = getBaseData();
-  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
-  const status = document.getElementById('filterStatus')?.value || 'All';
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const status = document.getElementById('filterStatus').value || 'All';
   if(status !== 'All') filtered = filtered.filter(d => (d.status || '') === status);
   if(q){
-    filtered = filtered.filter(d => String(d.name || '').toLowerCase().includes(q) || String(d.mobile || '').toLowerCase().includes(q) || String(d.tokenNo || '').toLowerCase().includes(q));
+    filtered = filtered.filter(d => String(d.name||'').toLowerCase().includes(q) || String(d.mobile||'').toLowerCase().includes(q) || String(d.tokenNo||'').toLowerCase().includes(q));
   }
   return filtered;
 }
 
 function updateStats(){
   const base = getBaseData();
-  const total = base.length;
-  const arrived = base.filter(d => d.status === 'Arrived').length;
-  const pending = base.filter(d => d.status !== 'Arrived').length;
-  document.getElementById('totalStat').innerText = total;
-  document.getElementById('arrivedStat').innerText = arrived;
-  document.getElementById('pendingStat').innerText = pending;
-  document.getElementById('mineStat').innerText = total;
+  document.getElementById('totalStat').innerText = base.length;
+  document.getElementById('arrivedStat').innerText = base.filter(d => d.status === 'Arrived').length;
+  document.getElementById('pendingStat').innerText = base.filter(d => d.status !== 'Arrived').length;
+  document.getElementById('mineStat').innerText = base.length;
 }
 
-window.clearForm = function(){
-  document.getElementById('name').value = '';
-  document.getElementById('mobile').value = '';
-  document.getElementById('age').value = '';
-  document.getElementById('status').value = 'Registered';
-  document.getElementById('note').value = '';
-  setSaveMsg('');
-};
+function render(){
+  if(!(user && user.mobile)) return;
+  updateStats();
+  const list = document.getElementById('list');
+  const filtered = getFilteredData();
+  if(!filtered.length){ list.innerHTML = '<div class="center small">डेटा सापडला नाही</div>'; return; }
+  list.innerHTML = filtered.map(d => {
+    const badgeClass = d.status === 'Arrived' ? 'arr' : (d.status === 'Cancelled' ? 'can' : 'reg');
+    return `<div class='item'><div class='itemtop'><div><div class='name'>${escapeHtml(d.name||'')}</div><div class='token'>Token No: ${escapeHtml(d.tokenNo||'')}</div><div class='meta'>📞 ${escapeHtml(d.mobile||'')}<br>👤 वय: ${escapeHtml(d.age||'-')}<br>🕒 ${escapeHtml(d.timestamp||'-')}<br>👥 Added By: ${escapeHtml(d.userName||'-')} (${escapeHtml(d.userMobile||'-')})</div></div><span class='badge ${badgeClass}'>${escapeHtml(d.status||'Registered')}</span></div><div class='meta'><b>Note:</b> ${escapeHtml(d.note||'-')}</div><div class='actions' style='margin-top:10px'><button type='button' class='btn3' onclick="markArrived('${d.docId}')">Mark Arrived</button><button type='button' class='btn6' onclick="showQRCode('${d.docId}')">QR</button><button type='button' class='btn2' onclick="printSlip('${d.docId}')">Print Slip</button><a class='action-link btn5' href="https://wa.me/91${encodeURIComponent(d.mobile || '')}?text=${encodeURIComponent('नमस्कार ' + (d.name || '') + ', आपल्या आरोग्य शिबिर नोंदणीबद्दल धन्यवाद. Token No: ' + (d.tokenNo || ''))}">WhatsApp</a>${user.role==='admin' ? `<button type='button' class='btn4' onclick="removeEntry('${d.docId}')">Delete</button>` : ''}</div></div>`;
+  }).join('');
+}
 
-window.saveRegistration = async function(){
+async function saveRegistration(){
   const name = document.getElementById('name').value.trim();
   const mobile = document.getElementById('mobile').value.trim();
   const age = document.getElementById('age').value.trim();
@@ -321,100 +310,121 @@ window.saveRegistration = async function(){
   if(!name){ alert('नाव आवश्यक आहे'); return; }
   if(!mobile){ alert('मोबाईल नंबर आवश्यक आहे'); return; }
   if(!isValidMobile(mobile)){ alert('योग्य 10 अंकी मोबाईल नंबर टाका'); return; }
-  const duplicate = data.find(d => String(d.mobile || '') === mobile);
+  const duplicate = data.find(d => String(d.mobile||'') === mobile);
   if(duplicate){ alert('हा मोबाईल नंबर आधीच नोंद झालेला आहे'); return; }
+  if(!db || !firestoreFns){ setSaveMsg('Firebase ready नाही', '#dc2626'); return; }
   const now = new Date();
   const maxToken = data.length ? Math.max(...data.map(d => Number(d.tokenNo || 0))) : 0;
   const tokenNo = maxToken + 1;
   try{
     setSaveMsg('Saving...', '#ea580c');
-    await addDoc(ref, {
-      tokenNo,
-      name,
-      mobile,
-      age: age || '',
-      status: status || 'Registered',
-      note: note || '',
-      userMobile: user.mobile,
-      userName: user.name || '',
-      createdAt: serverTimestamp(),
-      date: now.toLocaleDateString('en-IN'),
-      time: now.toLocaleTimeString('en-IN'),
-      timestamp: now.toLocaleString('en-IN')
+    await firestoreFns.addDoc(firestoreFns.collection(db, 'health_reg'), {
+      tokenNo, name, mobile, age: age || '', status: status || 'Registered', note: note || '',
+      userMobile: user.mobile, userName: user.name || '', createdAt: firestoreFns.serverTimestamp(),
+      date: now.toLocaleDateString('en-IN'), time: now.toLocaleTimeString('en-IN'), timestamp: now.toLocaleString('en-IN')
     });
     clearForm();
     setSaveMsg(`Saved • Token No: ${tokenNo}`);
-    alert(`Registration Saved\nToken No: ${tokenNo}`);
-  }catch(err){
-    console.error(err);
-    setSaveMsg('Save failed', '#dc2626');
-    alert('डेटा सेव्ह झाला नाही. Firebase config तपासा.');
-  }
-};
+  }catch(err){ console.error(err); setSaveMsg('Save failed', '#dc2626'); }
+}
 
-window.markArrived = async function(docId){ await updateDoc(doc(db, 'health_reg', docId), { status:'Arrived' }); };
-window.removeEntry = async function(docId){ if(!confirm('Delete करायचं का?')) return; await deleteDoc(doc(db, 'health_reg', docId)); };
+async function markArrived(docId){ if(!db || !firestoreFns) return; await firestoreFns.updateDoc(firestoreFns.doc(db, 'health_reg', docId), { status:'Arrived' }); }
+async function removeEntry(docId){ if(!confirm('Delete करायचं का?')) return; if(!db || !firestoreFns) return; await firestoreFns.deleteDoc(firestoreFns.doc(db, 'health_reg', docId)); }
 
-window.showQRCode = function(docId){
-  const item = data.find(d => d.docId === docId);
-  if(!item) return;
-  currentQRData = item;
+function showQRCode(docId){
+  const item = data.find(d => d.docId === docId); if(!item) return; currentQRData = item;
   document.getElementById('qrPersonName').innerText = `${item.name} • Token ${item.tokenNo}`;
-  const qrCanvas = document.getElementById('qrCanvas');
-  qrCanvas.innerHTML = '';
-  const qrPayload = JSON.stringify({ tokenNo:item.tokenNo, name:item.name, mobile:item.mobile, userMobile:item.userMobile, timestamp:item.timestamp });
-  new QRCode(qrCanvas, { text: qrPayload, width: 190, height: 190 });
+  const qrCanvas = document.getElementById('qrCanvas'); qrCanvas.innerHTML='';
+  new QRCode(qrCanvas, { text: JSON.stringify({ tokenNo:item.tokenNo, name:item.name, mobile:item.mobile, timestamp:item.timestamp }), width:190, height:190 });
   document.getElementById('qrModal').classList.add('show');
-};
-
-window.closeQRModal = function(){ document.getElementById('qrModal').classList.remove('show'); };
-
-window.printCurrentQR = function(){
+}
+function closeQRModal(){ document.getElementById('qrModal').classList.remove('show'); }
+function printCurrentQR(){
   if(!currentQRData) return;
   const qrImg = document.querySelector('#qrCanvas img') || document.querySelector('#qrCanvas canvas');
-  let qrDataUrl = '';
-  if(qrImg){
-    if(qrImg.tagName.toLowerCase() === 'img') qrDataUrl = qrImg.src;
-    else qrDataUrl = qrImg.toDataURL();
-  }
+  const qrDataUrl = qrImg ? (qrImg.tagName.toLowerCase()==='img' ? qrImg.src : qrImg.toDataURL()) : '';
   const w = window.open('', '_blank');
-  w.document.write(`
-    <html><head><title>QR Print</title><style>
-    body{font-family:Arial;padding:24px;text-align:center} .card{border:2px solid #333;border-radius:14px;padding:18px;display:inline-block}
-    img{width:220px;height:220px} h2,p{margin:8px 0}
-    </style></head><body><div class="card">
-  <h2>आरोग्य शिबिर QR</h2>
-  <p><b>Name:</b> ${escapeHtml(currentQRData.name || '')}</p>
-  <p><b>Token No:</b> ${escapeHtml(currentQRData.tokenNo || '')}</p>
-  <p><b>Mobile:</b> ${escapeHtml(currentQRData.mobile || '')}</p>
-  <img src="${qrDataUrl}" alt="QR">
-</div>
-</body></html>
+  w.document.write(`<html><body style='font-family:Arial;text-align:center;padding:24px'><h2>आरोग्य शिबिर QR</h2><p>${escapeHtml(currentQRData.name||'')} • ${escapeHtml(currentQRData.tokenNo||'')}</p><img src='${qrDataUrl}' style='width:220px;height:220px'></body></html>`);
+  w.document.close(); w.print();
+}
+function printSlip(docId){
+  const item = data.find(d => d.docId === docId); if(!item) return;
+  const tempDiv = document.createElement('div');
+  new QRCode(tempDiv, { text: JSON.stringify({ tokenNo:item.tokenNo, name:item.name, mobile:item.mobile, timestamp:item.timestamp }), width:130, height:130 });
+  setTimeout(() => {
+    const qrEl = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
+    const qrDataUrl = qrEl ? (qrEl.tagName.toLowerCase()==='img' ? qrEl.src : qrEl.toDataURL()) : '';
+    const w = window.open('', '_blank');
+    w.document.write(`<html><body style='font-family:Arial;padding:18px'><h2 style='text-align:center'>मोफत आरोग्य तपासणी व मार्गदर्शन शिबिर</h2><div style='border:2px solid #333;border-radius:14px;padding:14px'><p><b>Token No:</b> ${escapeHtml(item.tokenNo||'')}</p><p><b>Name:</b> ${escapeHtml(item.name||'')}</p><p><b>Mobile:</b> ${escapeHtml(item.mobile||'')}</p><p><b>Age:</b> ${escapeHtml(item.age||'-')}</p><p><b>Status:</b> ${escapeHtml(item.status||'')}</p><p><b>Date:</b> ${escapeHtml(item.date||'')}</p><p><b>Time:</b> ${escapeHtml(item.time||'')}</p><p><b>Note:</b> ${escapeHtml(item.note||'-')}</p><div style='text-align:center'>${qrDataUrl ? `<img src='${qrDataUrl}' style='width:130px;height:130px'>` : ''}</div></div></body></html>`);
+    w.document.close(); w.print();
+  }, 100);
+}
 
-`); w.document.close(); w.print(); };
+function uploadBannerImage(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    localStorage.setItem('login_banner_image', e.target.result);
+    loadBannerImage();
+    alert('Image update झाली');
+  };
+  reader.readAsDataURL(file);
+}
+function removeBannerImage(){ localStorage.removeItem('login_banner_image'); loadBannerImage(); alert('Image remove झाली'); }
 
-window.printSlip = function(docId){ const item = data.find(d => d.docId === docId); if(!item) return; const qrText = JSON.stringify({ tokenNo:item.tokenNo, name:item.name, mobile:item.mobile, timestamp:item.timestamp }); const tempDiv = document.createElement('div'); new QRCode(tempDiv, { text: qrText, width: 130, height: 130 }); setTimeout(() => { const qrEl = tempDiv.querySelector('img') || tempDiv.querySelector('canvas'); const qrDataUrl = qrEl ? (qrEl.tagName.toLowerCase()==='img' ? qrEl.src : qrEl.toDataURL()) : ''; const w = window.open('', '_blank'); w.document.write(<html><head><title>Print Slip</title><style> body{font-family:Arial;padding:18px;color:#111}.slip{padding:18px}.slip h2,.slip h3,.slip p{text-align:center;margin:6px 0}.slip-card{border:2px solid #333;border-radius:14px;padding:14px;margin-top:10px}.slip-row{margin:6px 0;font-size:14px}.qr{text-align:center;margin-top:12px} .qr img{width:130px;height:130px} </style></head><body> <div class="slip"> <h2>मोफत आरोग्य तपासणी व मार्गदर्शन शिबिर</h2> <p>कृष्णाई RCM सेवा केंद्र, स्नेह शारदा नगर, परभणी</p> <div class="slip-card"> <h3>Registration Slip</h3> <div class="slip-row"><b>Token No:</b> ${escapeHtml(item.tokenNo || '')}</div> <div class="slip-row"><b>Name:</b> ${escapeHtml(item.name || '')}</div> <div class="slip-row"><b>Mobile:</b> ${escapeHtml(item.mobile || '')}</div> <div class="slip-row"><b>Age:</b> ${escapeHtml(item.age || '-')}</div> <div class="slip-row"><b>Status:</b> ${escapeHtml(item.status || '')}</div> <div class="slip-row"><b>Date:</b> ${escapeHtml(item.date || '')}</div> <div class="slip-row"><b>Time:</b> ${escapeHtml(item.time || '')}</div> <div class="slip-row"><b>Note:</b> ${escapeHtml(item.note || '-')}</div> <div class="qr">${qrDataUrl ?<img src="${qrDataUrl}" alt="QR">: ''}</div> </div> </div> </body></html>); w.document.close(); w.print(); }, 100); };
+window.switchAuthTab = switchAuthTab;
+window.signupUser = signupUser;
+window.loginUser = loginUser;
+window.loginAdmin = loginAdmin;
+window.logout = logout;
+window.saveRegistration = saveRegistration;
+window.clearForm = clearForm;
+window.render = render;
+window.markArrived = markArrived;
+window.removeEntry = removeEntry;
+window.showQRCode = showQRCode;
+window.closeQRModal = closeQRModal;
+window.printCurrentQR = printCurrentQR;
+window.printSlip = printSlip;
+window.uploadBannerImage = uploadBannerImage;
+window.removeBannerImage = removeBannerImage;
 
-window.render = function(){ if(!(user && user.mobile)) return; updateStats(); const list = document.getElementById('list'); const filtered = getFilteredData(); if(!filtered.length){ list.innerHTML = '<div class="center small">डेटा सापडला नाही</div>'; return; } list.innerHTML = filtered.map(d => { const badgeClass = d.status === 'Arrived' ? 'arr' : (d.status === 'Cancelled' ? 'can' : 'reg'); return <div class="item"> <div class="itemtop"> <div> <div class="name">${escapeHtml(d.name || '')}</div> <div class="token">Token No: ${escapeHtml(d.tokenNo || '')}</div> <div class="meta"> 📞 ${escapeHtml(d.mobile || '')}<br> 👤 वय: ${escapeHtml(d.age || '-') }<br> 🕒 ${escapeHtml(d.timestamp || '-') }<br> 👥 Added By: ${escapeHtml(d.userName || '-') } (${escapeHtml(d.userMobile || '-') }) </div> </div> <span class="badge ${badgeClass}">${escapeHtml(d.status || 'Registered')}</span> </div> <div class="meta"><b>Note:</b> ${escapeHtml(d.note || '-')}</div> <div class="actions" style="margin-top:10px"> <button class="btn3" onclick="markArrived('${d.docId}')">Mark Arrived</button> <button class="btn6" onclick="showQRCode('${d.docId}')">QR</button> <button class="btn2" onclick="printSlip('${d.docId}')">Print Slip</button> <a class="action-link btn5" href="https://wa.me/91${encodeURIComponent(d.mobile || '')}?text=${encodeURIComponent('नमस्कार ' + (d.name || '') + ', आपल्या आरोग्य शिबिर नोंदणीबद्दल धन्यवाद. Token No: ' + (d.tokenNo || ''))}">WhatsApp</a> ${user.role === 'admin' ?<button class="btn4" onclick="removeEntry('${d.docId}')">Delete</button> : ''} </div> </div>; }).join(''); };
+function bindStaticEvents(){
+  document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('filterStatus').addEventListener('change', render);
+  document.getElementById('uploadBannerBtn').addEventListener('click', () => document.getElementById('bannerUpload').click());
+  document.getElementById('bannerUpload').addEventListener('change', uploadBannerImage);
+  document.getElementById('removeBannerBtn').addEventListener('click', removeBannerImage);
+}
 
-window.downloadExcel = function(){ const filtered = getFilteredData().map((d, i) => ({ 'Sr No': i + 1, 'Token No': d.tokenNo || '', 'Name': d.name || '', 'Mobile': d.mobile || '', 'Age': d.age || '', 'Status': d.status || '', 'Note': d.note || '', 'Added By Name': d.userName || '', 'Added By Mobile': d.userMobile || '', 'Date': d.date || '', 'Time': d.time || '', 'Timestamp': d.timestamp || '' })); if(!filtered.length){ alert('डेटा नाही'); return; } const ws = XLSX.utils.json_to_sheet(filtered); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Report'); XLSX.writeFile(wb, user.role === 'admin' ? 'admin_full_report.xlsx' : 'my_report.xlsx'); };
+bindStaticEvents();
+loadBannerImage();
+if(user && user.mobile) showMain(); else { showLogin(); switchAuthTab('signup'); }
+</script><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-window.downloadPDF = function(){ const filtered = getFilteredData(); if(!filtered.length){ alert('डेटा नाही'); return; } let html = `<html><head><title>Report</title><style> body{font-family:Arial;padding:20px}h2,p{text-align:center}table{width:100%;border-collapse:collapse;font-size:12px} th,td{border:1px solid #333;padding:6px;text-align:left;vertical-align:top}th{background:#eee} </style></head><body>
+const firebaseConfig = {
+  apiKey: "AIzaSyAxNEp3ER-q7KwtCmy-tgnaTX5-Y6L3CfY",
+  authDomain: "health-93579.firebaseapp.com",
+  projectId: "health-93579",
+  storageBucket: "health-93579.firebasestorage.app",
+  messagingSenderId: "1012453688122",
+  appId: "1:1012453688122:web:20a241a2b743faa3484603"
+};
 
-  <h2>आरोग्य शिबिर रिपोर्ट</h2>
-  <p>Generated: ${new Date().toLocaleString('en-IN')}</p>
-  <table><tr><th>Sr</th><th>Token</th><th>Name</th><th>Mobile</th><th>Status</th><th>Added By</th><th>Date</th><th>Time</th><th>Timestamp</th></tr>`;
-  filtered.forEach((d, i) => {
-    html += `<tr><td>${i+1}</td><td>${escapeHtml(d.tokenNo || '')}</td><td>${escapeHtml(d.name || '')}</td><td>${escapeHtml(d.mobile || '')}</td><td>${escapeHtml(d.status || '')}</td><td>${escapeHtml((d.userName || '-') + ' / ' + (d.userMobile || '-'))}</td><td>${escapeHtml(d.date || '')}</td><td>${escapeHtml(d.time || '')}</td><td>${escapeHtml(d.timestamp || '')}</td></tr>`;
-  });
-  html += `</table></body></html>`;
-  const w = window.open('', '_blank');
-  w.document.write(html);
-  w.document.close();
-  w.print();
-};// poster.jpg ही image हा HTML file ज्या folder मध्ये आहे त्याच folder मध्ये ठेवा
-
-function escapeHtml(v){ return String(v) .replace(/&/g,'&') .replace(/</g,'<') .replace(/>/g,'>') .replace(/"/g,'"') .replace(/'/g,'''); } </script>
-
-</body>
+try{
+  const app = initializeApp(firebaseConfig);
+  window.db = getFirestore(app);
+  window.firestoreFns = { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, updateDoc, doc, deleteDoc };
+  onSnapshot(query(window.firestoreFns.collection(window.db, 'health_reg'), orderBy('tokenNo', 'desc')), snap => {
+    window.data = [];
+    snap.forEach(d => window.data.push({ docId:d.id, ...d.data() }));
+    window.render();
+  }, err => console.error(err));
+}catch(err){
+  console.error('Firebase init failed:', err);
+}
+</script></body>
 </html>
