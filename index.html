@@ -1,71 +1,37 @@
-<!DOCTYPE html>
-<html lang="mr">
+<!DOCTYPE html><html lang="mr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>आरोग्य शिबिर Registration App</title>
-
+<title>आरोग्य शिबिर - Stable Version</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:'Segoe UI',Tahoma,Verdana,sans-serif;background:linear-gradient(180deg,#ff9933 0%,#ffffff 48%,#138808 100%);color:#1f2937}
 .app{max-width:560px;margin:auto;min-height:100vh;background:rgba(255,255,255,.97);box-shadow:0 0 22px rgba(0,0,0,.14)}
 .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid #e5e7eb}
-.brand{font-size:18px;font-weight:900;color:#000080}
-.small{font-size:12px;color:#6b7280}
-.hidden{display:none!important}
+.brand{font-size:18px;font-weight:900;color:#000080}.small{font-size:12px;color:#6b7280}.hidden{display:none!important}
 .card{margin:12px;padding:14px;border-radius:18px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.08)}
 .banner{width:100%;display:block;border-radius:16px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.title{font-size:24px;font-weight:900;text-align:center;color:#1d4ed8;margin:4px 0}
-.subtitle{text-align:center;font-size:13px;color:#4b5563;font-weight:600;margin-bottom:6px}
+.title{font-size:24px;font-weight:900;text-align:center;color:#1d4ed8;margin:4px 0}.subtitle{text-align:center;font-size:13px;color:#4b5563;font-weight:600;margin-bottom:6px}
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
-.tab-btn{border:none;border-radius:12px;padding:10px;font-weight:800;background:#eef2ff;color:#1e3a8a;cursor:pointer}
-.tab-btn.active{background:#000080;color:#fff}
+.tab-btn{border:none;border-radius:12px;padding:10px;font-weight:800;background:#eef2ff;color:#1e3a8a;cursor:pointer}.tab-btn.active{background:#000080;color:#fff}
 .form-block{margin-top:12px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.searchrow{display:grid;grid-template-columns:1fr 120px;gap:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.searchrow{display:grid;grid-template-columns:1fr 120px;gap:10px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.stat{padding:12px 8px;border-radius:14px;text-align:center;color:#fff;font-weight:900}
-.s1{background:linear-gradient(135deg,#1d4ed8,#000080)}
-.s2{background:linear-gradient(135deg,#16a34a,#0f766e)}
-.s3{background:linear-gradient(135deg,#ea580c,#ff9933)}
-.s4{background:linear-gradient(135deg,#7c3aed,#4f46e5)}
-.stat .n{font-size:22px;margin-top:4px}
-input,select,textarea{width:100%;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:14px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 3px rgba(29,78,216,.08)}
+.stat{padding:12px 8px;border-radius:14px;text-align:center;color:#fff;font-weight:900}.s1{background:linear-gradient(135deg,#1d4ed8,#000080)}.s2{background:linear-gradient(135deg,#16a34a,#0f766e)}.s3{background:linear-gradient(135deg,#ea580c,#ff9933)}.s4{background:linear-gradient(135deg,#7c3aed,#4f46e5)}.stat .n{font-size:22px;margin-top:4px}
+input,select,textarea{width:100%;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:14px;outline:none}input:focus,select:focus,textarea:focus{border-color:#1d4ed8;background:#fff;box-shadow:0 0 0 3px rgba(29,78,216,.08)}
 textarea{min-height:90px;resize:vertical}
-button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}
-.btn{background:#000080;color:#fff}
-.btn2{background:#ff9933;color:#fff}
-.btn3{background:#16a34a;color:#fff}
-.btn4{background:#dc2626;color:#fff}
-.btn5{background:#eef2ff;color:#1e3a8a}
-.btn6{background:#111827;color:#fff}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.status-msg{margin-top:8px;font-size:12px;font-weight:800;text-align:center}
-.user-chip{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#1e3a8a;font-size:12px;font-weight:800}
-.token{display:inline-block;background:#fff7ed;border:1px solid #fdba74;color:#c2410c;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;margin-top:4px}
-.list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}
-.item{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fcfcff}
-.itemtop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.name{font-size:17px;font-weight:900;color:#111827}
-.meta{font-size:13px;color:#4b5563;line-height:1.6}
-.badge{padding:5px 10px;border-radius:999px;font-size:11px;color:#fff;font-weight:900;white-space:nowrap}
-.reg{background:#2563eb}
-.arr{background:#16a34a}
-.can{background:#dc2626}
-.center{text-align:center}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}
-.modal.show{display:flex}
-.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(92vw,380px);text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block}.btn{background:#000080;color:#fff}.btn2{background:#ff9933;color:#fff}.btn3{background:#16a34a;color:#fff}.btn4{background:#dc2626;color:#fff}.btn5{background:#eef2ff;color:#1e3a8a}.btn6{background:#111827;color:#fff}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.status-msg{margin-top:8px;font-size:12px;font-weight:800;text-align:center}
+.user-chip{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#1e3a8a;font-size:12px;font-weight:800}.token{display:inline-block;background:#fff7ed;border:1px solid #fdba74;color:#c2410c;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;margin-top:4px}
+.list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}.item{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fcfcff}
+.itemtop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.name{font-size:17px;font-weight:900;color:#111827}.meta{font-size:13px;color:#4b5563;line-height:1.6}
+.badge{padding:5px 10px;border-radius:999px;font-size:11px;color:#fff;font-weight:900;white-space:nowrap}.reg{background:#2563eb}.arr{background:#16a34a}.can{background:#dc2626}
+.center{text-align:center}.footer{padding:0 14px 18px;text-align:center;color:#4b5563;font-size:12px;font-weight:700}.notice{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;padding:10px 12px;border-radius:12px;font-size:12px;font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}.modal.show{display:flex}.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(92vw,380px);text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25)}
 .qr-box{display:flex;justify-content:center;align-items:center;min-height:210px;margin:10px 0}
-@media (max-width:520px){
-  .tabs,.row,.searchrow,.stats{grid-template-columns:1fr}
-  .title{font-size:22px}
-  .topbar{padding:10px 12px}
-}
+@media (max-width:520px){.tabs,.row,.searchrow,.stats{grid-template-columns:1fr}.title{font-size:22px}.topbar{padding:10px 12px}}
 </style>
 </head>
 <body>
@@ -79,149 +45,150 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
       <span class="user-chip" id="userChip">Guest</span>
       <button type="button" class="btn5" onclick="logout()">Logout</button>
     </div>
-  </div>
-
-  <div id="loginCard">
+  </div>  <div id="loginCard">
     <div class="card">
       <img class="banner hidden" id="loginBanner" src="" alt="banner">
       <div class="title">स्वास्थ्य जांच एवं परामर्श शिविर</div>
-      <div class="subtitle">Sign Up / Login करून पुढे जा</div>
-
-      <div class="tabs">
-        <button type="button" class="tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">User Sign Up</button>
-        <button type="button" class="tab-btn" id="userLoginTabBtn" onclick="switchAuthTab('userLogin')">User Login</button>
-        <button type="button" class="tab-btn" id="adminLoginTabBtn" onclick="switchAuthTab('adminLogin')">Admin Login</button>
-      </div>
-
-      <div class="form-block" id="signupBlock">
-        <input id="signupName" placeholder="नाव">
-        <input id="signupMobile" placeholder="मोबाईल नंबर" maxlength="10">
-        <input id="signupPass" placeholder="पासवर्ड" type="password">
-        <div class="actions" style="margin-top:10px">
-          <button type="button" class="btn" onclick="signupUser()" style="flex:1">Sign Up</button>
-        </div>
-      </div>
-
-      <div class="form-block hidden" id="userLoginBlock">
-        <input id="loginMobile" placeholder="नोंदणीकृत मोबाईल नंबर" maxlength="10">
-        <input id="loginPass" placeholder="पासवर्ड" type="password">
-        <div class="actions" style="margin-top:10px">
-          <button type="button" class="btn" onclick="loginUser()" style="flex:1">User Login</button>
-        </div>
-      </div>
-
-      <div class="form-block hidden" id="adminLoginBlock">
-        <input id="adminMobile" placeholder="Admin मोबाईल नंबर" maxlength="10">
-        <input id="adminPass" placeholder="Admin Password" type="password">
-        <div class="actions" style="margin-top:10px">
-          <button type="button" class="btn2" onclick="loginAdmin()" style="flex:1">Admin Login</button>
-        </div>
-      </div>
-
-      <div class="status-msg" id="authMsg"></div>
-    </div>
+      <div class="subtitle">Sign Up / Login करून पुढे जा</div><div class="tabs">
+    <button type="button" class="tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">User Sign Up</button>
+    <button type="button" class="tab-btn" id="userLoginTabBtn" onclick="switchAuthTab('userLogin')">User Login</button>
+    <button type="button" class="tab-btn" id="adminLoginTabBtn" onclick="switchAuthTab('adminLogin')">Admin Login</button>
   </div>
 
-  <div id="mainApp" class="hidden">
+  <div class="form-block" id="signupBlock">
+    <input id="signupName" placeholder="नाव">
+    <input id="signupMobile" placeholder="मोबाईल नंबर" maxlength="10">
+    <input id="signupPass" placeholder="पासवर्ड" type="password">
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn" onclick="signupUser()" style="flex:1">Sign Up</button></div>
+  </div>
+
+  <div class="form-block hidden" id="userLoginBlock">
+    <input id="loginMobile" placeholder="नोंदणीकृत मोबाईल नंबर" maxlength="10">
+    <input id="loginPass" placeholder="पासवर्ड" type="password">
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn" onclick="loginUser()" style="flex:1">User Login</button></div>
+  </div>
+
+  <div class="form-block hidden" id="adminLoginBlock">
+    <input id="adminMobile" placeholder="Admin मोबाईल नंबर" maxlength="10">
+    <input id="adminPass" placeholder="Admin Password" type="password">
+    <div class="actions" style="margin-top:10px"><button type="button" class="btn2" onclick="loginAdmin()" style="flex:1">Admin Login</button></div>
+    
+  </div>
+
+  <div class="status-msg" id="authMsg"></div>
+</div>
+
+  </div>  <div id="mainApp" class="hidden">
     <div class="card">
       <img class="banner hidden" id="mainBanner" src="" alt="banner">
       <div class="title">आरोग्य शिबिर नोंदणी</div>
-      <div class="subtitle">Name आणि Mobile आवश्यक • बाकी optional</div>
-
-      <div class="actions hidden" id="adminImageBox" style="margin-top:10px">
-        <input type="file" id="bannerUpload" accept="image/*" style="display:none">
-        <button type="button" class="btn6" id="uploadBannerBtn">Login Image Upload</button>
-        <button type="button" class="btn4" id="removeBannerBtn">Image Remove</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="stats">
-        <div class="stat s1"><div>एकूण</div><div class="n" id="totalStat">0</div></div>
-        <div class="stat s2"><div>Arrived</div><div class="n" id="arrivedStat">0</div></div>
-        <div class="stat s3"><div>Pending</div><div class="n" id="pendingStat">0</div></div>
-        <div class="stat s4"><div>माझे</div><div class="n" id="mineStat">0</div></div>
-      </div>
-      <div class="stats" style="margin-top:8px">
-        <div class="stat s1"><div>आजचे</div><div class="n" id="todayTotalStat">0</div></div>
-        <div class="stat s2"><div>आज Arrived</div><div class="n" id="todayArrivedStat">0</div></div>
-        <div class="stat s3"><div>आज Pending</div><div class="n" id="todayPendingStat">0</div></div>
-        <div class="stat s4"><div>Next Queue</div><div class="n" id="nextQueueStat">0</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row">
-        <input id="name" placeholder="नाव *">
-        <input id="mobile" placeholder="मोबाईल *" maxlength="10">
-      </div>
-      <div class="row" style="margin-top:10px">
-        <input id="age" placeholder="वय">
-        <select id="status">
-          <option value="Registered">Registered</option>
-          <option value="Arrived">Arrived</option>
-          <option value="Cancelled">Cancelled</option>
-          <option value="Completed">Completed</option>
-        </select>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <select id="service">
-          <option value="General Checkup">General Checkup</option>
-          <option value="BP">BP</option>
-          <option value="Sugar">Sugar</option>
-          <option value="Weight">Weight</option>
-          <option value="Consultation">Consultation</option>
-        </select>
-        <label style="display:flex;align-items:center;gap:8px;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:14px">
-          <input id="autoPrint" type="checkbox" style="width:auto;margin:0"> Save नंतर Print
-        </label>
-      </div>
-      <textarea id="note" placeholder="Note / तक्रार / तपासणी प्रकार" style="margin-top:10px"></textarea>
-      <div class="actions" style="margin-top:10px">
-        <button type="button" class="btn" onclick="saveRegistration()">Save Registration</button>
-        <button type="button" class="btn2" onclick="clearForm()">Clear</button>
-      </div>
-      <div class="status-msg" id="saveMsg"></div>
-    </div>
-
-    <div class="card">
-      <div class="actions">
-        <button type="button" class="btn" onclick="downloadExcel()">Excel Report</button>
-        <button type="button" class="btn2" onclick="downloadPDF()">PDF Report</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="searchrow">
-        <input id="searchInput" placeholder="नाव / मोबाईल / टोकन शोधा">
-        <select id="filterStatus">
-          <option value="All">All</option>
-          <option value="Registered">Registered</option>
-          <option value="Arrived">Arrived</option>
-          <option value="Cancelled">Cancelled</option>
-          <option value="Completed">Completed</option>
-        </select>
-      </div>
-      <div class="searchrow" style="margin-top:10px">
-        <input id="filterDate" type="date">
-        <select id="filterService">
-          <option value="All">All Services</option>
-          <option value="General Checkup">General Checkup</option>
-          <option value="BP">BP</option>
-          <option value="Sugar">Sugar</option>
-          <option value="Weight">Weight</option>
-          <option value="Consultation">Consultation</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="list" id="list"></div>
-    </div>
+      <div class="subtitle">Name आणि Mobile आवश्यक • बाकी optional</div><div class="actions hidden" id="adminImageBox" style="margin-top:10px">
+    <input type="file" id="bannerUpload" accept="image/*" style="display:none">
+    <button type="button" class="btn6" id="uploadBannerBtn">Login Image Upload</button>
+    <button type="button" class="btn4" id="removeBannerBtn">Image Remove</button>
   </div>
 </div>
 
-<div class="modal" id="qrModal">
+<div class="card">
+  <div class="stats">
+    <div class="stat s1"><div>एकूण</div><div class="n" id="totalStat">0</div></div>
+    <div class="stat s2"><div>Arrived</div><div class="n" id="arrivedStat">0</div></div>
+    <div class="stat s3"><div>Pending</div><div class="n" id="pendingStat">0</div></div>
+    <div class="stat s4"><div>माझे</div><div class="n" id="mineStat">0</div></div>
+  </div>
+  <div class="stats" style="margin-top:8px">
+    <div class="stat s1"><div>आजचे</div><div class="n" id="todayTotalStat">0</div></div>
+    <div class="stat s2"><div>आज Arrived</div><div class="n" id="todayArrivedStat">0</div></div>
+    <div class="stat s3"><div>आज Pending</div><div class="n" id="todayPendingStat">0</div></div>
+    <div class="stat s4"><div>Next Queue</div><div class="n" id="nextQueueStat">0</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <input id="name" placeholder="नाव *">
+    <input id="mobile" placeholder="मोबाईल *" maxlength="10">
+  </div>
+  <div class="row" style="margin-top:10px">
+    <input id="age" placeholder="वय">
+    <select id="status">
+      <option value="Registered">Registered</option>
+      <option value="Arrived">Arrived</option>
+      <option value="Cancelled">Cancelled</option>
+      <option value="Completed">Completed</option>
+    </select>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <select id="service">
+      <option value="General Checkup">General Checkup</option>
+      <option value="BP">BP</option>
+      <option value="Sugar">Sugar</option>
+      <option value="Weight">Weight</option>
+      <option value="Consultation">Consultation</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:8px;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:14px">
+      <input id="autoPrint" type="checkbox" style="width:auto;margin:0"> Save नंतर Print
+    </label>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <select id="rcmJoin">
+      <option value="No">RCM अभियानात सहभागी आहात का? - No</option>
+      <option value="Yes">RCM अभियानात सहभागी आहात का? - Yes</option>
+    </select>
+    <div style="display:flex;align-items:center;justify-content:center;padding:12px 13px;border-radius:12px;border:1.6px solid #d1d5db;background:#f8fafc;font-size:13px;font-weight:700;color:#1e3a8a">📍 Google Location Slip वर जाईल</div>
+  </div>
+  <textarea id="note" placeholder="Note / तक्रार / तपासणी प्रकार" style="margin-top:10px"></textarea>
+  <div class="actions" style="margin-top:10px">
+    <button type="button" class="btn" onclick="saveRegistration()">Save Registration</button>
+    <button type="button" class="btn2" onclick="clearForm()">Clear</button>
+  </div>
+  <div class="status-msg" id="saveMsg"></div>
+</div>
+
+<div class="card">
+  <div class="actions">
+    <button type="button" class="btn" onclick="downloadExcel()">Excel Report</button>
+    <button type="button" class="btn2" onclick="downloadPDF()">PDF Report</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="searchrow">
+    <input id="searchInput" placeholder="नाव / मोबाईल / टोकन शोधा">
+    <select id="filterStatus">
+      <option value="All">All</option>
+      <option value="Registered">Registered</option>
+      <option value="Arrived">Arrived</option>
+      <option value="Cancelled">Cancelled</option>
+      <option value="Completed">Completed</option>
+    </select>
+  </div>
+  <div class="searchrow" style="margin-top:10px">
+    <input id="filterDate" type="date">
+    <select id="filterService">
+      <option value="All">All Services</option>
+      <option value="General Checkup">General Checkup</option>
+      <option value="BP">BP</option>
+      <option value="Sugar">Sugar</option>
+      <option value="Weight">Weight</option>
+      <option value="Consultation">Consultation</option>
+    </select>
+  </div>
+</div>
+
+<div class="card">
+  <div class="list" id="list"></div>
+</div>
+
+  </div></div><div class="modal" id="successModal">
+  <div class="modal-card">
+    <h2 style="margin:0 0 10px;color:#16a34a">🎉✅ नोंदणी यशस्वी ✅🎉</h2>
+    <div id="successMessage" style="font-size:16px;font-weight:800;line-height:1.6;color:#111827">धन्यवाद! आपण रोगमुक्त अभियानात सहभाग नोंदवल्या बद्दल 🙏</div>
+    <div class="actions" style="justify-content:center;margin-top:14px">
+      <button type="button" class="btn" onclick="closeSuccessModal()">ठीक आहे</button>
+    </div>
+  </div>
+</div><div class="modal" id="qrModal">
   <div class="modal-card">
     <h3 style="margin:0;color:#000080">QR Code</h3>
     <div class="small" id="qrPersonName" style="margin-top:4px"></div>
@@ -231,71 +198,68 @@ button,a.action-link{border:none;border-radius:12px;padding:11px 14px;font-weigh
       <button type="button" class="btn2" onclick="closeQRModal()">Close</button>
     </div>
   </div>
-</div>
-
-<script>
-window.db = null;
-window.firestoreFns = null;
-window.data = [];
-
+</div><script>
 let user = JSON.parse(localStorage.getItem('user')) || {};
 let savedUsers = JSON.parse(localStorage.getItem('health_users')) || [];
+let data = [];
 let currentQRData = null;
+let db = null;
+let firestoreFns = null;
 
 function setAuthMsg(msg, color='#15803d'){
   const el = document.getElementById('authMsg');
   if(el){ el.innerText = msg; el.style.color = color; }
 }
-
 function setSaveMsg(msg, color='#15803d'){
   const el = document.getElementById('saveMsg');
   if(el){ el.innerText = msg; el.style.color = color; }
 }
 
-function isValidMobile(mobile){
-  return /^\d{10}$/.test(mobile);
+function speakSuccessMessage(){
+  try{
+    const text = 'धन्यवाद! आपण रोगमुक्त अभियानात सहभाग नोंदवल्या बद्दल';
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'mr-IN';
+    utter.rate = 0.95;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }catch(e){
+    console.log('Speech not supported', e);
+  }
 }
 
-function escapeHtml(v){
-  return String(v)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
+function showSuccessModal(tokenNo){
+  const msg = document.getElementById('successMessage');
+  if(msg){
+    msg.innerHTML = `🎊 धन्यवाद! आपण रोगमुक्त अभियानात सहभाग नोंदवल्या बद्दल 🙏<br><span style="color:#c2410c">Token No: ${tokenNo}</span>`;
+  }
+  document.getElementById('successModal').classList.add('show');
+  speakSuccessMessage();
 }
+
+function closeSuccessModal(){
+  document.getElementById('successModal').classList.remove('show');
+}
+function isValidMobile(mobile){ return /^\d{10}$/.test(mobile); }
+function escapeHtml(v){ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
 
 function loadBannerImage(){
   const imgData = localStorage.getItem('login_banner_image');
-  ['loginBanner','mainBanner'].forEach(id => {
+  const ids = ['loginBanner','mainBanner'];
+  ids.forEach(id => {
     const img = document.getElementById(id);
     if(!img) return;
-    if(imgData){
-      img.src = imgData;
-      img.classList.remove('hidden');
-    }else{
-      img.src = '';
-      img.classList.add('hidden');
-    }
+    if(imgData){ img.src = imgData; img.classList.remove('hidden'); }
+    else { img.src = ''; img.classList.add('hidden'); }
   });
 }
 
 function switchAuthTab(tab){
   ['signupBlock','userLoginBlock','adminLoginBlock'].forEach(id => document.getElementById(id).classList.add('hidden'));
   ['signupTabBtn','userLoginTabBtn','adminLoginTabBtn'].forEach(id => document.getElementById(id).classList.remove('active'));
-
-  if(tab === 'signup'){
-    document.getElementById('signupBlock').classList.remove('hidden');
-    document.getElementById('signupTabBtn').classList.add('active');
-  }
-  if(tab === 'userLogin'){
-    document.getElementById('userLoginBlock').classList.remove('hidden');
-    document.getElementById('userLoginTabBtn').classList.add('active');
-  }
-  if(tab === 'adminLogin'){
-    document.getElementById('adminLoginBlock').classList.remove('hidden');
-    document.getElementById('adminLoginTabBtn').classList.add('active');
-  }
+  if(tab === 'signup'){ document.getElementById('signupBlock').classList.remove('hidden'); document.getElementById('signupTabBtn').classList.add('active'); }
+  if(tab === 'userLogin'){ document.getElementById('userLoginBlock').classList.remove('hidden'); document.getElementById('userLoginTabBtn').classList.add('active'); }
+  if(tab === 'adminLogin'){ document.getElementById('adminLoginBlock').classList.remove('hidden'); document.getElementById('adminLoginTabBtn').classList.add('active'); }
   setAuthMsg('');
 }
 
@@ -371,12 +335,13 @@ function clearForm(){
   ['name','mobile','age','note'].forEach(id => document.getElementById(id).value='');
   document.getElementById('status').value='Registered';
   document.getElementById('service').value='General Checkup';
+  document.getElementById('rcmJoin').value='No';
   setSaveMsg('');
 }
 
 function getBaseData(){
   if(!(user && user.mobile)) return [];
-  return user.role === 'admin' ? [...window.data] : window.data.filter(d => d.userMobile === user.mobile);
+  return user.role === 'admin' ? [...data] : data.filter(d => d.userMobile === user.mobile);
 }
 
 function getFilteredData(){
@@ -385,17 +350,11 @@ function getFilteredData(){
   const status = document.getElementById('filterStatus').value || 'All';
   const service = document.getElementById('filterService').value || 'All';
   const dateValue = document.getElementById('filterDate').value || '';
-
   if(status !== 'All') filtered = filtered.filter(d => (d.status || '') === status);
   if(service !== 'All') filtered = filtered.filter(d => (d.service || '') === service);
   if(dateValue) filtered = filtered.filter(d => (d.isoDate || '') === dateValue);
-
   if(q){
-    filtered = filtered.filter(d =>
-      String(d.name||'').toLowerCase().includes(q) ||
-      String(d.mobile||'').toLowerCase().includes(q) ||
-      String(d.tokenNo||'').toLowerCase().includes(q)
-    );
+    filtered = filtered.filter(d => String(d.name||'').toLowerCase().includes(q) || String(d.mobile||'').toLowerCase().includes(q) || String(d.tokenNo||'').toLowerCase().includes(q));
   }
   return filtered;
 }
@@ -405,7 +364,6 @@ function updateStats(){
   const todayIso = new Date().toISOString().slice(0,10);
   const todayBase = base.filter(d => (d.isoDate || '') === todayIso);
   const nextQueue = base.filter(d => d.status === 'Registered').sort((a,b) => Number(a.tokenNo || 0) - Number(b.tokenNo || 0))[0];
-
   document.getElementById('totalStat').innerText = base.length;
   document.getElementById('arrivedStat').innerText = base.filter(d => d.status === 'Arrived').length;
   document.getElementById('pendingStat').innerText = base.filter(d => d.status === 'Registered').length;
@@ -422,10 +380,9 @@ function render(){
   const list = document.getElementById('list');
   const filtered = getFilteredData();
   if(!filtered.length){ list.innerHTML = '<div class="center small">डेटा सापडला नाही</div>'; return; }
-
   list.innerHTML = [...filtered].sort((a,b) => Number(a.tokenNo || 0) - Number(b.tokenNo || 0)).map(d => {
     const badgeClass = d.status === 'Arrived' ? 'arr' : (d.status === 'Cancelled' ? 'can' : (d.status === 'Completed' ? 'arr' : 'reg'));
-    return `<div class='item'><div class='itemtop'><div><div class='name'>${escapeHtml(d.name||'')}</div><div class='token'>Token No: ${escapeHtml(d.tokenNo||'')} • Queue: ${escapeHtml(d.queueNo||d.tokenNo||'')}</div><div class='meta'>📞 ${escapeHtml(d.mobile||'')}<br>👤 वय: ${escapeHtml(d.age||'-')}<br>🩺 Service: ${escapeHtml(d.service||'-')}<br>🕒 ${escapeHtml(d.timestamp||'-')}<br>👥 Added By: ${escapeHtml(d.userName||'-')} (${escapeHtml(d.userMobile||'-')})</div></div><span class='badge ${badgeClass}'>${escapeHtml(d.status||'Registered')}</span></div><div class='meta'><b>Note:</b> ${escapeHtml(d.note||'-')}</div><div class='actions' style='margin-top:10px'><button type='button' class='btn3' onclick="markArrived('${d.docId}')">Mark Arrived</button><button type='button' class='btn6' onclick="markCompleted('${d.docId}')">Completed</button><button type='button' class='btn6' onclick="showQRCode('${d.docId}')">QR</button><button type='button' class='btn2' onclick="printSlip('${d.docId}')">Print Slip</button><a class='action-link btn5' href="https://wa.me/91${encodeURIComponent(d.mobile || '')}?text=${encodeURIComponent('नमस्कार ' + (d.name || '') + ', आपल्या आरोग्य शिबिर नोंदणीबद्दल धन्यवाद. Token No: ' + (d.tokenNo || ''))}">WhatsApp</a>${user.role==='admin' ? `<button type='button' class='btn4' onclick="removeEntry('${d.docId}')">Delete</button>` : ''}</div></div>`;
+    return `<div class='item'><div class='itemtop'><div><div class='name'>${escapeHtml(d.name||'')}</div><div class='token'>Token No: ${escapeHtml(d.tokenNo||'')} • Queue: ${escapeHtml(d.queueNo||d.tokenNo||'')}</div><div class='meta'>📞 ${escapeHtml(d.mobile||'')}<br>👤 वय: ${escapeHtml(d.age||'-')}<br>🩺 Service: ${escapeHtml(d.service||'-')}<br>🤝 RCM अभियान: ${escapeHtml(d.rcmJoin||'No')}<br>🕒 ${escapeHtml(d.timestamp||'-')}<br>👥 Added By: ${escapeHtml(d.userName||'-')} (${escapeHtml(d.userMobile||'-')})</div></div><span class='badge ${badgeClass}'>${escapeHtml(d.status||'Registered')}</span></div><div class='meta'><b>Note:</b> ${escapeHtml(d.note||'-')}</div><div class='actions' style='margin-top:10px'><button type='button' class='btn3' onclick="markArrived('${d.docId}')">Mark Arrived</button><button type='button' class='btn6' onclick="markCompleted('${d.docId}')">Completed</button><button type='button' class='btn6' onclick="showQRCode('${d.docId}')">QR</button><button type='button' class='btn2' onclick="printSlip('${d.docId}')">Print Slip</button><a class='action-link btn5' href="https://wa.me/91${encodeURIComponent(d.mobile || '')}?text=${encodeURIComponent('नमस्कार ' + (d.name || '') + ', आपल्या आरोग्य शिबिर नोंदणीबद्दल धन्यवाद. Token No: ' + (d.tokenNo || ''))}">WhatsApp</a><button type='button' class='btn5' onclick="sendSlipWhatsApp('${d.docId}')">WhatsApp Slip</button>${user.role==='admin' ? `<button type='button' class='btn4' onclick="removeEntry('${d.docId}')">Delete</button>` : ''}</div></div>`;
   }).join('');
 }
 
@@ -435,84 +392,58 @@ async function saveRegistration(){
   const age = document.getElementById('age').value.trim();
   const status = document.getElementById('status').value;
   const service = document.getElementById('service').value;
+  const rcmJoin = document.getElementById('rcmJoin').value;
   const note = document.getElementById('note').value.trim();
   const autoPrint = document.getElementById('autoPrint').checked;
-
   if(!name){ alert('नाव आवश्यक आहे'); return; }
   if(!mobile){ alert('मोबाईल नंबर आवश्यक आहे'); return; }
   if(!isValidMobile(mobile)){ alert('योग्य 10 अंकी मोबाईल नंबर टाका'); return; }
-
   const now = new Date();
   const isoDate = now.toISOString().slice(0,10);
-  const duplicate = window.data.find(d => String(d.mobile||'') === mobile && String(d.isoDate||'') === isoDate);
+  const duplicate = data.find(d => String(d.mobile||'') === mobile && String(d.isoDate||'') === isoDate);
   if(duplicate){ alert('हा मोबाईल नंबर आज आधीच नोंद झालेला आहे'); return; }
-
-  if(!window.db || !window.firestoreFns){
-    setSaveMsg('Firebase ready नाही', '#dc2626');
-    return;
-  }
-
-  const maxToken = window.data.length ? Math.max(...window.data.map(d => Number(d.tokenNo || 0))) : 0;
+  if(!db || !firestoreFns){ setSaveMsg('Firebase ready नाही', '#dc2626'); return; }
+  const maxToken = data.length ? Math.max(...data.map(d => Number(d.tokenNo || 0))) : 0;
   const tokenNo = maxToken + 1;
-
   try{
     setSaveMsg('Saving...', '#ea580c');
-    const docRef = await window.firestoreFns.addDoc(
-      window.firestoreFns.collection(window.db, 'health_reg'),
-      {
-        tokenNo,
-        queueNo: tokenNo,
-        name,
-        mobile,
-        age: age || '',
-        service: service || 'General Checkup',
-        status: status || 'Registered',
-        note: note || '',
-        userMobile: user.mobile,
-        userName: user.name || '',
-        createdAt: window.firestoreFns.serverTimestamp(),
-        date: now.toLocaleDateString('en-IN'),
-        isoDate,
-        time: now.toLocaleTimeString('en-IN'),
-        timestamp: now.toLocaleString('en-IN')
-      }
-    );
+    const docRef = await firestoreFns.addDoc(firestoreFns.collection(db, 'health_reg'), {
+      tokenNo,
+      queueNo: tokenNo,
+      name,
+      mobile,
+      age: age || '',
+      service: service || 'General Checkup',
+      rcmJoin: rcmJoin || 'No',
+      status: status || 'Registered',
+      note: note || '',
+      userMobile: user.mobile,
+      userName: user.name || '',
+      createdAt: firestoreFns.serverTimestamp(),
+      date: now.toLocaleDateString('en-IN'),
+      isoDate,
+      time: now.toLocaleTimeString('en-IN'),
+      timestamp: now.toLocaleString('en-IN')
+    });
     clearForm();
     setSaveMsg(`Saved • Token No: ${tokenNo}`);
+    showSuccessModal(tokenNo);
     if(autoPrint) printSlip(docRef.id);
-  }catch(err){
-    console.error(err);
-    setSaveMsg('Save failed', '#dc2626');
-  }
+  }catch(err){ console.error(err); setSaveMsg('Save failed', '#dc2626'); }
 }
 
-async function markArrived(docId){
-  if(!window.db || !window.firestoreFns) return;
-  await window.firestoreFns.updateDoc(window.firestoreFns.doc(window.db, 'health_reg', docId), { status:'Arrived' });
-}
-
-async function markCompleted(docId){
-  if(!window.db || !window.firestoreFns) return;
-  await window.firestoreFns.updateDoc(window.firestoreFns.doc(window.db, 'health_reg', docId), { status:'Completed' });
-}
-
-async function removeEntry(docId){
-  if(!confirm('Delete करायचं का?')) return;
-  if(!window.db || !window.firestoreFns) return;
-  await window.firestoreFns.deleteDoc(window.firestoreFns.doc(window.db, 'health_reg', docId));
-}
+async function markArrived(docId){ if(!db || !firestoreFns) return; await firestoreFns.updateDoc(firestoreFns.doc(db, 'health_reg', docId), { status:'Arrived' }); }
+async function markCompleted(docId){ if(!db || !firestoreFns) return; await firestoreFns.updateDoc(firestoreFns.doc(db, 'health_reg', docId), { status:'Completed' }); }
+async function removeEntry(docId){ if(!confirm('Delete करायचं का?')) return; if(!db || !firestoreFns) return; await firestoreFns.deleteDoc(firestoreFns.doc(db, 'health_reg', docId)); }
 
 function showQRCode(docId){
-  const item = window.data.find(d => d.docId === docId); if(!item) return;
-  currentQRData = item;
+  const item = data.find(d => d.docId === docId); if(!item) return; currentQRData = item;
   document.getElementById('qrPersonName').innerText = `${item.name} • Token ${item.tokenNo}`;
   const qrCanvas = document.getElementById('qrCanvas'); qrCanvas.innerHTML='';
   new QRCode(qrCanvas, { text: JSON.stringify({ tokenNo:item.tokenNo, queueNo:item.queueNo || item.tokenNo, name:item.name, mobile:item.mobile, service:item.service || '', timestamp:item.timestamp }), width:190, height:190 });
   document.getElementById('qrModal').classList.add('show');
 }
-
 function closeQRModal(){ document.getElementById('qrModal').classList.remove('show'); }
-
 function printCurrentQR(){
   if(!currentQRData) return;
   const qrImg = document.querySelector('#qrCanvas img') || document.querySelector('#qrCanvas canvas');
@@ -521,140 +452,127 @@ function printCurrentQR(){
   w.document.write(`<html><body style='font-family:Arial;text-align:center;padding:24px'><h2>आरोग्य शिबिर QR</h2><p>${escapeHtml(currentQRData.name||'')} • ${escapeHtml(currentQRData.tokenNo||'')}</p><img src='${qrDataUrl}' style='width:220px;height:220px'></body></html>`);
   w.document.close(); w.print();
 }
-
 function printSlip(docId){
-  const item = window.data.find(d => d.docId === docId); if(!item) return;
+  const item = window.data.find(d => d.docId === docId);
+  if(!item) return;
+
   const tempDiv = document.createElement('div');
-  new QRCode(tempDiv, { text: JSON.stringify({ tokenNo:item.tokenNo, queueNo:item.queueNo || item.tokenNo, name:item.name, mobile:item.mobile, service:item.service || '', timestamp:item.timestamp }), width:130, height:130 });
-  setTimeout(() => {
-    const qrEl = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
-    const qrDataUrl = qrEl ? (qrEl.tagName.toLowerCase()==='img' ? qrEl.src : qrEl.toDataURL()) : '';
-    const w = window.open('', '_blank');
-    w.document.write(`<html><body style='font-family:Arial;padding:18px'><h2 style='text-align:center'>मोफत आरोग्य तपासणी व मार्गदर्शन शिबिर</h2><div style='border:2px solid #333;border-radius:14px;padding:14px'><p><b>Token No:</b> ${escapeHtml(item.tokenNo||'')}</p><p><b>Name:</b> ${escapeHtml(item.name||'')}</p><p><b>Mobile:</b> ${escapeHtml(item.mobile||'')}</p><p><b>Age:</b> ${escapeHtml(item.age||'-')}</p><p><b>Service:</b> ${escapeHtml(item.service||'-')}</p><p><b>Queue No:</b> ${escapeHtml(item.queueNo||item.tokenNo||'')}</p><p><b>Status:</b> ${escapeHtml(item.status||'')}</p><p><b>Date:</b> ${escapeHtml(item.date||'')}</p><p><b>Time:</b> ${escapeHtml(item.time||'')}</p><p><b>Note:</b> ${escapeHtml(item.note||'-')}</p><div style='text-align:center'>${qrDataUrl ? `<img src='${qrDataUrl}' style='width:130px;height:130px'>` : ''}</div></div></body></html>`);
-    w.document.close(); w.print();
-  }, 100);
-}
-
-function uploadBannerImage(event){
-  const file = event.target.files && event.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e){
-    localStorage.setItem('login_banner_image', e.target.result);
-    loadBannerImage();
-    alert('Image update झाली');
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeBannerImage(){
-  localStorage.removeItem('login_banner_image');
-  loadBannerImage();
-  alert('Image remove झाली');
-}
-
-function downloadExcel(){
-  const filtered = [...getFilteredData()].sort((a,b) => Number(a.tokenNo || 0) - Number(b.tokenNo || 0)).map((d, i) => ({
-    'Sr No': i + 1,
-    'Token No': d.tokenNo || '',
-    'Queue No': d.queueNo || d.tokenNo || '',
-    'Name': d.name || '',
-    'Mobile': d.mobile || '',
-    'Age': d.age || '',
-    'Service': d.service || '',
-    'Status': d.status || '',
-    'Note': d.note || '',
-    'Added By Name': d.userName || '',
-    'Added By Mobile': d.userMobile || '',
-    'Date': d.date || '',
-    'Time': d.time || '',
-    'Timestamp': d.timestamp || ''
-  }));
-
-  if(!filtered.length){ alert('डेटा नाही'); return; }
-
-  const ws = XLSX.utils.json_to_sheet(filtered);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Report');
-  XLSX.writeFile(wb, user.role === 'admin' ? 'admin_full_report.xlsx' : 'my_report.xlsx');
-}
-
-function downloadPDF(){
-  const filtered = [...getFilteredData()].sort((a,b) => Number(a.tokenNo || 0) - Number(b.tokenNo || 0));
-  if(!filtered.length){ alert('डेटा नाही'); return; }
-
-  let html = `
-    <html><head><title>Report</title>
-    <style>
-      body{font-family:Arial;padding:20px}
-      h2,p{text-align:center}
-      table{width:100%;border-collapse:collapse;font-size:12px}
-      th,td{border:1px solid #333;padding:6px;text-align:left;vertical-align:top}
-      th{background:#eee}
-    </style></head><body>
-    <h2>आरोग्य शिबिर रिपोर्ट</h2>
-    <p>Generated: ${new Date().toLocaleString('en-IN')}</p>
-    <table>
-      <tr><th>Sr</th><th>Token</th><th>Queue</th><th>Name</th><th>Mobile</th><th>Service</th><th>Status</th><th>Added By</th><th>Date</th><th>Time</th><th>Timestamp</th></tr>
-  `;
-
-  filtered.forEach((d, i) => {
-    html += `
-      <tr>
-        <td>${i+1}</td>
-        <td>${escapeHtml(d.tokenNo || '')}</td>
-        <td>${escapeHtml(d.queueNo || d.tokenNo || '')}</td>
-        <td>${escapeHtml(d.name || '')}</td>
-        <td>${escapeHtml(d.mobile || '')}</td>
-        <td>${escapeHtml(d.service || '')}</td>
-        <td>${escapeHtml(d.status || '')}</td>
-        <td>${escapeHtml((d.userName || '-') + ' / ' + (d.userMobile || '-'))}</td>
-        <td>${escapeHtml(d.date || '')}</td>
-        <td>${escapeHtml(d.time || '')}</td>
-        <td>${escapeHtml(d.timestamp || '')}</td>
-      </tr>
-    `;
+  new QRCode(tempDiv, {
+    text: JSON.stringify({
+      tokenNo: item.tokenNo,
+      queueNo: item.queueNo || item.tokenNo,
+      name: item.name,
+      mobile: item.mobile,
+      service: item.service || '',
+      rcmJoin: item.rcmJoin || 'No',
+      timestamp: item.timestamp || ''
+    }),
+    width: 120,
+    height: 120
   });
 
-  html += `</table></body></html>`;
-  const w = window.open('', '_blank');
-  w.document.write(html);
-  w.document.close();
-  w.print();
-}
+  setTimeout(() => {
+    const qrEl = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
+    const qrDataUrl = qrEl ? (qrEl.tagName.toLowerCase() === 'img' ? qrEl.src : qrEl.toDataURL()) : '';
+    const logoUrl = localStorage.getItem('login_banner_image') || '';
 
-function bindStaticEvents(){
-  document.getElementById('searchInput').addEventListener('input', render);
-  document.getElementById('filterStatus').addEventListener('change', render);
-  document.getElementById('filterDate').addEventListener('change', render);
-  document.getElementById('filterService').addEventListener('change', render);
-  document.getElementById('uploadBannerBtn').addEventListener('click', () => document.getElementById('bannerUpload').click());
-  document.getElementById('bannerUpload').addEventListener('change', uploadBannerImage);
-  document.getElementById('removeBannerBtn').addEventListener('click', removeBannerImage);
-}
+    const w = window.open('', '_blank');
+    w.document.write(`
+      <html>
+      <head>
+        <title>Slip PDF</title>
+        <style>
+          body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#dbeafe,#ffffff,#e0f2fe);padding:18px;margin:0}
+          .wrap{max-width:430px;margin:auto}
+          .card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.18);border:3px solid #93c5fd}
+          .head{background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;text-align:center;padding:18px 14px}
+          .logo{max-width:140px;max-height:90px;object-fit:contain;margin:0 auto 8px;display:block;background:#fff;border-radius:14px;padding:6px}
+          .title{font-size:24px;font-weight:900;margin:4px 0}
+          .sub{font-size:14px;font-weight:700;opacity:.98}
+          .body{padding:18px}
+          .tokenBox{background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;border-radius:18px;padding:14px;text-align:center;margin-bottom:16px;box-shadow:0 8px 18px rgba(249,115,22,.28)}
+          .tokenLabel{font-size:13px;font-weight:800;letter-spacing:.5px}
+          .tokenNo{font-size:34px;font-weight:900;line-height:1.1;margin-top:4px}
+          .queue{font-size:14px;font-weight:800;margin-top:6px}
+          .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+          .field{background:#f8fafc;border:1px solid #dbeafe;border-radius:14px;padding:10px 12px}
+          .field.full{grid-column:1 / -1}
+          .label{font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.4px}
+          .value{font-size:15px;font-weight:800;color:#0f172a;margin-top:4px;line-height:1.45}
+          .event{background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:12px 14px;margin-top:10px}
+          .event h3{margin:0 0 8px;font-size:15px;color:#1d4ed8}
+          .event p{margin:4px 0;font-size:14px;color:#111827;font-weight:700}
+          .link{word-break:break-word;color:#1d4ed8}
+          .qrWrap{text-align:center;margin-top:14px}
+          .qrWrap img{width:120px;height:120px}
+          .thanks{margin-top:14px;text-align:center;font-size:15px;font-weight:900;color:#16a34a}
+          .foot{text-align:center;margin-top:6px;font-size:12px;color:#475569;font-weight:700}
+          @media print{body{background:#fff;padding:0}.wrap{max-width:none}.card{box-shadow:none;border:2px solid #93c5fd}}
+        </style></head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="head">
+          ${logoUrl ? `<img src="${logoUrl}" class="logo" alt="logo">` : ''}
+          <div class="title">आरोग्य शिबिर स्लिप</div>
+          <div class="sub">मोफत आरोग्य तपासणी व मार्गदर्शन शिबिर</div>
+        </div>
+        <div class="body">
+          <div class="tokenBox">
+            <div class="tokenLabel">TOKEN NUMBER</div>
+            <div class="tokenNo">${escapeHtml(item.tokenNo || '')}</div>
+            <div class="queue">Queue No: ${escapeHtml(item.queueNo || item.tokenNo || '')}</div>
+          </div>
 
-bindStaticEvents();
-loadBannerImage();
-if(user && user.mobile) showMain(); else { showLogin(); switchAuthTab('signup'); }
+          <div class="grid">
+            <div class="field"><div class="label">नाव</div><div class="value">${escapeHtml(item.name || '')}</div></div>
+            <div class="field"><div class="label">मोबाईल</div><div class="value">${escapeHtml(item.mobile || '')}</div></div>
+            <div class="field"><div class="label">वय</div><div class="value">${escapeHtml(item.age || '-')}</div></div>
+            <div class="field"><div class="label">सेवा</div><div class="value">${escapeHtml(item.service || '-')}</div></div>
+            <div class="field"><div class="label">RCM अभियान</div><div class="value">${escapeHtml(item.rcmJoin || 'No')}</div></div>
+            <div class="field"><div class="label">Status</div><div class="value">${escapeHtml(item.status || 'Registered')}</div></div>
+            <div class="field"><div class="label">दिनांक</div><div class="value">26.04.2026</div></div>
+            <div class="field"><div class="label">वेळ</div><div class="value">सकाळी 9.30 ते 1</div></div>
+            <div class="field full"><div class="label">नोंद / तक्रार</div><div class="value">${escapeHtml(item.note || '-')}</div></div>
+          </div>
 
-window.switchAuthTab = switchAuthTab;
-window.signupUser = signupUser;
-window.loginUser = loginUser;
-window.loginAdmin = loginAdmin;
-window.logout = logout;
-window.saveRegistration = saveRegistration;
-window.clearForm = clearForm;
-window.render = render;
-window.markArrived = markArrived;
-window.markCompleted = markCompleted;
-window.removeEntry = removeEntry;
-window.showQRCode = showQRCode;
-window.closeQRModal = closeQRModal;
-window.printCurrentQR = printCurrentQR;
-window.printSlip = printSlip;
-window.downloadExcel = downloadExcel;
-window.downloadPDF = downloadPDF;
-</script>
+          <div class="event">
+            <h3>शिबिर माहिती</h3>
+            <p>कृष्णाई RCM सेवा केंद्र, स्नेह शारदा नगर, वसमत रोड, परभणी.</p>
+            <p class="link">https://maps.app.goo.gl/kLwgDmSCsEBevMwH7</p>
+          </div>
+
+          <div class="qrWrap">
+            ${qrDataUrl ? `<img src="${qrDataUrl}" alt="QR">` : ''}
+          </div>
+
+          <div class="thanks">🎉 धन्यवाद! रोगमुक्त अभियानात सहभागाबद्दल आभार 🙏</div>
+          <div class="foot">ही slip Print / Save as PDF / WhatsApp screenshot साठी उपयुक्त आहे.</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  </html>
+`);
+w.document.close();
+w.focus();
+w.print();
+
+}, 120); }
+
+function sendSlipWhatsApp(docId){ const item = data.find(d => d.docId === docId); if(!item) return; const msg = `नमस्कार ${item.name || ''},
+
+मोफत आरोग्य तपासणी व मार्गदर्शन शिबिरासाठी आपली नोंदणी झाली आहे. दिनांक: 26.04.2026 वेळ: सकाळी 9.30 ते 1 Token No: ${item.tokenNo || ''} Queue No: ${item.queueNo || item.tokenNo || ''} सेवा: ${item.service || '-'} RCM अभियानात सहभागी: ${item.rcmJoin || 'No'} पत्ता: कृष्णाई RCM सेवा केंद्र, स्नेह शारदा नगर, वसमत रोड, परभणी. Location: https://maps.app.goo.gl/kLwgDmSCsEBevMwH7
+
+कृपया वेळेत या.; window.open(https://wa.me/91${encodeURIComponent(item.mobile || '')}?text=${encodeURIComponent(msg)}`, '_blank'); }
+
+function uploadBannerImage(event){ const file = event.target.files && event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(e){ localStorage.setItem('login_banner_image', e.target.result); loadBannerImage(); alert('Image update झाली'); }; reader.readAsDataURL(file); } function removeBannerImage(){ localStorage.removeItem('login_banner_image'); loadBannerImage(); alert('Image remove झाली'); }
+
+window.switchAuthTab = switchAuthTab; window.signupUser = signupUser; window.loginUser = loginUser; window.loginAdmin = loginAdmin; window.logout = logout; window.saveRegistration = saveRegistration; window.clearForm = clearForm; window.render = render; window.markArrived = markArrived; window.removeEntry = removeEntry; window.markCompleted = markCompleted; window.showQRCode = showQRCode; window.closeQRModal = closeQRModal; window.printCurrentQR = printCurrentQR; window.printSlip = printSlip; window.showSuccessModal = showSuccessModal; window.closeSuccessModal = closeSuccessModal; window.uploadBannerImage = uploadBannerImage; window.removeBannerImage = removeBannerImage; window.sendSlipWhatsApp = sendSlipWhatsApp;
+
+function bindStaticEvents(){ document.getElementById('searchInput').addEventListener('input', render); document.getElementById('filterStatus').addEventListener('change', render); document.getElementById('filterDate').addEventListener('change', render); document.getElementById('filterService').addEventListener('change', render); document.getElementById('uploadBannerBtn').addEventListener('click', () => document.getElementById('bannerUpload').click()); document.getElementById('bannerUpload').addEventListener('change', uploadBannerImage); document.getElementById('removeBannerBtn').addEventListener('click', removeBannerImage); }
+
+bindStaticEvents(); loadBannerImage(); if(user && user.mobile) showMain(); else { showLogin(); switchAuthTab('signup'); } </script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -673,20 +591,13 @@ try{
   const app = initializeApp(firebaseConfig);
   window.db = getFirestore(app);
   window.firestoreFns = { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, updateDoc, doc, deleteDoc };
-  console.log("Firebase connected", window.db);
-
-  onSnapshot(
-    query(window.firestoreFns.collection(window.db, 'health_reg'), orderBy('tokenNo', 'asc')),
-    snap => {
-      window.data = [];
-      snap.forEach(d => window.data.push({ docId:d.id, ...d.data() }));
-      window.render();
-    },
-    err => console.error(err)
-  );
+  onSnapshot(query(window.firestoreFns.collection(window.db, 'health_reg'), orderBy('tokenNo', 'asc')), snap => {
+    window.data = [];
+    snap.forEach(d => window.data.push({ docId:d.id, ...d.data() }));
+    window.render();
+  }, err => console.error(err));
 }catch(err){
   console.error('Firebase init failed:', err);
 }
-</script>
-</body>
+</script></body>
 </html>
