@@ -148,6 +148,50 @@ body.lightTheme .scoreRing:after{background:#fffdf8}
 #cloudStatus.offline{color:var(--gold)}
 #cloudStatus.error{color:var(--red)}
 
+
+/* V6 compact leader home */
+.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.quickCard{min-height:82px;padding:10px 11px;border-radius:16px}
+.quickCard .qicon{font-size:18px}.quickCard .qtitle{font-size:10px;font-weight:900;color:var(--muted);margin-top:3px}
+.quickCard .qvalue{font-size:22px;font-weight:950;line-height:1.05;margin-top:3px}
+.quickCard .qsub{font-size:10px;color:var(--muted);margin-top:3px}
+.todayMini{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}
+.todayMini .mini{padding:9px;border:1px solid var(--line);border-radius:14px;text-align:center;background:rgba(15,31,56,.55)}
+.todayMini b{display:block;font-size:18px}.todayMini span{font-size:10px;color:var(--muted);font-weight:800}
+.homeActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.homeActions button{min-height:45px}
+.simpleProgress{display:flex;gap:7px;overflow:auto;margin-top:9px;padding-bottom:2px}
+.simpleProgress .sp{min-width:120px;padding:9px 10px;border:1px solid var(--line);border-radius:13px}
+.simpleProgress .sp b{font-size:15px}.simpleProgress .sp small{display:block;color:var(--muted);margin-top:2px}
+.adminChartGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.chartCard{border:1px solid var(--line);border-radius:18px;padding:12px;background:linear-gradient(180deg,#112341,#0d1c33);min-height:285px}
+.chartCard h4{margin:0 0 8px;font-size:13px}.chartCard canvas{display:block;width:100%;height:220px}
+.analysisGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}
+.analysisBox{border:1px solid var(--line);border-radius:17px;padding:12px;background:linear-gradient(180deg,#112341,#0d1c33)}
+.analysisLine{padding:8px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.45}.analysisLine:last-child{border-bottom:0}
+.funnelRow{margin-top:10px}.funnelLabel{display:flex;justify-content:space-between;font-size:11px;font-weight:850;margin-bottom:4px}
+.funnelTrack{height:18px;background:#20385a;border-radius:6px;overflow:hidden}.funnelFill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+body.lightTheme .todayMini .mini,body.lightTheme .chartCard,body.lightTheme .analysisBox{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
+@media(max-width:700px){
+  .quickGrid{grid-template-columns:repeat(2,1fr)}
+  .todayMini{grid-template-columns:repeat(4,1fr)}
+  .quickCard{min-height:76px;padding:9px}
+  .quickCard .qvalue{font-size:20px}
+  .adminChartGrid,.analysisGrid{grid-template-columns:1fr}
+  .chartCard{min-height:255px}.chartCard canvas{height:195px}
+}
+@media(max-width:430px){
+  .shell{padding:9px}.hero{padding:14px;border-radius:20px}.hero h2{font-size:20px}
+  .section{padding:11px;border-radius:17px}.grid{gap:7px}
+  .todayMini .mini{padding:7px 4px}.todayMini b{font-size:16px}.todayMini span{font-size:9px}
+  .priorityItem{padding:9px}.priorityText{font-size:12px}
+}
+
+
+.coachGood{color:var(--green)}.coachWarn{color:var(--gold)}.coachBad{color:var(--red)}
+.coachStep{padding:9px 10px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(180deg,#112341,#0d1c33);font-size:12px;font-weight:850;line-height:1.5}
+body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -205,50 +249,66 @@ body.lightTheme .scoreRing:after{background:#fffdf8}
     </div>
 
     <div id="dashboardView">
-      <div class="grid">
-        <div class="kpi glass"><div class="label">आजचा FTD Score</div><div class="value" id="ftdScore">0%</div><div class="progress"><div class="bar" id="ftdBar" style="width:0%"></div></div><div class="sub" id="ftdStatus">आजची सुरुवात करा</div></div>
-        <div class="kpi glass"><div class="label">MTD Achievement</div><div class="value" id="mtdScore">0%</div><div class="progress"><div class="bar" id="mtdBar" style="width:0%"></div></div><div class="sub">महिन्याची एकूण प्रगती</div></div>
-        <div class="kpi glass"><div class="label">PV MTD</div><div class="value" id="mtdPv">0</div><div class="sub">Target 5,000 PV</div></div>
-        <div class="kpi glass"><div class="label">Required Daily PV</div><div class="value" id="reqPv">0</div><div class="sub">Target पूर्ण करण्यासाठी</div></div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead"><div><h3>🔥 आजची Winning Position</h3></div><span class="badge" id="todayBadge">FTD</span></div>
-        <div class="grid">
-          <div class="kpi"><div class="label">Calls</div><div class="value" id="kCalls">0</div><div class="sub">Target 5</div></div>
-          <div class="kpi"><div class="label">Presentations</div><div class="value" id="kPlans">0</div><div class="sub">Target 2</div></div>
-          <div class="kpi"><div class="label">Today PV</div><div class="value" id="kPv">0</div><div class="sub">Daily benchmark 167</div></div>
-          <div class="kpi"><div class="label">Learning</div><div class="value" id="kLearn">0m</div><div class="sub">Video + Book</div></div>
+      <div class="quickGrid">
+        <div class="quickCard glass">
+          <div class="qicon">✅</div><div class="qtitle">आजचे काम</div>
+          <div class="qvalue" id="ftdScore">0%</div>
+          <div class="progress"><div class="bar" id="ftdBar" style="width:0%"></div></div>
+          <div class="qsub" id="ftdStatus">सुरू करा</div>
+        </div>
+        <div class="quickCard glass">
+          <div class="qicon">📅</div><div class="qtitle">महिन्याची प्रगती</div>
+          <div class="qvalue" id="mtdScore">0%</div>
+          <div class="progress"><div class="bar" id="mtdBar" style="width:0%"></div></div>
+          <div class="qsub">या महिन्याचे काम</div>
+        </div>
+        <div class="quickCard glass">
+          <div class="qicon">💼</div><div class="qtitle">महिन्याचा PV</div>
+          <div class="qvalue" id="mtdPv">0</div><div class="qsub">लक्ष्य 5,000</div>
+        </div>
+        <div class="quickCard glass">
+          <div class="qicon">🎯</div><div class="qtitle">आज करायचा PV</div>
+          <div class="qvalue" id="reqPv">0</div><div class="qsub">लक्ष्य गाठण्यासाठी</div>
         </div>
       </div>
 
+      <div class="section glass">
+        <div class="sectionHead"><h3>आज किती झाले?</h3><span class="badge" id="todayBadge">आज</span></div>
+        <div class="todayMini">
+          <div class="mini"><b id="kCalls">0</b><span>📞 कॉल / 5</span></div>
+          <div class="mini"><b id="kPlans">0</b><span>🎯 प्लॅन / 2</span></div>
+          <div class="mini"><b id="kPv">0</b><span>💼 PV</span></div>
+          <div class="mini"><b id="kLearn">0m</b><span>📚 अभ्यास</span></div>
+        </div>
+        <div class="homeActions">
+          <button class="primary green" onclick="openAppTab('entry')">✍️ आजची नोंद भरा</button>
+          <button class="primary" onclick="shareWhatsAppReport()">📲 रिपोर्ट WhatsApp</button>
+        </div>
+      </div>
 
       <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>🎯 आजच्या Top 3 Priorities</h3></div>
-          <span class="badge">ACTION NOW</span>
-        </div>
+        <div class="sectionHead"><h3>आता ही 3 कामे करा</h3><span class="badge">TOP 3</span></div>
         <div id="topPriorityList" class="priorityList"></div>
       </div>
 
       <div class="section glass">
         <div class="sectionHead">
-          <div><h3>📈 Growth & Consistency</h3></div>
+          <h3>माझी प्रगती</h3>
           <div class="scoreRing" id="growthRing" style="--p:0%"><span id="growthScore">0</span></div>
         </div>
-        <div class="grid">
-          <div class="kpi"><div class="label">Growth Level</div><div class="value" id="growthLevel" style="font-size:18px">—</div><div class="sub">Overall performance</div></div>
-          <div class="kpi"><div class="label">Consistency</div><div class="value" id="consistencyPct">0%</div><div class="sub" id="activeDaysText">0 active days</div></div>
-          <div class="kpi"><div class="label">Current Streak</div><div class="value" id="currentStreak">0 🔥</div><div class="sub">सलग active days</div></div>
-          <div class="kpi"><div class="label">Projection PV</div><div class="value" id="projectedPV">0</div><div class="sub">महिना अखेर अंदाज</div></div>
+        <div class="simpleProgress">
+          <div class="sp"><small>स्थिती</small><b id="growthLevel">—</b></div>
+          <div class="sp"><small>सातत्य</small><b id="consistencyPct">0%</b><small id="activeDaysText">0 दिवस</small></div>
+          <div class="sp"><small>सलग दिवस</small><b id="currentStreak">0 🔥</b></div>
+          <div class="sp"><small>महिना अखेर PV</small><b id="projectedPV">0</b></div>
         </div>
       </div>
 
       <div class="section glass">
-        <div class="sectionHead"><div><h3>🚀 Smart Motivation</h3></div><span class="badge">Growth Coach</span></div>
-        <div id="coachText" style="margin-top:10px;line-height:1.65;font-weight:800;color:#dce9ff">
-          आजची नोंद करा. तुमच्या कृतीवरून पुढचा focus येथे दिसेल.
-        </div>
+        <div class="sectionHead"><h3>🧠 Smart Coach</h3><span class="badge">माझ्यासाठी काय करायचे?</span></div>
+        <div id="coachSummary" style="margin-top:8px;font-size:14px;font-weight:900;line-height:1.55"></div>
+        <div id="coachAnalysis" class="priorityList" style="margin-top:9px"></div>
+        <div id="coachMonthPlan" class="analysisBox" style="margin-top:9px"></div>
       </div>
     </div>
 
@@ -280,7 +340,7 @@ body.lightTheme .scoreRing:after{background:#fffdf8}
     <div id="reportView" class="hidden">
       <div class="section glass">
         <div class="sectionHead"><div><h3>📄 Performance Report</h3></div><span class="badge">SMART REPORT</span></div>
-        <div class="btnrow"><button class="primary gold" onclick="printReport()">🖨️ PDF / Print Report</button><button class="primary" onclick="copyWhatsAppReport()">📲 WhatsApp Summary Copy</button></div>
+        <div class="btnrow"><button class="primary gold" onclick="printReport()">🖨️ PDF / Print Report</button><button class="primary" onclick="shareWhatsAppReport()">📲 WhatsApp वर पाठवा</button></div>
       </div>
       <div class="section glass" id="printableReport">
         <div class="sectionHead"><div><h3 id="reportTitle">DS WORLD Performance Report</h3><div class="small" id="reportMeta"></div></div><span class="badge">DS WORLD</span></div>
@@ -306,6 +366,28 @@ body.lightTheme .scoreRing:after{background:#fffdf8}
           <div class="warKpi"><div class="wl">Team MTD PV</div><div class="wv" id="warPv">0</div></div>
           <div class="warKpi"><div class="wl">Projected Team PV</div><div class="wv" id="warProjected">0</div></div>
           <div class="warKpi"><div class="wl">High Performers</div><div class="wv good" id="warHigh">0</div></div>
+        </div>
+      </div>
+
+      <div class="section glass">
+        <div class="sectionHead"><h3>📊 Team Analysis</h3><span class="badge">LIVE DATA</span></div>
+        <div class="adminChartGrid">
+          <div class="chartCard"><h4>Leader-wise MTD PV</h4><canvas id="pvBarChart"></canvas></div>
+          <div class="chartCard"><h4>आजचा FTD Score</h4><canvas id="ftdBarChart"></canvas></div>
+          <div class="chartCard"><h4>Team Activity Achievement</h4><canvas id="activityBarChart"></canvas></div>
+          <div class="chartCard"><h4>Leader Status</h4><canvas id="riskDonutChart"></canvas></div>
+          <div class="chartCard" style="grid-column:1/-1"><h4>गेल्या 7 दिवसांचा Team PV</h4><canvas id="pvTrendChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section glass">
+        <div class="sectionHead"><h3>🧠 Admin Smart Analysis</h3><span class="badge">DECISION</span></div>
+        <div class="analysisGrid">
+          <div class="analysisBox" id="adminAnalysisText"></div>
+          <div class="analysisBox">
+            <h4 style="margin:0">Contacts → Calls → Plans</h4>
+            <div id="teamFunnel"></div>
+          </div>
         </div>
       </div>
 
@@ -540,6 +622,7 @@ async function boot(){
   adminTabApp.classList.toggle("hidden",currentUser.role!=="admin");
   heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
   renderAll();
+  if(currentUser.role==="admin")openAppTab("admin");
   startCloudListeners();
   await syncCloudData();
 }
@@ -548,9 +631,22 @@ function showView(v,btn){
   ["dashboard","entry","leaderboard","report","admin"].forEach(x=>document.getElementById(x+"View").classList.toggle("hidden",x!==v));
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active")
 }
+
+function openAppTab(name){
+  const b=[...document.querySelectorAll(".tab")].find(x=>(x.getAttribute("onclick")||"").includes(`'${name}'`));
+  if(b)showView(name,b)
+}
+
 function entryKey(){return "ds_entries_"+currentUser.username}
 function allEntries(){return JSON.parse(localStorage.getItem(entryKey())||"{}")}
-function todayKey(){return new Date().toISOString().slice(0,10)}
+
+function localDateKey(d=new Date()){
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function localMonthKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}
+
+function todayKey(){return localDateKey()}
 async function saveEntry(){
   const e={};
   Object.keys(targets).forEach(k=>e[k]=Number(document.getElementById(k).value||0));
@@ -567,7 +663,7 @@ async function saveEntry(){
 }
 function monthEntries(username){
   const data=JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}");
-  const ym=new Date().toISOString().slice(0,7);
+  const ym=localMonthKey();
   return Object.entries(data).filter(([d])=>d.startsWith(ym)).map(x=>x[1])
 }
 function sum(arr,k){return arr.reduce((a,b)=>a+Number(b[k]||0),0)}
@@ -592,15 +688,102 @@ function renderDash(){
   const mtd=Math.min(Math.round((pv/5000)*100),100);mtdScore.textContent=mtd+"%";mtdBar.style.width=mtd+"%";
   const d=new Date(), days=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(), left=Math.max(days-d.getDate(),1);
   reqPv.textContent=Math.ceil(Math.max(5000-pv,0)/left);
-  coachText.textContent=coach(e,f,pv,left);
+  renderLeaderSmartCoach(e,f,pv,left);
 }
 function coach(e,f,pv,left){
-  if(f>=90)return "🔥 Outstanding! आजची discipline level उत्कृष्ट आहे. आता हा consistency streak कायम ठेवा आणि PV मध्ये extra push द्या.";
-  if((e.calls||0)<5)return "📞 आजचा मुख्य focus: किमान 5 कॉल पूर्ण करा. Calling वाढली की presentations आणि PV naturally वाढतील.";
-  if((e.plans||0)<2)return "🎯 Calls झाले आहेत. आता किमान 2 plan presentations पूर्ण करा — आजची conversion संधी इथे आहे.";
-  if((e.pv||0)<167)return "💼 Activity ठीक आहे. आता आजचा PV benchmark पूर्ण करण्यावर focus करा.";
-  return "✅ आजची execution चांगली आहे. महिन्याचे लक्ष्य पूर्ण करण्यासाठी हीच सातत्यपूर्ण गती ठेवा.";
+  if(f>=90)return "🔥 छान! आजचे काम जवळपास पूर्ण आहे. आता थोडा जास्त PV करण्याचा प्रयत्न करा.";
+  if((e.calls||0)<5)return "📞 आधी 5 कॉल पूर्ण करा. कॉल झाले की पुढचे काम सोपे होईल.";
+  if((e.plans||0)<2)return "🎯 आता 2 प्लॅन दाखवा. आजचे पुढचे महत्त्वाचे काम हेच आहे.";
+  if((e.pv||0)<167)return "💼 आता आजचा PV पूर्ण करा. उरलेले PV वरच्या कार्डमध्ये दिसत आहे.";
+  return "✅ आजचे काम छान आहे. अशीच रोज नोंद आणि काम चालू ठेवा.";
 }
+
+function renderLeaderSmartCoach(e,f,pv,left){
+  const summary=document.getElementById("coachSummary");
+  const analysis=document.getElementById("coachAnalysis");
+  const monthBox=document.getElementById("coachMonthPlan");
+  if(!summary||!analysis||!monthBox)return;
+
+  const mt=getMonthTotals(currentUser.username);
+  const todayExists=!!allEntries()[todayKey()];
+  const daily=[
+    {k:"calls",label:"कॉल",icon:"📞",actual:Number(e.calls||0),target:5},
+    {k:"plans",label:"प्लॅन",icon:"🎯",actual:Number(e.plans||0),target:2},
+    {k:"pv",label:"PV",icon:"💼",actual:Number(e.pv||0),target:167},
+    {k:"video",label:"व्हिडिओ",icon:"🎧",actual:Number(e.video||0),target:20},
+    {k:"book",label:"वाचन",icon:"📚",actual:Number(e.book||0),target:20},
+    {k:"names",label:"नवीन संपर्क",icon:"👥",actual:Number(e.names||0),target:2}
+  ].map(x=>({...x,pct:Math.min(Math.round(x.actual/x.target*100),100),remain:Math.max(x.target-x.actual,0)}));
+
+  const weak=[...daily].sort((a,b)=>a.pct-b.pct);
+  const strongest=[...daily].sort((a,b)=>b.pct-a.pct)[0];
+
+  if(!todayExists){
+    summary.className="coachWarn";
+    summary.textContent="आजची नोंद अजून झालेली नाही. आधी आजचे काम भरा, मग मी नेमका सल्ला देईन.";
+    analysis.innerHTML=`
+      <div class="coachStep">1️⃣ 📞 5 कॉल करा</div>
+      <div class="coachStep">2️⃣ 🎯 2 प्लॅन दाखवा</div>
+      <div class="coachStep">3️⃣ 💼 किमान 167 PV चे काम करा</div>`;
+  }else{
+    if(f>=85){
+      summary.className="coachGood";
+      summary.textContent=`आजची कामगिरी ${f}% आहे. छान! आता महिन्याच्या लक्ष्याला पुढे नेण्यासाठी उरलेले छोटे काम पूर्ण करा.`;
+    }else if(f>=60){
+      summary.className="coachWarn";
+      summary.textContent=`आजची कामगिरी ${f}% आहे. दिवस चांगला आहे, पण अजून थोडे काम केले तर 100% जवळ जाता येईल.`;
+    }else{
+      summary.className="coachBad";
+      summary.textContent=`आजची कामगिरी ${f}% आहे. काळजी नको — खालील 3 कामे आधी पूर्ण करा.`;
+    }
+
+    const todo=weak.filter(x=>x.remain>0).slice(0,3);
+    analysis.innerHTML=(todo.length?todo.map((x,i)=>{
+      let action="";
+      if(x.k==="calls") action=`अजून ${x.remain} कॉल करा.`;
+      else if(x.k==="plans") action=`अजून ${x.remain} प्लॅन दाखवा.`;
+      else if(x.k==="pv") action=`अजून ${x.remain} PV करा.`;
+      else if(x.k==="video") action=`अजून ${x.remain} मिनिटे व्हिडिओ पाहा.`;
+      else if(x.k==="book") action=`अजून ${x.remain} मिनिटे वाचा.`;
+      else action=`अजून ${x.remain} नवीन संपर्क जोडा.`;
+      return `<div class="coachStep">${i+1}️⃣ ${x.icon} <b>${x.label}</b> — ${action}</div>`;
+    }).join(""):`<div class="coachStep">🏆 आजचे मुख्य Daily Target पूर्ण झाले आहेत. आता extra PV किंवा team follow-up करा.</div>`);
+  }
+
+  const d=new Date(),days=daysInCurrentMonth(),elapsed=elapsedDays();
+  const reqPV=Math.ceil(Math.max(5000-mt.pv,0)/Math.max(days-d.getDate(),1));
+  const reqCalls=Math.ceil(Math.max(150-mt.calls,0)/Math.max(days-d.getDate(),1));
+  const reqPlans=Math.ceil(Math.max(60-mt.plans,0)/Math.max(days-d.getDate(),1));
+  const pvPct=Math.min(Math.round(mt.pv/5000*100),100);
+  const callPct=Math.min(Math.round(mt.calls/150*100),100);
+  const planPct=Math.min(Math.round(mt.plans/60*100),100);
+
+  const monthMetrics=[
+    {label:"PV",pct:pvPct},
+    {label:"कॉल",pct:callPct},
+    {label:"प्लॅन",pct:planPct}
+  ].sort((a,b)=>a.pct-b.pct);
+  const monthWeak=monthMetrics[0];
+
+  let conversionNote="";
+  if(mt.calls>0){
+    const c=Math.round(mt.plans/mt.calls*100);
+    if(c<25) conversionNote=`📉 कॉल होत आहेत पण प्लॅन कमी होत आहेत. Call → Plan conversion सध्या ${c}% आहे.`;
+    else conversionNote=`📈 Call → Plan conversion ${c}% आहे. हे चांगले आहे; आता PV conversion वाढवा.`;
+  }else{
+    conversionNote="📞 या महिन्यात कॉलिंग सुरू/वाढवणे सर्वात महत्त्वाचे आहे.";
+  }
+
+  monthBox.innerHTML=`
+    <div style="font-weight:950;margin-bottom:6px">📅 या महिन्यात काय करायचे?</div>
+    <div class="analysisLine">🔍 सर्वात कमी: <b>${monthWeak.label} ${monthWeak.pct}%</b></div>
+    <div class="analysisLine">💼 रोज साधारण <b>${reqPV} PV</b> आवश्यक</div>
+    <div class="analysisLine">📞 रोज साधारण <b>${reqCalls} कॉल</b> आवश्यक</div>
+    <div class="analysisLine">🎯 रोज साधारण <b>${reqPlans} प्लॅन</b> आवश्यक</div>
+    <div class="analysisLine">${conversionNote}</div>
+    <div class="analysisLine">💪 आजची मजबूत बाजू: <b>${strongest.label}</b> (${strongest.pct}%)</div>`;
+}
+
 function renderLeaderboard(){
   const users=getUsers().filter(x=>x.role==="leader");
   const rows=users.map(u=>{
@@ -654,21 +837,26 @@ async function resetUserPassword(username){
 function renderReport(){if(!currentUser)return;const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis(),mt=a.totals,mtdPvPct=scorePct(mt.pv,5000);reportTitle.textContent=`${currentUser.name} — Performance Report`;reportMeta.textContent=`${new Date().toLocaleDateString("mr-IN")} • ${currentUser.role.toUpperCase()}`;reportKpis.innerHTML=`<div class="kpi"><div class="label">FTD Score</div><div class="value">${f}%</div><div class="sub">आजची कामगिरी</div></div><div class="kpi"><div class="label">MTD PV</div><div class="value">${mt.pv}</div><div class="sub">${mtdPvPct}% of 5000</div></div><div class="kpi"><div class="label">MTD Calls</div><div class="value">${mt.calls}</div><div class="sub">Target 150</div></div><div class="kpi"><div class="label">MTD Plans</div><div class="value">${mt.plans}</div><div class="sub">Target 60</div></div>`;gapAnalysis.innerHTML=a.gaps.map(x=>`<div>${x}</div>`).join("");actionPlan.innerHTML=a.actions.map(x=>`<div>${x}</div>`).join("");reportCoach.textContent=f>=90&&mtdPvPct>=70?"🏆 Performance मजबूत आहे. आता consistency टिकवून extra growth वर काम करा.":f>=70?"💪 दिशा योग्य आहे. सर्वात कमी असलेल्या activity वर आज अतिरिक्त 30–45 मिनिटे focus करा.":"⚡ आजचा दिवस recover करता येऊ शकतो. Calls → Presentations → PV या क्रमाने execution करा आणि दिवस संपण्याआधी पुन्हा score पाहा."}
 function printReport(){renderReport();window.print()}
 function buildWhatsAppReport(){const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis();return `📊 DS WORLD PERFORMANCE REPORT\n👤 ${currentUser.name}\n📅 ${new Date().toLocaleDateString("mr-IN")}\n\n🔥 FTD Score: ${f}%\n💼 MTD PV: ${a.totals.pv}/5000\n📞 MTD Calls: ${a.totals.calls}/150\n🎯 MTD Plans: ${a.totals.plans}/60\n\n🔍 कुठे कमी:\n${a.gaps.slice(0,4).join("\n")}\n\n🎯 पुढील Action:\n${a.actions.slice(0,4).join("\n")}`}
-function copyWhatsAppReport(){const txt=buildWhatsAppReport();if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>showToast("WhatsApp Summary copy झाला ✅"))}else{prompt("Copy करा:",txt)}}
+function shareWhatsAppReport(){
+  const txt=buildWhatsAppReport();
+  const url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
+  const w=window.open(url,"_blank");
+  if(!w) window.location.href=url;
+}
 
 
 function getEntriesFor(username){return JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}")}
 function daysInCurrentMonth(){const d=new Date();return new Date(d.getFullYear(),d.getMonth()+1,0).getDate()}
 function elapsedDays(){return Math.max(new Date().getDate(),1)}
-function monthKey(){return new Date().toISOString().slice(0,7)}
+function monthKey(){return localMonthKey()}
 function activeDayCount(username){return Object.keys(getEntriesFor(username)).filter(d=>d.startsWith(monthKey())).length}
 function calcStreak(username){
   const data=getEntriesFor(username);let streak=0,d=new Date();
-  for(let i=0;i<60;i++){const k=d.toISOString().slice(0,10);if(data[k]){streak++}else if(i===0){/* today may be pending */}else break;d.setDate(d.getDate()-1)}
+  for(let i=0;i<60;i++){const k=localDateKey(d);if(data[k]){streak++}else if(i===0){/* today may be pending */}else break;d.setDate(d.getDate()-1)}
   return streak
 }
 function getTopPriorities(e){
-  const labels={names:"नवीन संपर्क",calls:"Calls",plans:"Presentations",pv:"PV",video:"Video Learning",book:"Book Reading",depth:"Depth Follow-up",meeting:"Meeting"};
+  const labels={names:"नवीन संपर्क",calls:"कॉल",plans:"प्लॅन",pv:"PV",video:"व्हिडिओ",book:"वाचन",depth:"Depth Follow-up",meeting:"Meeting"};
   const icons={names:"👥",calls:"📞",plans:"🎯",pv:"💼",video:"🎧",book:"📚",depth:"🔁",meeting:"🤝"};
   const rows=Object.keys(targets).map(k=>{
     const a=Number(e[k]||0),t=targets[k],pct=Math.min(a/t*100,100),remain=Math.max(t-a,0);
@@ -732,7 +920,112 @@ function renderAdminWarRoom(){
         <a class="actionMini" style="text-decoration:none" href="https://wa.me/91${x.username}" target="_blank">📲 WhatsApp</a>
       </div>
     </div>`).join(""):`<div class="small" style="margin-top:10px">अजून Leader add केलेले नाहीत.</div>`;
+  requestAnimationFrame(()=>renderAdminAnalytics(leaders));
 }
+
+function cssColor(name,fallback){
+  const v=getComputedStyle(document.body).getPropertyValue(name).trim();
+  return v||fallback
+}
+function prepCanvas(id){
+  const c=document.getElementById(id);if(!c)return null;
+  const rect=c.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+  c.width=Math.max(300,Math.round(rect.width*dpr));c.height=Math.max(180,Math.round(rect.height*dpr));
+  const ctx=c.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {c,ctx,w:rect.width,h:rect.height}
+}
+function chartEmpty(ctx,w,h){
+  ctx.fillStyle=cssColor("--muted","#9db0ca");ctx.font="12px system-ui";ctx.textAlign="center";ctx.fillText("डेटा उपलब्ध नाही",w/2,h/2)
+}
+function shortName(s,n=11){s=String(s||"");return s.length>n?s.slice(0,n-1)+"…":s}
+function drawBars(id,labels,values,opt={}){
+  const o=prepCanvas(id);if(!o)return;const {ctx,w,h}=o;ctx.clearRect(0,0,w,h);
+  if(!values.length)return chartEmpty(ctx,w,h);
+  const pad={l:38,r:10,t:12,b:42},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,max=Math.max(opt.max||0,...values,1);
+  ctx.strokeStyle=cssColor("--line","#21385d");ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+ch*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke()}
+  const slot=cw/values.length,bw=Math.max(10,Math.min(34,slot*.58));
+  values.forEach((v,i)=>{
+    const bh=Math.max(2,ch*(v/max)),x=pad.l+slot*i+(slot-bw)/2,y=pad.t+ch-bh;
+    const g=ctx.createLinearGradient(0,y,0,pad.t+ch);g.addColorStop(0,cssColor("--cyan","#17c3ff"));g.addColorStop(1,cssColor("--blue","#2a7fff"));
+    ctx.fillStyle=g;ctx.fillRect(x,y,bw,bh);
+    ctx.fillStyle=cssColor("--text","#fff");ctx.font="bold 10px system-ui";ctx.textAlign="center";ctx.fillText((opt.prefix||"")+Math.round(v)+(opt.suffix||""),x+bw/2,Math.max(10,y-4));
+    ctx.save();ctx.translate(x+bw/2,h-8);ctx.rotate(-.35);ctx.fillStyle=cssColor("--muted","#9db0ca");ctx.font="9px system-ui";ctx.fillText(shortName(labels[i]),0,0);ctx.restore();
+  })
+}
+function drawLine(id,labels,values){
+  const o=prepCanvas(id);if(!o)return;const {ctx,w,h}=o;ctx.clearRect(0,0,w,h);
+  if(!values.length)return chartEmpty(ctx,w,h);
+  const pad={l:35,r:12,t:18,b:28},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,max=Math.max(...values,1);
+  ctx.strokeStyle=cssColor("--line","#21385d");
+  for(let i=0;i<=4;i++){const y=pad.t+ch*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke()}
+  const pts=values.map((v,i)=>({x:pad.l+(values.length===1?cw/2:cw*i/(values.length-1)),y:pad.t+ch-ch*v/max}));
+  ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle=cssColor("--cyan","#17c3ff");ctx.lineWidth=3;ctx.stroke();
+  pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle=cssColor("--green","#26d07c");ctx.fill();ctx.fillStyle=cssColor("--muted","#9db0ca");ctx.font="9px system-ui";ctx.textAlign="center";ctx.fillText(labels[i],p.x,h-8)});
+}
+function drawDonut(id,parts){
+  const o=prepCanvas(id);if(!o)return;const {ctx,w,h}=o;ctx.clearRect(0,0,w,h);
+  const total=parts.reduce((s,x)=>s+x.value,0);if(!total)return chartEmpty(ctx,w,h);
+  const colors=[cssColor("--green","#26d07c"),cssColor("--gold","#f3c763"),cssColor("--red","#ff5d73")],cx=w*.34,cy=h*.48,r=Math.min(w,h)*.29,inner=r*.58;
+  let a=-Math.PI/2;
+  parts.forEach((p,i)=>{const da=Math.PI*2*p.value/total;ctx.beginPath();ctx.arc(cx,cy,r,a,a+da);ctx.arc(cx,cy,inner,a+da,a,true);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();a+=da});
+  ctx.fillStyle=cssColor("--text","#fff");ctx.textAlign="center";ctx.font="bold 20px system-ui";ctx.fillText(total,cx,cy+6);
+  ctx.textAlign="left";ctx.font="11px system-ui";
+  parts.forEach((p,i)=>{const y=34+i*29;ctx.fillStyle=colors[i%colors.length];ctx.fillRect(w*.62,y-9,10,10);ctx.fillStyle=cssColor("--text","#fff");ctx.fillText(`${p.label}: ${p.value}`,w*.62+16,y)})
+}
+function lastNDates(n){
+  const a=[];const d=new Date();
+  for(let i=n-1;i>=0;i--){const x=new Date(d);x.setDate(d.getDate()-i);a.push(x)}
+  return a
+}
+function renderAdminAnalytics(leaders){
+  if(!document.getElementById("pvBarChart"))return;
+  const topPV=[...leaders].sort((a,b)=>b.m.pv-a.m.pv).slice(0,8);
+  drawBars("pvBarChart",topPV.map(x=>x.name),topPV.map(x=>x.m.pv),{suffix:""});
+  const topF=[...leaders].sort((a,b)=>b.f-a.f).slice(0,8);
+  drawBars("ftdBarChart",topF.map(x=>x.name),topF.map(x=>x.f),{max:100,suffix:"%"});
+
+  const dm=daysInCurrentMonth(),ed=elapsedDays(),pace=ed/dm;
+  const denom=Math.max(leaders.length,1);
+  const avgPct=(key,target)=>Math.round(leaders.reduce((s,x)=>s+Math.min((Number(x.m[key]||0)/Math.max(target*pace,1))*100,100),0)/denom);
+  const learnTarget=20*dm;
+  const activity=[
+    ["संपर्क",avgPct("names",60)],["कॉल",avgPct("calls",150)],["प्लॅन",avgPct("plans",60)],
+    ["PV",avgPct("pv",5000)],["अभ्यास",Math.round((avgPct("video",learnTarget)+avgPct("book",learnTarget))/2)]
+  ];
+  drawBars("activityBarChart",activity.map(x=>x[0]),activity.map(x=>x[1]),{max:100,suffix:"%"});
+
+  const strong=leaders.filter(x=>x.risk<25).length,follow=leaders.filter(x=>x.risk>=25&&x.risk<50).length,risk=leaders.filter(x=>x.risk>=50).length;
+  drawDonut("riskDonutChart",[{label:"Strong",value:strong},{label:"Follow-up",value:follow},{label:"At Risk",value:risk}]);
+
+  const dates=lastNDates(7);
+  const pv7=dates.map(d=>{
+    const k=localDateKey(d);
+    return leaders.reduce((s,x)=>s+Number((getEntriesFor(x.username)[k]||{}).pv||0),0)
+  });
+  drawLine("pvTrendChart",dates.map(d=>`${d.getDate()}/${d.getMonth()+1}`),pv7);
+
+  const totalNames=leaders.reduce((s,x)=>s+x.m.names,0),totalCalls=leaders.reduce((s,x)=>s+x.m.calls,0),totalPlans=leaders.reduce((s,x)=>s+x.m.plans,0);
+  const maxF=Math.max(totalNames,totalCalls,totalPlans,1);
+  teamFunnel.innerHTML=[
+    ["नवीन संपर्क",totalNames],["कॉल / भेटी",totalCalls],["प्लॅन",totalPlans]
+  ].map(x=>`<div class="funnelRow"><div class="funnelLabel"><span>${x[0]}</span><b>${x[1]}</b></div><div class="funnelTrack"><div class="funnelFill" style="width:${Math.max(4,x[1]/maxF*100)}%"></div></div></div>`).join("");
+
+  const act=activity.slice().sort((a,b)=>a[1]-b[1]),weak=act[0],best=act[act.length-1];
+  const top=leaders.slice().sort((a,b)=>b.g-a.g)[0];
+  const noToday=leaders.filter(x=>!getEntriesFor(x.username)[todayKey()]).length;
+  const callToPlan=totalCalls?Math.round(totalPlans/totalCalls*100):0;
+  adminAnalysisText.innerHTML=`
+    <div class="analysisLine">🟢 <b>सर्वात मजबूत:</b> ${best?best[0]:"—"} ${best?best[1]:0}%</div>
+    <div class="analysisLine">🔴 <b>सर्वात कमी:</b> ${weak?weak[0]:"—"} ${weak?weak[1]:0}% — पुढचा focus इथे ठेवा.</div>
+    <div class="analysisLine">👑 <b>Top Leader:</b> ${top?top.name:"—"} ${top?`(Growth ${top.g}/100)`:""}</div>
+    <div class="analysisLine">📵 <b>आज entry नाही:</b> ${noToday} Leader</div>
+    <div class="analysisLine">🎯 <b>Call → Plan conversion:</b> ${callToPlan}%</div>
+    <div class="analysisLine">📌 <b>आजचा Admin Action:</b> आधी At Risk/No Entry Leaders, नंतर कमी ${weak?weak[0]:"activity"} असलेल्या Leaders वर follow-up करा.</div>`;
+}
+let adminChartResizeTimer=null;
+window.addEventListener("resize",()=>{clearTimeout(adminChartResizeTimer);adminChartResizeTimer=setTimeout(()=>{if(currentUser&&currentUser.role==="admin")renderAdminWarRoom()},180)});
+
 function openLeader360(username){
   const u=getUsers().find(x=>x.username===username);if(!u)return;
   const s=leaderSnapshot(u),d=new Date(),left=Math.max(daysInCurrentMonth()-d.getDate(),1),req=Math.ceil(Math.max(5000-s.m.pv,0)/left),proj=Math.round(s.m.pv/elapsedDays()*daysInCurrentMonth());
@@ -761,7 +1054,7 @@ function applyTheme(){
   const b=document.getElementById("themeToggleBtn"); if(b)b.textContent=t==="light"?"🌙 Dark":"☀️ Cream";
   const s=document.getElementById("loginTheme"); if(s)s.value=t;
 }
-function setTheme(t){localStorage.setItem("ds_theme",t==="light"?"light":"dark");applyTheme()}
+function setTheme(t){localStorage.setItem("ds_theme",t==="light"?"light":"dark");applyTheme();setTimeout(()=>{if(currentUser&&currentUser.role==="admin")renderAdminWarRoom()},80)}
 function toggleTheme(){const now=localStorage.getItem("ds_theme")||"dark";setTheme(now==="dark"?"light":"dark")}
 
 function showToast(msg){toast.textContent=msg;toast.style.display="block";setTimeout(()=>toast.style.display="none",2200)}
