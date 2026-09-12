@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V19.0 FINAL STABLE</title>
+<title>RCM • DS WORLD Growth OS — V20.0</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -285,7 +285,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
 }
 
 
-/* ===== FINAL STABLE FEATURES ===== */
+/* ===== ADMIN LIVE + RIGHTS FIX FEATURES ===== */
 .profileMiniGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .profileMini{padding:11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035)}
 .profileMini small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
@@ -343,6 +343,21 @@ body.lightTheme .versionBadge{
   .brandVersionLine small{font-size:8px}
 }
 
+
+/* ===== V20 ADMIN LIVE + RIGHTS ===== */
+.liveMonitorGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.liveEntryCard{border:1px solid var(--line);border-radius:17px;padding:12px;background:rgba(255,255,255,.035)}
+.liveEntryTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.liveStats{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.rightsWrap{display:flex;flex-wrap:wrap;gap:5px}
+.rightBadge{font-size:9px;font-weight:950;padding:4px 7px;border-radius:999px;border:1px solid var(--line)}
+.rightOn{color:#54e8a2;background:rgba(31,180,112,.08)}
+.rightOff{color:#ff8b8b;background:rgba(220,65,65,.08)}
+.directoryNote{margin:8px 0 0;line-height:1.55}
+.profileRightsBox{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}
+.livePulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4be09a;box-shadow:0 0 0 5px rgba(75,224,154,.12);margin-right:6px}
+@media(max-width:680px){.liveMonitorGrid{grid-template-columns:1fr}}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -361,7 +376,7 @@ body.lightTheme .versionBadge{
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V19.0 • FINAL STABLE</div>
+      <div class="loginVersion">V20.0 • ADMIN LIVE + RIGHTS FIX</div>
     </div>
 
     <div class="loginTabs">
@@ -385,7 +400,7 @@ body.lightTheme .versionBadge{
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V19.0 • FINAL STABLE</span>
+            <span class="versionBadge">V20.0 • ADMIN LIVE + RIGHTS FIX</span>
           </div>
         </div>
       </div>
@@ -405,9 +420,9 @@ body.lightTheme .versionBadge{
 
     <div class="tabs">
       <button class="tab active" onclick="showView('dashboard',this)">Dashboard</button>
-      <button class="tab" onclick="showView('entry',this)">Daily Entry</button>
+      <button id="entryTabApp" class="tab" onclick="showView('entry',this)">Daily Entry</button>
       <button class="tab" onclick="showView('leaderboard',this)">Leaderboard</button>
-      <button class="tab" onclick="showView('report',this)">Reports</button>
+      <button id="reportTabApp" class="tab" onclick="showView('report',this)">Reports</button>
       <button id="historyTabApp" class="tab hidden" onclick="showView('history',this)">History</button>
       <button id="adminTabApp" class="tab hidden" onclick="showView('admin',this)">Admin Control</button>
     </div>
@@ -478,7 +493,12 @@ body.lightTheme .versionBadge{
           <div class="profileMini"><small>Best Month</small><b id="lpBestMonth">—</b></div>
           <div class="profileMini"><small>Total Active Days</small><b id="lpTotalActive">0</b></div>
           <div class="profileMini"><small>Growth Level</small><b id="lpLevel">—</b></div>
+          <div class="profileMini"><small>गाव / परिसर</small><b id="lpVillage">—</b></div>
+          <div class="profileMini"><small>Monthly PV Goal</small><b id="lpMonthlyGoal">—</b></div>
+          <div class="profileMini"><small>Profile Right</small><b id="lpProfileRight">🔒 Admin Only</b></div>
         </div>
+        <div id="leaderProfileEditActions" class="btnrow"></div>
+        <div class="profileRightsBox" id="leaderRightsSummary"></div>
       </div>
 
       <div class="section glass">
@@ -604,7 +624,7 @@ body.lightTheme .versionBadge{
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V19.0 • FINAL STABLE</div>
+              <div><b>Version:</b> V20.0 • ADMIN LIVE + RIGHTS FIX</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -666,6 +686,17 @@ body.lightTheme .versionBadge{
       </div>
 
       <div class="section glass">
+        <div class="sectionHead">
+          <h3><span class="livePulse"></span>Live Leader Entry Monitor</h3>
+          <div><span class="badge" id="liveMonitorTime">LIVE FIREBASE</span></div>
+        </div>
+        <div class="btnrow">
+          <button class="primary" onclick="refreshAdminLive(true)">🔄 Live Data Refresh</button>
+        </div>
+        <div id="adminLiveEntryList" class="liveMonitorGrid"></div>
+      </div>
+
+      <div class="section glass">
         <div class="sectionHead"><h3>📊 Team Analysis</h3><span class="badge">LIVE DATA</span></div>
         <div class="adminChartGrid">
           <div class="chartCard"><h4>Leader-wise MTD PV</h4><canvas id="pvBarChart"></canvas></div>
@@ -708,7 +739,7 @@ body.lightTheme .versionBadge{
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
-          <span class="safetyPill">Version: V19.0</span>
+          <span class="safetyPill">Version: V20.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -721,6 +752,22 @@ body.lightTheme .versionBadge{
         </div>
       </div>
 
+
+      <div class="section glass">
+        <div class="sectionHead">
+          <div><h3>👥 Leader Directory & Rights</h3><div class="small">हीच Admin ची Master Leader List आहे.</div></div>
+          <div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div>
+        </div>
+        <div class="tableWrap">
+          <table>
+            <thead><tr><th>नाव / Mobile</th><th>आजची Entry</th><th>Rights</th><th>Profile</th><th>Admin Action</th></tr></thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+        <div class="small directoryNote">
+          Core Profile (Name, Mobile, Role) फक्त Admin बदलू शकतो. Leader ला स्वतःची Personal Profile भरायची असेल तर Admin ने <b>Profile Edit Right</b> ON करायचा.
+        </div>
+      </div>
 
       <div class="section glass">
         <div class="sectionHead"><h3>🎨 Report Branding</h3><span class="badge">LETTERHEAD</span></div>
@@ -740,14 +787,6 @@ body.lightTheme .versionBadge{
         </div>
       </div>
 
-      <div class="section glass">
-        <div class="sectionHead"><div><h3>👥 Users</h3></div><div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div></div>
-        <div class="tableWrap">
-          <table>
-            <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Cloud</th><th>Action</th></tr></thead>
-            <tbody id="usersTable"></tbody></table></div>
-        <div class="small" style="margin-top:8px">नवीन User फक्त Firebase मध्ये दोन ठिकाणी verify झाल्यावरच तयार होतो. त्यामुळे Local-only / गायब होणारा User तयार होणार नाही.<br>Deactivate केल्यावरही Data सुरक्षित राहतो; Mobile बदलल्यास जुना record archive होतो.</div>
-      </div>
     </div>
 
   </div>
@@ -771,9 +810,9 @@ body.lightTheme .versionBadge{
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V19.0";
+const APP_VERSION="V20.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="FINAL STABLE";
+const APP_RELEASE="ADMIN LIVE + RIGHTS FIX";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -837,7 +876,12 @@ async function hashPassword(value){
   for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
   return "fallback_"+(h>>>0).toString(16);
 }
-function cleanUserForSession(u){return {name:u.name,username:u.username,role:u.role,active:u.active!==false}}
+function cleanUserForSession(u){
+  return {
+    name:u.name,username:u.username,role:u.role,active:u.active!==false,
+    permissions:userPermissions(u),profile:u.profile||{},createdAt:u.createdAt||0
+  };
+}
 function cloudUserPath(username){return `${CLOUD_ROOT}/users/${safeCloudKey(username)}`}
 function cloudEntriesPath(username){return `${CLOUD_ROOT}/entries/${safeCloudKey(username)}`}
 
@@ -1179,7 +1223,9 @@ async function cloudSetUser(user,passwordPlain=null){
       archived:false,
       createdAt:Number(existing?.createdAt||user.createdAt||now),
       updatedAt:now,
-      cloudVerifiedAt:now
+      cloudVerifiedAt:now,
+      permissions:user.permissions||existing?.permissions||defaultPermissions(user.role||existing?.role||"leader"),
+      profile:user.profile||existing?.profile||{}
     };
     // If an old archived alias is intentionally reused, clear the migration pointer.
     payload.migratedTo=null;
@@ -1255,58 +1301,180 @@ async function migrateLocalToCloud(){
 async function syncCloudData(){
   if(!firebaseReady||!db){setCloudStatus("offline","☁️ Offline");return}
   setCloudStatus("","☁️ Syncing");
-  await mergeAllUsersFromFirebase();
   try{
-    if(currentUser&&currentUser.role==="admin") await migrateLocalToCloud();
-    else if(currentUser){
-      const me=getUsers().find(x=>x.username===currentUser.username);
-      if(me) await cloudSetUser(me,null);
-      const local=JSON.parse(localStorage.getItem("ds_entries_"+currentUser.username)||"{}");
-      if(Object.keys(local).length) await db.ref(cloudEntriesPath(currentUser.username)).update(local);
+    if(currentUser&&currentUser.role==="admin"){
+      await restorePermanentUsers();
+      await mergeAllUsersFromFirebase();
+      await refreshAdminLive(false);
+    }else if(currentUser){
+      const remote=await cloudFetchUser(currentUser.username);
+      if(remote&&remote.active!==false){
+        const users=getUsers().filter(u=>String(u.username)!==String(remote.username));
+        users.push(remote);setUsers(users);
+        currentUser=cleanUserForSession(remote);
+        localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+        applyLeaderPermissionsUI();
+      }
+      const local=getEntriesFor(currentUser.username);
+      if(Object.keys(local).length)await db.ref(cloudEntriesPath(currentUser.username)).update(local);
+      const cloudEntrySnap=await db.ref(cloudEntriesPath(currentUser.username)).once("value");
+      if(cloudEntrySnap.exists())mergeEntryData(currentUser.username,cloudEntrySnap.val()||{});
     }
-    const [us,es]=await Promise.all([
-      db.ref(`${CLOUD_ROOT}/users`).once("value"),
-      db.ref(`${CLOUD_ROOT}/entries`).once("value")
-    ]);
-    mergeCloudUsers(us.val()||{});
-    const all=es.val()||{};
-    Object.keys(all).forEach(k=>{
-      const user=getUsers().find(x=>safeCloudKey(x.username)===k);
-      if(user) mergeEntryData(user.username,all[k]);
-    });
     setCloudStatus("online","☁️ Firebase Online");
     renderAll();
-  }catch(e){console.warn(e);setCloudStatus("offline","☁️ Local")}
+  }catch(e){
+    console.warn(e);setCloudStatus("offline","☁️ Local");
+  }
 }
+
+function hydrateCloudRoot(root){
+  root=root||{};
+  const rawUsers={...(root.users_permanent||{}),...(root.users||{})};
+  cloudUsersCache=rawUsers;
+  cloudEntriesCache=root.entries||{};
+  mergeCloudUsers(rawUsers);
+
+  const users=getUsers();
+  Object.entries(cloudEntriesCache).forEach(([key,entries])=>{
+    const user=users.find(u=>safeCloudKey(u.username)===key) ||
+               Object.values(rawUsers).find(u=>u&&safeCloudKey(u.username)===key);
+    if(user&&user.username)mergeEntryData(String(user.username),entries||{});
+  });
+}
+async function refreshAdminLive(showMsg=false){
+  if(!firebaseReady||!db)return false;
+  try{
+    const s=await db.ref(CLOUD_ROOT).once("value");
+    hydrateCloudRoot(s.val()||{});
+    if(currentUser&&currentUser.role==="admin"){
+      renderUsers();renderAdminWarRoom();renderAdminLiveMonitor();
+      const t=document.getElementById("liveMonitorTime");
+      if(t)t.textContent="Updated "+new Date().toLocaleTimeString("mr-IN");
+    }
+    if(showMsg)showToast("Admin Live Data Refresh झाला ✅");
+    return true;
+  }catch(e){
+    console.warn("refreshAdminLive failed",e);
+    if(showMsg)showToast("Live Data Refresh झाला नाही");
+    return false;
+  }
+}
+function renderAdminLiveMonitor(){
+  const box=document.getElementById("adminLiveEntryList");
+  if(!box||!currentUser||currentUser.role!=="admin")return;
+  const leaders=getUsers().filter(u=>u.role==="leader"&&u.active!==false);
+  const rows=leaders.map(u=>{
+    const st=entryStatusFor(u.username);
+    const mt=getMonthTotals(u.username);
+    const updated=Number(st.e.updatedAt||0);
+    return {u,st,mt,updated};
+  }).sort((a,b)=>{
+    if(a.st.has!==b.st.has)return a.st.has?-1:1;
+    return b.updated-a.updated;
+  });
+
+  box.innerHTML=rows.length?rows.map(x=>`
+    <div class="liveEntryCard">
+      <div class="liveEntryTop">
+        <div><b>${x.u.name}</b><div class="small">${x.u.username}</div></div>
+        <span class="badge">${x.st.has?"🟢 Entry Received":"🔴 No Entry"}</span>
+      </div>
+      <div class="liveStats">
+        <span class="metricpill">FTD ${x.st.ftd}%</span>
+        <span class="metricpill">आज PV ${Number(x.st.e.pv||0)}</span>
+        <span class="metricpill">Calls ${Number(x.st.e.calls||0)}</span>
+        <span class="metricpill">Plans ${Number(x.st.e.plans||0)}</span>
+        <span class="metricpill">MTD PV ${x.mt.pv}</span>
+      </div>
+      <div class="small" style="margin-top:8px">${x.updated?"Last Entry: "+new Date(x.updated).toLocaleString("mr-IN"):"आजची entry अजून नाही"}</div>
+      <div class="btnrow">
+        <button class="actionMini" onclick="openLeader360('${x.u.username}')">360° Profile</button>
+        <a class="actionMini" style="text-decoration:none" href="tel:${x.u.username}">📞 Call</a>
+        <a class="actionMini" style="text-decoration:none" target="_blank" href="https://wa.me/91${x.u.username}">📲 WhatsApp</a>
+      </div>
+    </div>`).join(""):`<div class="small">Active Leader नाही.</div>`;
+}
+
 function startCloudListeners(){
   if(!firebaseReady||!db||cloudListenersStarted)return;
   cloudListenersStarted=true;
-  db.ref(USER_REGISTRY_PATH).on("value",async s=>{
-    const raw=s.val()||{};
-    let needsRepair=false;
-    Object.values(raw).forEach(r=>{
-      if(r&&r.archived===true&&r.active!==false)needsRepair=true;
-    });
-    if(needsRepair)await restorePermanentUsers();
-    const finalSnap=needsRepair?await db.ref(USER_REGISTRY_PATH).once("value"):s;
-    mergeCloudUsers(finalSnap.val()||{});
-    if(currentUser&&currentUser.role==="admin"){renderUsers();renderLeaderboard();renderAdminWarRoom()}
-  });
-  db.ref(`${CLOUD_ROOT}/entries`).on("value",s=>{
-    const all=s.val()||{};
-    const users=getUsers();
-    Object.keys(all).forEach(k=>{
-      const u=users.find(x=>safeCloudKey(x.username)===k);
-      if(u)mergeEntryData(u.username,all[k]);
-    });
-    if(currentUser)renderAll();
+  db.ref(CLOUD_ROOT).on("value",async snap=>{
+    const root=snap.val()||{};
+    hydrateCloudRoot(root);
+
+    // Repair invalid active+archived records without blocking live display.
+    const raw=root.users||{};
+    const needsRepair=Object.values(raw).some(r=>r&&r.archived===true&&r.active!==false);
+    if(needsRepair)restorePermanentUsers().catch(console.warn);
+
+    if(currentUser&&currentUser.role==="admin"){
+      renderUsers();renderLeaderboard();renderAdminWarRoom();renderAdminLiveMonitor();
+      const t=document.getElementById("liveMonitorTime");
+      if(t)t.textContent="Live "+new Date().toLocaleTimeString("mr-IN");
+    }else if(currentUser){
+      renderAll();
+    }
+  },err=>{
+    console.warn("Firebase root listener failed",err);
+    setCloudStatus("error","☁️ Live Sync Error");
   });
 }
 window.addEventListener("online",()=>{setCloudStatus("","☁️ Syncing");syncCloudData();startCloudListeners()});
 window.addEventListener("offline",()=>setCloudStatus("offline","☁️ Offline"));
 
 
+
+function scorePct(actual,target){
+  return Math.min(Math.round((Number(actual||0)/Math.max(Number(target||0),1))*100),100);
+}
+function getMonthTotals(username){
+  const m=monthEntries(username);
+  return {
+    names:sum(m,"names"),calls:sum(m,"calls"),plans:sum(m,"plans"),pv:sum(m,"pv"),
+    video:sum(m,"video"),book:sum(m,"book"),depth:sum(m,"depth"),meeting:sum(m,"meeting"),
+    activeDays:m.length
+  };
+}
+function buildGapAnalysis(username=(currentUser?currentUser.username:"")){
+  const totals=getMonthTotals(username);
+  const days=daysInCurrentMonth();
+  const monthTargets={names:60,calls:150,plans:60,pv:5000,video:20*days,book:20*days,depth:20,meeting:28};
+  const labels={names:"नवीन संपर्क",calls:"कॉल / भेटी",plans:"प्लॅन / प्रेझेंटेशन",pv:"PV",video:"व्हिडिओ",book:"वाचन",depth:"Depth Follow-up",meeting:"Meeting"};
+  const rows=Object.keys(monthTargets).map(k=>{
+    const actual=Number(totals[k]||0),target=monthTargets[k],pct=scorePct(actual,target),remaining=Math.max(target-actual,0);
+    return {k,label:labels[k],actual,target,pct,remaining};
+  }).sort((a,b)=>a.pct-b.pct);
+  const gaps=rows.slice(0,4).map(x=>`• ${x.label}: ${x.actual}/${x.target} (${x.pct}%)`);
+  const left=Math.max(days-new Date().getDate(),1);
+  const actions=rows.slice(0,4).map(x=>{
+    const req=Math.ceil(x.remaining/left);
+    if(x.k==="pv")return `• दररोज किमान ${req} PV करा.`;
+    if(x.k==="video"||x.k==="book")return `• ${x.label}: दररोज सुमारे ${req} मिनिटे पूर्ण करा.`;
+    return `• ${x.label}: दररोज किमान ${req} पूर्ण करा.`;
+  });
+  return {totals,rows,gaps,actions};
+}
+
 const targets={names:2,calls:5,plans:2,pv:167,video:20,book:20,depth:1,meeting:1};
+
+let cloudUsersCache={};
+let cloudEntriesCache={};
+
+function defaultPermissions(role="leader"){
+  if(role==="admin")return {dailyEntry:true,ownReport:true,profileEdit:true};
+  return {dailyEntry:true,ownReport:true,profileEdit:false};
+}
+function userPermissions(u){
+  return {...defaultPermissions(u?.role||"leader"),...(u?.permissions||{})};
+}
+function permissionBadge(label,on){
+  return `<span class="rightBadge ${on?"rightOn":"rightOff"}">${on?"✅":"🔒"} ${label}</span>`;
+}
+function entryStatusFor(username){
+  const e=getEntriesFor(username)[todayKey()];
+  return e?{has:true,e,ftd:ftdScore(e)}:{has:false,e:{},ftd:0};
+}
+
 let loginRole="leader";
 let currentUser=null;
 
@@ -1350,7 +1518,8 @@ async function boot(){
   const htab=document.getElementById("historyTabApp");if(htab)htab.classList.toggle("hidden",currentUser.role!=="admin");
   heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
   await loadBranding();
-  if(currentUser.role==="admin"){await restorePermanentUsers();await mergeAllUsersFromFirebase();}
+  applyLeaderPermissionsUI();
+  if(currentUser.role==="admin"){await restorePermanentUsers();await mergeAllUsersFromFirebase();await refreshAdminLive(false);}
   renderAll();
   if(currentUser.role==="admin")openAppTab("admin");
   startCloudListeners();
@@ -1360,6 +1529,12 @@ async function boot(){
 }
 function logout(){localStorage.removeItem("ds_current_user");location.reload()}
 function showView(v,btn){
+  if(currentUser&&currentUser.role==="leader"){
+    const p=userPermissions(currentUser);
+    if(v==="entry"&&p.dailyEntry===false)return showToast("Daily Entry Right Admin ने बंद केला आहे");
+    if(v==="report"&&p.ownReport===false)return showToast("Report Right Admin ने बंद केला आहे");
+    if(v==="admin"||v==="history")return showToast("हा भाग Admin साठी आहे");
+  }
   ["dashboard","entry","leaderboard","report","history","admin"].forEach(x=>{
     const el=document.getElementById(x+"View");if(el)el.classList.toggle("hidden",x!==v)
   });
@@ -1367,6 +1542,7 @@ function showView(v,btn){
   if(btn)btn.classList.add("active");
   if(v==="history")renderHistory();
   if(v==="report"){renderReport();applyBrandingToUI()}
+  if(v==="admin"){refreshAdminLive(false);renderUsers();renderAdminLiveMonitor()}
 }
 
 function openAppTab(name){
@@ -1385,25 +1561,37 @@ function localMonthKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMo
 
 function todayKey(){return localDateKey()}
 async function saveEntry(){
+  const perms=userPermissions(currentUser);
+  if(currentUser.role!=="admin"&&perms.dailyEntry===false)return showToast("Admin ने Daily Entry Right बंद केला आहे");
+
   const e={};
   Object.keys(targets).forEach(k=>e[k]=Number(document.getElementById(k).value||0));
   e.updatedAt=Date.now();
-  const data=allEntries();data[todayKey()]=e;localStorage.setItem(entryKey(),JSON.stringify(data));
-  showToast("आजची नोंद जतन झाली ✅");
-  renderAll();showView("dashboard",document.querySelector(".tab"));
+  e.savedBy=currentUser.username;
+
+  const data=allEntries();data[todayKey()]=e;
+  localStorage.setItem(entryKey(),JSON.stringify(data));
+
   if(firebaseReady&&db){
     try{
-      await db.ref(`${cloudEntriesPath(currentUser.username)}/${todayKey()}`).set(e);
-      setCloudStatus("online","☁️ Firebase Online");
-      if(currentUser.role==="admin")await logActivity("DAILY_ENTRY_SAVE",todayKey(),currentUser.username);
+      const path=`${cloudEntriesPath(currentUser.username)}/${todayKey()}`;
+      await db.ref(path).set(e);
+      const check=await db.ref(path).once("value");
+      if(!check.exists())throw new Error("Entry cloud verification failed");
+      setCloudStatus("online","☁️ Entry Synced");
+      showToast("आजची Entry Firebase मध्ये Save झाली ✅");
     }catch(err){
       console.warn(err);
+      showToast("Entry फोनमध्ये save आहे • Firebase Sync तपासा");
       if(String(err&&err.code||"").toUpperCase().includes("PERMISSION_DENIED")){
-        setFirebaseHealth("Data फोनमध्ये save झाला; Firebase Rules write block करत आहेत.","rules");
-        showToast("Local save झाला ✅ • Firebase Rules block");
-      }else setCloudStatus("offline","☁️ Local");
+        setFirebaseHealth("Entry Local save झाली; Firebase Rules write block आहेत.","rules");
+      }
     }
+  }else{
+    showToast("Entry फोनमध्ये save झाली • Firebase Offline");
   }
+  renderAll();
+  openAppTab("dashboard");
 }
 function monthEntries(username){
   const data=JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}");
@@ -1575,6 +1763,7 @@ async function addUser(){
   const passwordHash=await hashPassword(password);
   const obj={
     name,username,passwordHash,role,active:true,archived:false,
+    permissions:defaultPermissions(role),profile:{},
     createdAt:now,updatedAt:now,cloudVerifiedAt:now
   };
 
@@ -1780,20 +1969,109 @@ async function editUserUsername(oldUsername){
   }
 }
 
+
+function applyLeaderPermissionsUI(){
+  if(!currentUser)return;
+  const p=userPermissions(currentUser);
+  const entryTab=document.getElementById("entryTabApp");
+  const reportTab=document.getElementById("reportTabApp");
+  if(currentUser.role==="leader"){
+    if(entryTab)entryTab.classList.toggle("hidden",p.dailyEntry===false);
+    if(reportTab)reportTab.classList.toggle("hidden",p.ownReport===false);
+  }else{
+    if(entryTab)entryTab.classList.remove("hidden");
+    if(reportTab)reportTab.classList.remove("hidden");
+  }
+}
+async function toggleUserPermission(username,perm){
+  if(!currentUser||currentUser.role!=="admin")return;
+  await mergeAllUsersFromFirebase();
+  const users=getUsers(),u=users.find(x=>String(x.username)===String(username));if(!u)return;
+  u.permissions=userPermissions(u);
+  u.permissions[perm]=!u.permissions[perm];
+  u.updatedAt=Date.now();
+  setUsers(users);
+  const saved=await cloudSetUser(u,null);
+  if(saved){
+    await logActivity("RIGHT_CHANGE",`${perm} = ${u.permissions[perm]?"ON":"OFF"}`,u.username);
+    showToast("Leader Right update झाला ✅");
+  }else showToast("Right Firebase मध्ये save झाला नाही");
+  renderUsers();
+}
+async function editLeaderProfileAdmin(username){
+  if(!currentUser||currentUser.role!=="admin")return;
+  await mergeAllUsersFromFirebase();
+  const users=getUsers(),u=users.find(x=>String(x.username)===String(username));if(!u)return;
+  const p={...(u.profile||{})};
+  const village=prompt("गाव / परिसर",p.village||"");if(village===null)return;
+  const goal=prompt("Monthly PV Goal",String(p.monthlyGoal||5000));if(goal===null)return;
+  const focus=prompt("Leader Focus / Goal",p.focus||"");if(focus===null)return;
+  u.profile={...p,village:village.trim(),monthlyGoal:Number(goal||5000),focus:focus.trim()};
+  u.updatedAt=Date.now();setUsers(users);
+  const saved=await cloudSetUser(u,null);
+  if(saved){await logActivity("PROFILE_ADMIN_EDIT","Admin updated leader profile",u.username);showToast("Leader Profile update झाली ✅")}
+  renderUsers();
+}
+async function editOwnProfile(){
+  if(!currentUser||currentUser.role!=="leader")return;
+  const perms=userPermissions(currentUser);
+  if(!perms.profileEdit)return showToast("Profile Edit Right Admin कडून ON करावा लागेल");
+  const remote=(await cloudFetchUser(currentUser.username))||getUsers().find(x=>String(x.username)===String(currentUser.username))||currentUser;
+  const p={...(remote.profile||{})};
+  const village=prompt("तुमचे गाव / परिसर",p.village||"");if(village===null)return;
+  const goal=prompt("तुमचे Monthly PV Goal",String(p.monthlyGoal||5000));if(goal===null)return;
+  const focus=prompt("तुमचा मुख्य Goal / Focus",p.focus||"");if(focus===null)return;
+  remote.profile={...p,village:village.trim(),monthlyGoal:Number(goal||5000),focus:focus.trim()};
+  remote.permissions=userPermissions(remote);
+  remote.updatedAt=Date.now();
+  const saved=await cloudSetUser(remote,null);
+  if(saved){
+    const users=getUsers().filter(x=>String(x.username)!==String(remote.username));users.push(remote);setUsers(users);
+    currentUser=cleanUserForSession(remote);localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+    await logActivity("PROFILE_SELF_EDIT","Leader updated own profile",remote.username);
+    showToast("तुमची Profile save झाली ✅");renderLeaderProfile();
+  }else showToast("Profile Firebase मध्ये save झाली नाही");
+}
+
 function renderUsers(){
-  const u=getUsers();userCount.textContent=u.length;
-  usersTable.innerHTML=u.map(x=>`<tr>
-    <td>${x.name}</td>
-    <td>${x.username}</td>
-    <td>${x.role}${x.active===false?" • Inactive":""}</td>
-    <td>${x.username==="admin"?"LOCAL ADMIN":`<span class="badge">☁️ PERMANENT</span>`}</td>
-    <td>${x.username==="admin"?"—":`
-      <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password Reset</button>
-      <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
-      <button class="actionMini" onclick="editUserName('${x.username}')">Edit Name</button>
-      <button class="actionMini" onclick="editUserUsername('${x.username}')">Edit Mobile</button>`}
-    </td>
-  </tr>`).join("")
+  const el=document.getElementById("usersTable");if(!el)return;
+  const u=getUsers().filter(x=>x.username==="admin"||!(x.archived===true&&x.active===false));
+  const count=document.getElementById("userCount");if(count)count.textContent=u.filter(x=>x.role==="leader").length;
+
+  el.innerHTML=u.map(x=>{
+    if(x.username==="admin")return `<tr>
+      <td><b>${x.name}</b><div class="small">${x.username}</div></td>
+      <td>—</td><td><span class="badge">FULL ADMIN</span></td><td>Core Admin</td><td>—</td>
+    </tr>`;
+    const p=userPermissions(x),st=entryStatusFor(x.username),profile=x.profile||{};
+    return `<tr>
+      <td><b>${x.name}</b><div class="small">${x.username} • ${x.active===false?"Inactive":"Active"}</div></td>
+      <td>${st.has?`<span class="badge">🟢 Received</span><div class="small">FTD ${st.ftd}% • PV ${Number(st.e.pv||0)}</div>`:`<span class="badge">🔴 Pending</span>`}</td>
+      <td>
+        <div class="rightsWrap">
+          ${permissionBadge("Entry",p.dailyEntry)}
+          ${permissionBadge("Report",p.ownReport)}
+          ${permissionBadge("Profile Edit",p.profileEdit)}
+        </div>
+        <div class="btnrow">
+          <button class="actionMini" onclick="toggleUserPermission('${x.username}','dailyEntry')">Entry Right</button>
+          <button class="actionMini" onclick="toggleUserPermission('${x.username}','ownReport')">Report Right</button>
+          <button class="actionMini" onclick="toggleUserPermission('${x.username}','profileEdit')">Profile Right</button>
+        </div>
+      </td>
+      <td>
+        <div class="small">${profile.village||"गाव नाही"} • Goal ${Number(profile.monthlyGoal||5000)} PV</div>
+        <button class="actionMini" onclick="editLeaderProfileAdmin('${x.username}')">Edit Profile</button>
+      </td>
+      <td>
+        <button class="actionMini" onclick="openLeader360('${x.username}')">360°</button>
+        <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password</button>
+        <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
+        <button class="actionMini" onclick="editUserName('${x.username}')">Edit Name</button>
+        <button class="actionMini" onclick="editUserUsername('${x.username}')">Edit Mobile</button>
+      </td>
+    </tr>`;
+  }).join("");
 }
 async function resetUserPassword(username){
   const p=prompt("नवीन Password टाका");if(!p)return;
@@ -1891,6 +2169,7 @@ function renderAdminWarRoom(){
         <a class="actionMini" style="text-decoration:none" href="https://wa.me/91${x.username}" target="_blank">📲 WhatsApp</a>
       </div>
     </div>`).join(""):`<div class="small" style="margin-top:10px">अजून Leader add केलेले नाहीत.</div>`;
+  renderAdminLiveMonitor();
   requestAnimationFrame(()=>renderAdminAnalytics(leaders));
 }
 
@@ -2000,8 +2279,8 @@ window.addEventListener("resize",()=>{clearTimeout(adminChartResizeTimer);adminC
 function openLeader360(username){
   const u=getUsers().find(x=>x.username===username);if(!u)return;
   const s=leaderSnapshot(u),d=new Date(),left=Math.max(daysInCurrentMonth()-d.getDate(),1),req=Math.ceil(Math.max(5000-s.m.pv,0)/left),proj=Math.round(s.m.pv/elapsedDays()*daysInCurrentMonth());
-  const bm=bestMonthFor(u.username),allDays=totalActiveDaysAllTime(u.username);
-  l360Name.textContent=u.name+" — 360° Profile";l360Meta.textContent=u.username+" • Joined "+formatDateSafe(u.createdAt)+" • Best "+(bm?bm.ym+" / "+bm.pv+" PV":"—")+" • Total Active "+allDays;
+  const bm=bestMonthFor(u.username),allDays=totalActiveDaysAllTime(u.username),up=userPermissions(u),prof=u.profile||{};
+  l360Name.textContent=u.name+" — 360° Profile";l360Meta.textContent=u.username+" • Joined "+formatDateSafe(u.createdAt)+" • "+(prof.village||"Area not set")+" • Goal "+Number(prof.monthlyGoal||5000)+" PV • Best "+(bm?bm.ym+" / "+bm.pv+" PV":"—")+" • Total Active "+allDays;
   l360Kpis.innerHTML=`
     <div class="kpi"><div class="label">FTD</div><div class="value">${s.f}%</div><div class="sub">Today Score</div></div>
     <div class="kpi"><div class="label">Growth Score</div><div class="value">${s.g}</div><div class="sub">${growthLevelText(s.g)}</div></div>
@@ -2014,7 +2293,7 @@ function openLeader360(username){
   const weakest=[];
   const metrics=[["Calls",s.m.calls,150],["Presentations",s.m.plans,60],["PV",s.m.pv,5000],["Depth",s.m.depth,20],["Meeting",s.m.meeting,28]];
   metrics.sort((a,b)=>(a[1]/a[2])-(b[1]/b[2])).slice(0,2).forEach(x=>weakest.push(`🔍 ${x[0]} सध्या ${Math.round(x[1]/x[2]*100)}% आहे.`));
-  l360Diagnosis.innerHTML=(s.reasons.length?`<div>⚠️ ${s.reasons.join(" • ")}</div>`:"<div>🟢 मोठा risk दिसत नाही.</div>")+weakest.map(x=>`<div>${x}</div>`).join("")+`<div style="margin-top:6px">🎯 पुढील focus: Calls → Presentation → PV conversion.</div>`;
+  l360Diagnosis.innerHTML=(s.reasons.length?`<div>⚠️ ${s.reasons.join(" • ")}</div>`:"<div>🟢 मोठा risk दिसत नाही.</div>")+weakest.map(x=>`<div>${x}</div>`).join("")+`<div style="margin-top:6px">🎯 पुढील focus: Calls → Presentation → PV conversion.</div><div style="margin-top:8px"><b>Rights:</b> Entry ${up.dailyEntry?"✅":"🔒"} • Report ${up.ownReport?"✅":"🔒"} • Profile Edit ${up.profileEdit?"✅":"🔒"}</div>`;
   leader360Modal.classList.add("show")
 }
 function closeLeader360(){leader360Modal.classList.remove("show")}
@@ -2254,7 +2533,7 @@ function shareWhatsAppReport(){
 }
 
 
-/* ===== FINAL STABLE DATA / HISTORY / BRANDING ===== */
+/* ===== ADMIN LIVE + RIGHTS FIX DATA / HISTORY / BRANDING ===== */
 function localActivityLog(){
   try{return JSON.parse(localStorage.getItem("ds_activity_log")||"[]")}catch(e){return []}
 }
@@ -2311,15 +2590,28 @@ function renderLeaderProfile(){
   if(!currentUser||currentUser.role==="admin")return;
   const u=getUsers().find(x=>String(x.username)===String(currentUser.username))||currentUser;
   const best=bestMonthFor(currentUser.username);
-  const mt=monthTotalsFromEntries(getAllUserEntries(currentUser.username),localMonthKey());
+  const mt=getMonthTotals(currentUser.username);
   const gs=growthScoreFor(currentUser.username);
+  const p=userPermissions(u),profile=u.profile||currentUser.profile||{};
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
   set("lpMobile",currentUser.username||"—");
-  set("lpJoined",formatDateSafe(u.createdAt));
+  set("lpJoined",formatDateSafe(u.createdAt||currentUser.createdAt));
   set("lpCurrentPv",mt.pv||0);
   set("lpBestMonth",best?`${best.ym} • ${best.pv} PV`:"—");
   set("lpTotalActive",totalActiveDaysAllTime(currentUser.username));
   set("lpLevel",growthLevelText(gs));
+  set("lpVillage",profile.village||"—");
+  set("lpMonthlyGoal",Number(profile.monthlyGoal||5000)+" PV");
+  set("lpProfileRight",p.profileEdit?"✅ Allowed":"🔒 Admin Only");
+
+  const a=document.getElementById("leaderProfileEditActions");
+  if(a)a.innerHTML=p.profileEdit?`<button class="primary" onclick="editOwnProfile()">✏️ माझी Profile भरा / Edit करा</button>`:`<span class="small">Personal Profile edit करण्यासाठी Admin ने Profile Edit Right ON करावा.</span>`;
+  const r=document.getElementById("leaderRightsSummary");
+  if(r)r.innerHTML=`<b>माझे Rights:</b><div class="rightsWrap" style="margin-top:7px">
+    ${permissionBadge("Daily Entry",p.dailyEntry)}
+    ${permissionBadge("Own Report",p.ownReport)}
+    ${permissionBadge("Profile Edit",p.profileEdit)}
+  </div>`;
 }
 
 async function createSystemBackup(reason="auto",force=false){
