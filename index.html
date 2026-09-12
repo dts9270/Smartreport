@@ -598,7 +598,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         <div class="tableWrap">
           <table>
             <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
-            <tbody id="usersTable"></tbody></table></div><div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.</div><div style="display:none"><table>
+            <tbody id="usersTable"></tbody></table></div><div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.<br>Mobile / Username बदलताना जुना Firebase record archive होतो; entries नवीन username वर copy होतात.</div><div style="display:none"><table>
           </table>
         </div>
       </div>
@@ -929,7 +929,18 @@ async function backupUserRecord(user,reason="update"){
 async function mergeAllUsersFromFirebase(){
   const remote=await fetchAllCloudUsers();
   if(remote&&Object.keys(remote).length)mergeCloudUsers(remote);
-  return getUsers();
+
+  // Hide archived username aliases from the working user list.
+  const activeUsers=getUsers().filter(u=>u.username==="admin"||u.archived!==true);
+  const seen=new Set();
+  const deduped=[];
+  activeUsers.forEach(u=>{
+    const k=String(u.username);
+    if(seen.has(k))return;
+    seen.add(k);deduped.push(u);
+  });
+  setUsers(deduped);
+  return deduped;
 }
 
 async function cloudSetUser(user,passwordPlain=null){
@@ -975,7 +986,7 @@ async function cloudFetchUser(username){
 function mergeCloudUsers(remote){
   const local=getUsers(), map=new Map(local.map(x=>[x.username,x]));
   Object.values(remote||{}).forEach(r=>{
-    if(!r||!r.username||r.username==="admin")return;
+    if(!r||!r.username||r.username==="admin"||r.archived===true)return;
     const old=map.get(r.username)||{};
     map.set(r.username,{...old,...r,password:old.password,passwordHash:r.passwordHash||old.passwordHash});
   });
@@ -1350,6 +1361,125 @@ async function editUserName(username){
   renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
 
+
+async function editUserUsername(oldUsername){
+  if(oldUsername==="admin")return showToast("Default Admin username बदलता येणार नाही");
+
+  await mergeAllUsersFromFirebase();
+
+  const users=getUsers();
+  const user=users.find(u=>String(u.username)===String(oldUsername));
+  if(!user)return showToast("User सापडला नाही");
+
+  const next=prompt("नवीन Mobile / Username टाका",String(oldUsername));
+  if(next===null)return;
+
+  const newUsername=String(next).trim();
+  if(!newUsername)return showToast("नवीन Username भरा");
+  if(newUsername===String(oldUsername))return showToast("Username मध्ये बदल नाही");
+
+  // For mobile-based usernames, require 10 digits.
+  if(!/^\d{10}$/.test(newUsername))return showToast("10 अंकी Mobile Number टाका");
+
+  if(users.some(u=>String(u.username)===newUsername))return showToast("हा Username आधीच वापरात आहे");
+
+  if(firebaseReady&&db){
+    const existing=await verifyCloudUser(newUsername);
+    if(existing)return showToast("हा Username Firebase मध्ये आधीच आहे");
+  }
+
+  if(!confirm(`${oldUsername} → ${newUsername}\nUsername बदलायचा? जुना Data सुरक्षित ठेवला जाईल.`))return;
+
+  try{
+    const now=Date.now();
+    const oldKey=safeCloudKey(oldUsername);
+    const newKey=safeCloudKey(newUsername);
+
+    // Read old cloud user + entries first.
+    const oldCloudUser=firebaseReady&&db
+      ? await verifyCloudUser(oldUsername)
+      : null;
+
+    let oldCloudEntries={};
+    if(firebaseReady&&db){
+      try{
+        const s=await db.ref(`${CLOUD_ROOT}/entries/${oldKey}`).once("value");
+        oldCloudEntries=s.exists()?(s.val()||{}):{};
+      }catch(e){console.warn("Old entry read failed",e)}
+    }
+
+    // Merge local + cloud entries and copy to new username.
+    const oldLocal=JSON.parse(localStorage.getItem("ds_entries_"+oldUsername)||"{}");
+    const mergedEntries=typeof mergeEntrySets==="function"
+      ? mergeEntrySets(oldLocal,oldCloudEntries)
+      : {...oldCloudEntries,...oldLocal};
+
+    const newUser={
+      ...(oldCloudUser||user),
+      name:user.name,
+      username:newUsername,
+      role:user.role||"leader",
+      active:user.active!==false,
+      archived:false,
+      migratedFrom:String(oldUsername),
+      createdAt:Number((oldCloudUser||user).createdAt||now),
+      updatedAt:now
+    };
+
+    // Keep password hash from existing record/local user.
+    if(user.passwordHash)newUser.passwordHash=user.passwordHash;
+    else if(oldCloudUser&&oldCloudUser.passwordHash)newUser.passwordHash=oldCloudUser.passwordHash;
+
+    // Write NEW user first.
+    if(firebaseReady&&db){
+      await db.ref(`${USER_REGISTRY_PATH}/${newKey}`).set(newUser);
+      if(Object.keys(mergedEntries).length){
+        await db.ref(`${CLOUD_ROOT}/entries/${newKey}`).update(mergedEntries);
+      }
+
+      const verifyNew=await verifyCloudUser(newUsername);
+      if(!verifyNew||String(verifyNew.username)!==newUsername){
+        throw new Error("New username verification failed");
+      }
+
+      // Preserve old user record as archived alias. Never hard-delete it.
+      const archivedOld={
+        ...(oldCloudUser||user),
+        username:String(oldUsername),
+        active:false,
+        archived:true,
+        migratedTo:newUsername,
+        updatedAt:now
+      };
+      await db.ref(`${USER_REGISTRY_PATH}/${oldKey}`).set(archivedOld);
+      await backupUserRecord(newUser,"username_change_new");
+      await backupUserRecord(archivedOld,"username_change_old_archived");
+    }
+
+    // Local copy under new key; keep old key untouched for recovery.
+    localStorage.setItem("ds_entries_"+newUsername,JSON.stringify(mergedEntries));
+
+    const updatedUsers=getUsers().map(u=>{
+      if(String(u.username)!==String(oldUsername))return u;
+      return {...u,...newUser};
+    });
+    setUsers(updatedUsers);
+
+    // If admin edits the currently logged-in non-admin account in future.
+    if(currentUser&&String(currentUser.username)===String(oldUsername)){
+      currentUser={...currentUser,username:newUsername,name:newUser.name};
+      localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+    }
+
+    await mergeAllUsersFromFirebase();
+    showToast("Mobile / Username सुरक्षितपणे बदलला ✅");
+    renderUsers();renderLeaderboard();renderAdminWarRoom();
+  }catch(e){
+    console.warn("Username migration failed",e);
+    showToast("Username बदल पूर्ण झाला नाही; जुना Data सुरक्षित आहे");
+  }
+}
+
 function renderUsers(){
   const u=getUsers();userCount.textContent=u.length;
   usersTable.innerHTML=u.map(x=>`<tr>
@@ -1359,7 +1489,8 @@ function renderUsers(){
     <td>${x.username==="admin"?"—":`
       <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password Reset</button>
       <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
-      <button class="actionMini" onclick="editUserName('${x.username}')">Edit</button>`}
+      <button class="actionMini" onclick="editUserName('${x.username}')">Edit Name</button>
+      <button class="actionMini" onclick="editUserUsername('${x.username}')">Edit Mobile</button>`}
     </td>
   </tr>`).join("")
 }
