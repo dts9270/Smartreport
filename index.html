@@ -704,9 +704,9 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         <div class="sectionHead"><div><h3>👥 Users</h3></div><div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div></div>
         <div class="tableWrap">
           <table>
-            <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
+            <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Cloud</th><th>Action</th></tr></thead>
             <tbody id="usersTable"></tbody></table></div>
-        <div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.<br>Mobile / Username बदलताना जुना Firebase record archive होतो; entries नवीन username वर copy होतात.</div>
+        <div class="small" style="margin-top:8px">नवीन User फक्त Firebase मध्ये दोन ठिकाणी verify झाल्यावरच तयार होतो. त्यामुळे Local-only / गायब होणारा User तयार होणार नाही.<br>Deactivate केल्यावरही Data सुरक्षित राहतो; Mobile बदलल्यास जुना record archive होतो.</div>
       </div>
     </div>
 
@@ -753,6 +753,7 @@ const legacyFirebaseConfig = {
 };
 const CLOUD_ROOT="ds_world_growth_os_v1";
 const USER_REGISTRY_PATH=`${CLOUD_ROOT}/users`;
+const USER_PERMANENT_PATH=`${CLOUD_ROOT}/users_permanent`;
 const USER_BACKUP_PATH=`${CLOUD_ROOT}/user_backups`;
 const ACTIVITY_LOG_PATH=`${CLOUD_ROOT}/activity_log`;
 const DAILY_BACKUP_PATH=`${CLOUD_ROOT}/backups/daily`;
@@ -857,73 +858,57 @@ async function recoverOldUsersAndData(showMessage=true){
   recoveryRunning=true;
   if(showMessage)setCloudStatus("","♻️ Recovering");
   try{
-    const localOld=getUsersFromKey("ds_growth_users");
-    const localV2=getUsersFromKey("ds_v2_users");
-    const localCurrent=getUsers();
+    // First self-heal current stable Firebase using permanent registry/backups.
+    await restorePermanentUsers();
 
-    const [curUsersObj,legacyUsersObj,curEntriesObj,legacyEntriesObj]=await Promise.all([
-      readPath(db,`${CLOUD_ROOT}/users`),
-      readPath(legacyDb,`${CLOUD_ROOT}/users`),
-      readPath(db,`${CLOUD_ROOT}/entries`),
-      readPath(legacyDb,`${CLOUD_ROOT}/entries`)
-    ]);
+    const currentMain=(await readPath(db,USER_REGISTRY_PATH))||{};
+    const currentKeys=new Set(Object.keys(currentMain));
+    const legacyUsers=(await readPath(legacyDb,`${CLOUD_ROOT}/users`))||{};
+    const legacyEntries=(await readPath(legacyDb,`${CLOUD_ROOT}/entries`))||{};
 
-    let mergedUsers=mergeUserSources(
-      localOld,localV2,localCurrent,
-      normalizeRemoteUsers(curUsersObj),
-      normalizeRemoteUsers(legacyUsersObj)
-    );
+    let restored=0;
+    for(const [key,u] of Object.entries(legacyUsers)){
+      if(!u||!u.username||u.username==="admin")continue;
+      if(u.archived===true&&u.active===false)continue;
+      if(currentKeys.has(safeCloudKey(u.username)))continue;
 
-    if(!mergedUsers.find(x=>x.username==="admin"))mergedUsers.unshift(ADMIN_DEFAULT);
+      const payload={
+        ...u,
+        username:String(u.username),
+        active:u.active!==false,
+        archived:false,
+        migratedTo:null,
+        createdAt:Number(u.createdAt||Date.now()),
+        updatedAt:Date.now(),
+        cloudVerifiedAt:Date.now()
+      };
+      const updates={};
+      const k=safeCloudKey(payload.username);
+      updates[`users/${k}`]=payload;
+      updates[`users_permanent/${k}`]=payload;
+      await db.ref(CLOUD_ROOT).update(updates);
 
-    // Preserve any legacy plaintext password locally just long enough to hash it.
-    for(const u of mergedUsers){
-      if(u.username==="admin")continue;
-      if(!u.passwordHash&&u.password)u.passwordHash=await hashPassword(u.password);
+      // Restore only MISSING dates, never overwrite newer current entries.
+      const oldE=legacyEntries[k]||{};
+      const curSnap=await db.ref(`${CLOUD_ROOT}/entries/${k}`).once("value");
+      const curE=curSnap.exists()?(curSnap.val()||{}):{};
+      const missing={};
+      Object.entries(oldE).forEach(([date,val])=>{if(!curE[date])missing[date]=val});
+      if(Object.keys(missing).length)await db.ref(`${CLOUD_ROOT}/entries/${k}`).update(missing);
+
+      await backupUserRecord(payload,"legacy_safe_restore");
+      restored++;
     }
 
-    setUsers(mergedUsers);
-
-    // Merge entries from every known local namespace and both Firebase projects.
-    const currentEntries=curEntriesObj||{},legacyEntries=legacyEntriesObj||{};
-    for(const u of mergedUsers){
-      if(u.username==="admin")continue;
-      const sk=safeCloudKey(u.username);
-      const e1=getEntriesFromKey("ds_entries_"+u.username);
-      const e2=getEntriesFromKey("ds_v2_entries_"+u.username);
-      const mergedEntries=mergeEntrySets(e1,e2,currentEntries[sk]||{},legacyEntries[sk]||{});
-      localStorage.setItem("ds_entries_"+u.username,JSON.stringify(mergedEntries));
-
-      // Write recovered user and data only to the stable current Firebase root.
-      if(firebaseReady&&db){
-        const payload={
-          name:u.name||u.username,
-          username:String(u.username),
-          role:u.role||"leader",
-          active:u.active!==false,
-          passwordHash:u.passwordHash||"",
-          createdAt:Number(u.createdAt||Date.now()),
-          updatedAt:Date.now()
-        };
-        await db.ref(cloudUserPath(u.username)).update(payload);
-        if(Object.keys(mergedEntries).length)await db.ref(cloudEntriesPath(u.username)).update(mergedEntries);
-      }
-    }
-
-    // Remove plaintext passwords from the current stored user list after recovery.
-    const safeUsers=getUsers().map(u=>{
-      if(u.username==="admin")return u;
-      const x={...u};delete x.password;return x;
-    });
-    setUsers(safeUsers);
+    await mergeAllUsersFromFirebase();
     localStorage.setItem("ds_last_recovery",String(Date.now()));
     setCloudStatus("online","☁️ Firebase Online");
     if(currentUser)renderAll();
-    if(showMessage)showToast("जुने Users + Data शोधून Sync केले ✅");
+    if(showMessage)showToast(restored?`${restored} जुने User सुरक्षित Restore झाले ✅`:"सगळे Users आधीच सुरक्षित आहेत ✅");
   }catch(e){
     console.warn("Recovery error",e);
     setCloudStatus("error","☁️ Recovery Error");
-    if(showMessage)showToast("Recovery पूर्ण झाली नाही; Firebase rules तपासा");
+    if(showMessage)showToast("Recovery पूर्ण झाली नाही; Firebase Rules तपासा");
   }finally{
     recoveryRunning=false;
   }
@@ -1001,11 +986,86 @@ function startFirebaseConnectionMonitor(){
 }
 
 
+
+async function restorePermanentUsers(){
+  if(!firebaseReady||!db)return {main:{},permanent:{}};
+  try{
+    const [mainSnap,permSnap,backupSnap]=await Promise.all([
+      db.ref(USER_REGISTRY_PATH).once("value"),
+      db.ref(USER_PERMANENT_PATH).once("value"),
+      db.ref(USER_BACKUP_PATH).once("value")
+    ]);
+    const main=mainSnap.exists()?(mainSnap.val()||{}):{};
+    const permanent=permSnap.exists()?(permSnap.val()||{}):{};
+    const backups=backupSnap.exists()?(backupSnap.val()||{}):{};
+    const updates={};
+    const keys=new Set([...Object.keys(main),...Object.keys(permanent),...Object.keys(backups)]);
+
+    for(const key of keys){
+      let m=main[key]||null;
+      let p=permanent[key]||null;
+
+      // Repair the previous bug: active + archived should never hide a live user.
+      if(m&&m.archived===true&&m.active!==false){
+        m={...m,archived:false,migratedTo:null,updatedAt:Date.now(),cloudVerifiedAt:Date.now()};
+        updates[`users/${key}`]=m;
+      }
+      if(p&&p.archived===true&&p.active!==false){
+        p={...p,archived:false,migratedTo:null,updatedAt:Date.now(),cloudVerifiedAt:Date.now()};
+        updates[`users_permanent/${key}`]=p;
+      }
+
+      // Mirror an existing record to the missing side.
+      if(m&&!p){
+        updates[`users_permanent/${key}`]=m;
+        p=m;
+      }else if(p&&!m){
+        updates[`users/${key}`]=p;
+        m=p;
+      }
+
+      // If both primary records vanished, recover the newest backup.
+      if(!m&&!p&&backups[key]){
+        const versions=Object.values(backups[key]||{}).filter(Boolean);
+        versions.sort((a,b)=>Number(b.updatedAt||b.createdAt||0)-Number(a.updatedAt||a.createdAt||0));
+        const latest=versions[0];
+        if(latest&&latest.username){
+          const recovered={...latest,cloudVerifiedAt:Date.now()};
+          // Respect an intentional archived alias; do not resurrect it as a live user.
+          if(recovered.archived===true&&recovered.active===false){
+            updates[`users/${key}`]=recovered;
+            updates[`users_permanent/${key}`]=recovered;
+          }else{
+            recovered.archived=false;
+            recovered.migratedTo=null;
+            updates[`users/${key}`]=recovered;
+            updates[`users_permanent/${key}`]=recovered;
+          }
+        }
+      }
+    }
+
+    if(Object.keys(updates).length)await db.ref(CLOUD_ROOT).update(updates);
+
+    const [finalMain,finalPerm]=await Promise.all([
+      db.ref(USER_REGISTRY_PATH).once("value"),
+      db.ref(USER_PERMANENT_PATH).once("value")
+    ]);
+    return {
+      main:finalMain.exists()?(finalMain.val()||{}):{},
+      permanent:finalPerm.exists()?(finalPerm.val()||{}):{}
+    };
+  }catch(e){
+    console.warn("restorePermanentUsers failed",e);
+    return {main:{},permanent:{}};
+  }
+}
+
 async function fetchAllCloudUsers(){
   if(!firebaseReady||!db)return {};
   try{
-    const s=await db.ref(USER_REGISTRY_PATH).once("value");
-    return s.exists()?(s.val()||{}):{};
+    const healed=await restorePermanentUsers();
+    return healed.main||{};
   }catch(e){
     console.warn("fetchAllCloudUsers failed",e);
     return {};
@@ -1040,12 +1100,10 @@ async function backupUserRecord(user,reason="update"){
 async function mergeAllUsersFromFirebase(){
   const remote=await fetchAllCloudUsers();
   if(remote&&Object.keys(remote).length)mergeCloudUsers(remote);
-
-  // Hide archived username aliases from the working user list.
-  const activeUsers=getUsers().filter(u=>u.username==="admin"||u.archived!==true);
-  const seen=new Set();
-  const deduped=[];
-  activeUsers.forEach(u=>{
+  const seen=new Set(),deduped=[];
+  getUsers().forEach(u=>{
+    if(!u||!u.username)return;
+    if(u.username!=="admin"&&u.archived===true&&u.active===false)return;
     const k=String(u.username);
     if(seen.has(k))return;
     seen.add(k);deduped.push(u);
@@ -1057,27 +1115,53 @@ async function mergeAllUsersFromFirebase(){
 async function cloudSetUser(user,passwordPlain=null){
   if(!firebaseReady||!db||!user||user.username==="admin")return false;
   try{
-    const existing=await verifyCloudUser(user.username);
+    const username=String(user.username);
+    const key=safeCloudKey(username);
+
+    const [mainSnap,permSnap]=await Promise.all([
+      db.ref(`${USER_REGISTRY_PATH}/${key}`).once("value"),
+      db.ref(`${USER_PERMANENT_PATH}/${key}`).once("value")
+    ]);
+    const existingMain=mainSnap.exists()?mainSnap.val():null;
+    const existingPerm=permSnap.exists()?permSnap.val():null;
+    const existing=existingMain||existingPerm||null;
     const now=Date.now();
+
     const payload={
       ...(existing||{}),
-      name:user.name||existing?.name||String(user.username),
-      username:String(user.username),
+      name:user.name||existing?.name||username,
+      username,
       role:user.role||existing?.role||"leader",
       active:user.active!==false,
+      archived:false,
       createdAt:Number(existing?.createdAt||user.createdAt||now),
-      updatedAt:now
+      updatedAt:now,
+      cloudVerifiedAt:now
     };
+    // If an old archived alias is intentionally reused, clear the migration pointer.
+    payload.migratedTo=null;
+
     if(passwordPlain!==null)payload.passwordHash=await hashPassword(passwordPlain);
     else if(user.passwordHash)payload.passwordHash=user.passwordHash;
     else if(existing?.passwordHash)payload.passwordHash=existing.passwordHash;
     else if(user.password)payload.passwordHash=await hashPassword(user.password);
 
-    await db.ref(`${USER_REGISTRY_PATH}/${safeCloudKey(user.username)}`).set(payload);
+    // Atomic write to BOTH canonical and permanent registries.
+    const updates={};
+    updates[`users/${key}`]=payload;
+    updates[`users_permanent/${key}`]=payload;
+    await db.ref(CLOUD_ROOT).update(updates);
+
     await backupUserRecord(payload,existing?"update":"create");
 
-    const check=await verifyCloudUser(user.username);
-    if(!check||String(check.username)!==String(user.username))throw new Error("Firebase user write verification failed");
+    const [checkMain,checkPerm]=await Promise.all([
+      db.ref(`${USER_REGISTRY_PATH}/${key}`).once("value"),
+      db.ref(`${USER_PERMANENT_PATH}/${key}`).once("value")
+    ]);
+    if(!checkMain.exists()||!checkPerm.exists())throw new Error("Permanent user verification failed");
+    if(String(checkMain.val()?.username)!==username||String(checkPerm.val()?.username)!==username){
+      throw new Error("Username verification failed");
+    }
 
     setCloudStatus("online","☁️ Firebase Online");
     return true;
@@ -1095,13 +1179,15 @@ async function cloudFetchUser(username){
   }catch(e){console.warn(e);setCloudStatus("error","☁️ Firebase Error");return null}
 }
 function mergeCloudUsers(remote){
-  const local=getUsers(), map=new Map(local.map(x=>[x.username,x]));
+  const local=getUsers(),map=new Map(local.map(x=>[String(x.username),x]));
   Object.values(remote||{}).forEach(r=>{
-    if(!r||!r.username||r.username==="admin"||r.archived===true)return;
-    const old=map.get(r.username)||{};
-    map.set(r.username,{...old,...r,password:old.password,passwordHash:r.passwordHash||old.passwordHash});
+    if(!r||!r.username||r.username==="admin")return;
+    if(r.archived===true&&r.active===false)return;
+    const key=String(r.username);
+    const old=map.get(key)||{};
+    map.set(key,{...old,...r,password:old.password,passwordHash:r.passwordHash||old.passwordHash});
   });
-  const arr=[...map.values()];
+  const arr=[...map.values()].filter(u=>u.username==="admin"||!(u.archived===true&&u.active===false));
   setUsers(arr);
   return arr;
 }
@@ -1152,8 +1238,15 @@ async function syncCloudData(){
 function startCloudListeners(){
   if(!firebaseReady||!db||cloudListenersStarted)return;
   cloudListenersStarted=true;
-  db.ref(`${CLOUD_ROOT}/users`).on("value",s=>{
-    mergeCloudUsers(s.val()||{});
+  db.ref(USER_REGISTRY_PATH).on("value",async s=>{
+    const raw=s.val()||{};
+    let needsRepair=false;
+    Object.values(raw).forEach(r=>{
+      if(r&&r.archived===true&&r.active!==false)needsRepair=true;
+    });
+    if(needsRepair)await restorePermanentUsers();
+    const finalSnap=needsRepair?await db.ref(USER_REGISTRY_PATH).once("value"):s;
+    mergeCloudUsers(finalSnap.val()||{});
     if(currentUser&&currentUser.role==="admin"){renderUsers();renderLeaderboard();renderAdminWarRoom()}
   });
   db.ref(`${CLOUD_ROOT}/entries`).on("value",s=>{
@@ -1161,7 +1254,7 @@ function startCloudListeners(){
     const users=getUsers();
     Object.keys(all).forEach(k=>{
       const u=users.find(x=>safeCloudKey(x.username)===k);
-      if(u) mergeEntryData(u.username,all[k]);
+      if(u)mergeEntryData(u.username,all[k]);
     });
     if(currentUser)renderAll();
   });
@@ -1214,17 +1307,13 @@ async function boot(){
   const htab=document.getElementById("historyTabApp");if(htab)htab.classList.toggle("hidden",currentUser.role!=="admin");
   heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
   await loadBranding();
-  if(currentUser.role==="admin")await mergeAllUsersFromFirebase();
+  if(currentUser.role==="admin"){await restorePermanentUsers();await mergeAllUsersFromFirebase();}
   renderAll();
   if(currentUser.role==="admin")openAppTab("admin");
   startCloudListeners();
   await syncCloudData();
   if(currentUser.role==="admin"){await ensureDailyBackup();await autoArchivePreviousMonth();}
-  if(currentUser.role==="admin"){
-    const nonAdmin=getUsers().filter(x=>x.username!=="admin");
-    const last=Number(localStorage.getItem("ds_last_recovery")||0);
-    if(nonAdmin.length<3 || Date.now()-last>86400000)await recoverOldUsersAndData(false);
-  }
+
 }
 function logout(){localStorage.removeItem("ds_current_user");location.reload()}
 function showView(v,btn){
@@ -1411,33 +1500,63 @@ function renderLeaderboard(){
     </div>`).join(""):`<div class="small" style="margin-top:10px">Admin मधून Leader add करा.</div>`;
 }
 async function addUser(){
-  const name=newName.value.trim(),username=newUser.value.trim(),password=newPass.value,role=newRole.value;
+  const name=newName.value.trim(),username=String(newUser.value||"").trim(),password=newPass.value,role=newRole.value;
   if(!name||!username||!password)return showToast("सर्व माहिती भरा");
+  if(!/^\d{10}$/.test(username))return showToast("10 अंकी Mobile Number टाका");
 
-  await mergeAllUsersFromFirebase();
-  let users=getUsers();
-  if(users.some(x=>String(x.username)===String(username)))return showToast("हा Username आधीच आहे");
+  if(!firebaseReady||!db){
+    return showToast("Firebase connect नाही — User तयार केलेला नाही");
+  }
 
-  const now=Date.now();
-  const passwordHash=await hashPassword(password);
-  const obj={name,username:String(username),passwordHash,role,active:true,createdAt:now,updatedAt:now};
-
-  users.push(obj);
-  setUsers(users);
-
-  const saved=await cloudSetUser(obj,password);
-  const verified=await verifyCloudUser(username);
-
-  if(!saved||!verified){
-    showToast("User फोनमध्ये save आहे; Firebase save verify झाला नाही");
-    renderUsers();renderLeaderboard();renderAdminWarRoom();
-    return;
+  // Verify actual server connection before creating a permanent user.
+  try{
+    const connected=await db.ref(".info/connected").once("value");
+    if(connected.val()!==true)return showToast("Internet/Firebase connect नाही — User तयार केलेला नाही");
+  }catch(e){
+    return showToast("Firebase connect तपासता आला नाही");
   }
 
   await mergeAllUsersFromFirebase();
+  let users=getUsers();
+  if(users.some(x=>String(x.username)===username))return showToast("हा Username आधीच आहे");
+
+  // Existing archived alias is allowed to be reused; a live cloud record is not.
+  try{
+    const existing=await verifyCloudUser(username);
+    if(existing&&!(existing.archived===true&&existing.active===false)){
+      return showToast("हा Mobile Firebase मध्ये आधीच आहे");
+    }
+  }catch(e){}
+
+  const now=Date.now();
+  const passwordHash=await hashPassword(password);
+  const obj={
+    name,username,passwordHash,role,active:true,archived:false,
+    createdAt:now,updatedAt:now,cloudVerifiedAt:now
+  };
+
+  // Firebase FIRST. Do not add a local-only user that can disappear later.
+  const saved=await cloudSetUser(obj,password);
+  if(!saved){
+    return showToast("Firebase save झाला नाही — User तयार केलेला नाही");
+  }
+
+  const [mainCheck,permCheck]=await Promise.all([
+    db.ref(`${USER_REGISTRY_PATH}/${safeCloudKey(username)}`).once("value"),
+    db.ref(`${USER_PERMANENT_PATH}/${safeCloudKey(username)}`).once("value")
+  ]);
+  if(!mainCheck.exists()||!permCheck.exists()){
+    return showToast("Cloud verification failed — पुन्हा प्रयत्न करा");
+  }
+
+  users=getUsers().filter(x=>String(x.username)!==username);
+  users.push({...obj,passwordHash:mainCheck.val().passwordHash||passwordHash});
+  setUsers(users);
+
+  await mergeAllUsersFromFirebase();
   newName.value="";newUser.value="";newPass.value="";
-  await logActivity("USER_ADD",`${obj.name} • ${obj.role}`,obj.username);
-  showToast("User Firebase मध्ये कायमचा save झाला ✅");
+  await logActivity("USER_ADD",`${obj.name} • ${obj.role} • permanent cloud verified`,obj.username);
+  showToast("User Permanent Firebase मध्ये Save झाला ✅");
   renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
 async function deleteUser(username){
@@ -1555,15 +1674,9 @@ async function editUserUsername(oldUsername){
 
     // Write NEW user first.
     if(firebaseReady&&db){
-      await db.ref(`${USER_REGISTRY_PATH}/${newKey}`).set(newUser);
-      if(Object.keys(mergedEntries).length){
-        await db.ref(`${CLOUD_ROOT}/entries/${newKey}`).update(mergedEntries);
-      }
-
-      const verifyNew=await verifyCloudUser(newUsername);
-      if(!verifyNew||String(verifyNew.username)!==newUsername){
-        throw new Error("New username verification failed");
-      }
+      newUser.archived=false;
+      newUser.cloudVerifiedAt=now;
+      newUser.migratedTo=null;
 
       // Preserve old user record as archived alias. Never hard-delete it.
       const archivedOld={
@@ -1572,9 +1685,29 @@ async function editUserUsername(oldUsername){
         active:false,
         archived:true,
         migratedTo:newUsername,
-        updatedAt:now
+        updatedAt:now,
+        cloudVerifiedAt:now
       };
-      await db.ref(`${USER_REGISTRY_PATH}/${oldKey}`).set(archivedOld);
+
+      const updates={};
+      updates[`users/${newKey}`]=newUser;
+      updates[`users_permanent/${newKey}`]=newUser;
+      updates[`users/${oldKey}`]=archivedOld;
+      updates[`users_permanent/${oldKey}`]=archivedOld;
+      await db.ref(CLOUD_ROOT).update(updates);
+
+      if(Object.keys(mergedEntries).length){
+        await db.ref(`${CLOUD_ROOT}/entries/${newKey}`).update(mergedEntries);
+      }
+
+      const [verifyMain,verifyPerm]=await Promise.all([
+        db.ref(`${USER_REGISTRY_PATH}/${newKey}`).once("value"),
+        db.ref(`${USER_PERMANENT_PATH}/${newKey}`).once("value")
+      ]);
+      if(!verifyMain.exists()||!verifyPerm.exists()){
+        throw new Error("New username permanent verification failed");
+      }
+
       await backupUserRecord(newUser,"username_change_new");
       await backupUserRecord(archivedOld,"username_change_old_archived");
     }
@@ -1610,6 +1743,7 @@ function renderUsers(){
     <td>${x.name}</td>
     <td>${x.username}</td>
     <td>${x.role}${x.active===false?" • Inactive":""}</td>
+    <td>${x.username==="admin"?"LOCAL ADMIN":`<span class="badge">☁️ PERMANENT</span>`}</td>
     <td>${x.username==="admin"?"—":`
       <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password Reset</button>
       <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
