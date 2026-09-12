@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>DS WORLD Growth OS</title>
+<title>RCM • DS WORLD Growth OS — Stable Firebase</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -192,10 +192,106 @@ body.lightTheme .todayMini .mini,body.lightTheme .chartCard,body.lightTheme .ana
 .coachStep{padding:9px 10px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(180deg,#112341,#0d1c33);font-size:12px;font-weight:850;line-height:1.5}
 body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
 
+
+.rcmHeroBadge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 10px;margin-bottom:8px;border-radius:999px;
+  font-size:10px;font-weight:950;letter-spacing:.7px;
+  color:#fff;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.2)
+}
+body.lightTheme .rcmHeroBadge{
+  color:#27405f;background:rgba(255,255,255,.55);
+  border-color:rgba(73,91,111,.16)
+}
+@media(max-width:430px){
+  .brand h1{font-size:14px}
+  .brand small{font-size:9px}
+  .rcmHeroBadge{font-size:9px;padding:5px 8px}
+}
+
+
+#cloudStatus.testing{color:var(--cyan)}
+.firebasePanel{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(10,25,48,.55);font-size:11px;line-height:1.55}
+body.lightTheme .firebasePanel{background:#fffaf2}
+
+
+/* Professional report */
+.reportActions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.reportActions .primary{min-height:48px}
+.reportLetter{
+  background:#fff!important;color:#162031;border-radius:22px;padding:0;overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);box-shadow:0 22px 45px rgba(0,0,0,.12)
+}
+.reportTopBand{height:9px;background:linear-gradient(90deg,#1a4f9c,#d4af37,#169b62)}
+.reportHead{padding:18px 18px 14px;border-bottom:1px solid #e8eef6}
+.reportHeadRow{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.reportBrandWrap{display:flex;gap:12px;align-items:center}
+.reportLogo{
+  width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#1a4f9c,#0a2d66);
+  color:#fff;display:grid;place-items:center;font-weight:1000;font-size:18px;letter-spacing:.5px;box-shadow:0 8px 18px rgba(26,79,156,.25)
+}
+.reportBrandText h2{margin:0;font-size:19px;color:#163a73}
+.reportBrandText .sub1{font-size:12px;font-weight:900;color:#1b8ba8}
+.reportBrandText .sub2{font-size:12px;color:#5b6880;margin-top:2px}
+.reportMetaBox{text-align:right;font-size:12px;line-height:1.5;color:#4b5568}
+.reportTitleBar{
+  margin:14px 18px 0;background:linear-gradient(135deg,#f7fbff,#fff8e8);
+  border:1px solid #e5edf7;border-radius:16px;padding:12px 14px
+}
+.reportTitleBar h3{margin:0;font-size:18px;color:#163a73}
+.reportTitleBar p{margin:4px 0 0;font-size:12px;color:#58657b}
+.reportBody{padding:16px 18px 20px}
+.reportKpiGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.reportKpi{
+  border:1px solid #e6edf5;border-radius:16px;padding:10px 12px;background:#fbfdff;
+}
+.reportKpi .rkLbl{font-size:11px;color:#64748b;font-weight:800}
+.reportKpi .rkVal{font-size:22px;font-weight:1000;color:#162031;margin-top:4px}
+.reportKpi .rkSub{font-size:11px;color:#64748b;margin-top:3px}
+.reportSection{margin-top:16px;border:1px solid #e8eef6;border-radius:18px;padding:14px;background:#fff}
+.reportSection h4{margin:0 0 10px;font-size:15px;color:#163a73}
+.reportTableWrap{overflow:auto}
+.reportTable{width:100%;border-collapse:collapse;font-size:12px}
+.reportTable th,.reportTable td{border-bottom:1px solid #ecf1f6;padding:9px 8px;text-align:left;vertical-align:top}
+.reportTable th{background:#f7fbff;color:#163a73;font-size:12px;font-weight:900}
+.reportChip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:1000}
+.reportGood{background:#e8f8ef;color:#157347}
+.reportWarn{background:#fff6db;color:#9a6700}
+.reportBad{background:#fdecec;color:#b42318}
+.reportInfoGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+.reportList{margin:0;padding-left:18px}
+.reportList li{margin:7px 0;line-height:1.5}
+.reportFooter{
+  margin-top:16px;border-top:1px dashed #d9e2ec;padding-top:12px;
+  display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:11px;color:#556176
+}
+.reportSign{
+  min-width:150px;text-align:center;border-top:1px solid #7d8ba0;padding-top:6px;color:#334155;font-weight:800
+}
+@media(max-width:760px){
+  .reportActions,.reportKpiGrid,.reportInfoGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:430px){
+  .reportActions{grid-template-columns:1fr 1fr}
+  .reportHeadRow{flex-direction:column}
+  .reportMetaBox{text-align:left}
+  .reportKpiGrid,.reportInfoGrid{grid-template-columns:1fr}
+}
+@media print{
+  body *{visibility:hidden!important}
+  #printableReport,#printableReport *{visibility:visible!important}
+  #printableReport{position:absolute!important;left:0;top:0;width:100%!important;box-shadow:none!important}
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </head>
 <body>
@@ -225,18 +321,19 @@ body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
     <div class="topbar glass">
       <div class="brand">
         <div class="logo">DS</div>
-        <div><h1>DS WORLD Growth OS</h1><small>Enterprise Performance Command Center</small></div>
+        <div><h1>RCM • DS WORLD Growth OS</h1><small>Leader Growth & Performance System</small></div>
       </div>
       <div class="userchip">
         <div class="avatar" id="avatar">D</div>
         <div class="nm"><b id="topName">User</b><div class="role" id="topRole">LEADER</div></div>
-        <span class="badge" id="cloudStatus">☁️ Sync</span>
+        <span class="badge" id="cloudStatus">☁️ Firebase</span>
         <button class="themeBtn" id="themeToggleBtn" onclick="toggleTheme()">☀️ Cream</button>
         <button class="iconbtn" onclick="logout()">Logout</button>
       </div>
     </div>
 
     <div class="hero">
+      <div class="rcmHeroBadge">RCM BUSINESS GROWTH</div>
       <h2 id="heroTitle">आजची कामगिरी म्हणजे उद्याची ओळख.</h2>
 </div>
 
@@ -337,17 +434,96 @@ body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
     </div>
 
 
-    <div id="reportView" class="hidden">
+    
+<div id="reportView" class="hidden">
       <div class="section glass">
-        <div class="sectionHead"><div><h3>📄 Performance Report</h3></div><span class="badge">SMART REPORT</span></div>
-        <div class="btnrow"><button class="primary gold" onclick="printReport()">🖨️ PDF / Print Report</button><button class="primary" onclick="shareWhatsAppReport()">📲 WhatsApp वर पाठवा</button></div>
+        <div class="sectionHead"><div><h3>📄 Reports Center</h3></div><span class="badge">RCM • DS WORLD</span></div>
+        <div class="reportActions">
+          <button class="primary gold" onclick="renderReport()">🧾 Report तयार करा</button>
+          <button class="primary" onclick="downloadPDFReport()">📥 PDF डाउनलोड</button>
+          <button class="primary green" onclick="printReport()">🖨️ Print / PDF</button>
+          <button class="primary" onclick="shareWhatsAppReport()">📲 WhatsApp</button>
+        </div>
       </div>
-      <div class="section glass" id="printableReport">
-        <div class="sectionHead"><div><h3 id="reportTitle">DS WORLD Performance Report</h3><div class="small" id="reportMeta"></div></div><span class="badge">DS WORLD</span></div>
-        <div class="grid" id="reportKpis"></div>
-        <div style="margin-top:14px"><h3>🔍 कुठे कमी आहे?</h3><div id="gapAnalysis" style="margin-top:8px;line-height:1.7"></div></div>
-        <div style="margin-top:14px"><h3>🎯 आता काय करायचे?</h3><div id="actionPlan" style="margin-top:8px;line-height:1.7"></div></div>
-        <div style="margin-top:14px"><h3>💡 Smart Coach</h3><div id="reportCoach" style="margin-top:8px;line-height:1.7;font-weight:800;color:#dce9ff"></div></div>
+
+      <div id="printableReport" class="reportLetter">
+        <div class="reportTopBand"></div>
+        <div class="reportHead">
+          <div class="reportHeadRow">
+            <div class="reportBrandWrap">
+              <div class="reportLogo">RCM</div>
+              <div class="reportBrandText">
+                <h2>DS WORLD Performance Report</h2>
+                <div class="sub1">RCM Business Growth System</div>
+                <div class="sub2">व्यावसायिक प्रगती • सातत्य • कामगिरी विश्लेषण</div>
+              </div>
+            </div>
+            <div class="reportMetaBox" id="reportMetaBox"></div>
+          </div>
+
+          <div class="reportTitleBar">
+            <h3 id="reportMainTitle">मासिक प्रगती अहवाल</h3>
+            <p id="reportSubTitle">Leader daily performance, monthly progress and smart action guidance.</p>
+          </div>
+        </div>
+
+        <div class="reportBody">
+          <div class="reportKpiGrid" id="reportKpiGrid"></div>
+
+          <div class="reportSection">
+            <h4>आजचा अहवाल (FTD)</h4>
+            <div class="reportTableWrap">
+              <table class="reportTable">
+                <thead>
+                  <tr><th>घटक</th><th>टार्गेट</th><th>आज झाले</th><th>स्कोअर</th><th>स्थिती</th></tr>
+                </thead>
+                <tbody id="reportFtdTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reportSection">
+            <h4>मासिक अहवाल (MTD)</h4>
+            <div class="reportTableWrap">
+              <table class="reportTable">
+                <thead>
+                  <tr><th>घटक</th><th>मासिक टार्गेट</th><th>आतापर्यंत</th><th>उर्वरित</th><th>Achievement</th><th>दररोज आवश्यक</th></tr>
+                </thead>
+                <tbody id="reportMtdTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reportInfoGrid">
+            <div class="reportSection">
+              <h4>🔍 कुठे कमी आहे?</h4>
+              <div id="reportGapAnalysis"></div>
+            </div>
+            <div class="reportSection">
+              <h4>🎯 पुढील Action Plan</h4>
+              <ul class="reportList" id="reportActionList"></ul>
+            </div>
+          </div>
+
+          <div class="reportInfoGrid">
+            <div class="reportSection">
+              <h4>🧠 Smart Coach</h4>
+              <div id="reportCoachText" style="line-height:1.7;font-weight:800;color:#243143"></div>
+            </div>
+            <div class="reportSection">
+              <h4>📌 नोट्स</h4>
+              <div id="reportNotesText" style="line-height:1.7;color:#334155">आजच्या नोंदीमधील टिपा येथे दिसतील.</div>
+            </div>
+          </div>
+
+          <div class="reportFooter">
+            <div>
+              <div><b>Brand:</b> RCM • DS WORLD</div>
+              <div><b>System:</b> Growth OS Smart Reporting</div>
+            </div>
+            <div class="reportSign">Authorized Growth Review</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -402,7 +578,7 @@ body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
       <div class="section glass">
         <div class="sectionHead">
           <div><h3>🛡️ Admin Control Center</h3></div>
-          <span class="badge">ADMIN ONLY</span>
+          <span class="badge">FIREBASE LIVE</span>
         </div>
         <div class="formGrid">
           <div><div class="small">Leader नाव</div><input id="newName" placeholder="पूर्ण नाव"></div>
@@ -410,15 +586,19 @@ body.lightTheme .coachStep{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
           <div><div class="small">Password</div><input id="newPass" placeholder="पासवर्ड"></div>
           <div><div class="small">Role</div><select id="newRole"><option value="leader">Leader</option><option value="admin">Admin</option></select></div>
         </div>
-        <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button></div>
+        <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
+        <div class="firebasePanel">
+          <b>Firebase:</b> <span id="firebaseHealthText">तपासणी सुरू...</span>
+          <div class="btnrow"><button class="actionMini" onclick="testFirebaseConnection(true)">🔎 Firebase Test</button></div>
+        </div>
       </div>
 
       <div class="section glass">
-        <div class="sectionHead"><div><h3>👥 Users</h3></div><span class="badge" id="userCount">0</span></div>
+        <div class="sectionHead"><div><h3>👥 Users</h3></div><div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div></div>
         <div class="tableWrap">
           <table>
             <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
-            <tbody id="usersTable"></tbody>
+            <tbody id="usersTable"></tbody></table></div><div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.</div><div style="display:none"><table>
           </table>
         </div>
       </div>
@@ -456,18 +636,37 @@ const firebaseConfig = {
   messagingSenderId: "679934692192",
   appId: "1:679934692192:web:939ec09265d2c9f0bc2c05"
 };
+const legacyFirebaseConfig = {
+  apiKey: "AIzaSyDqvrIYLlVFUK5CrXw2l9ejuT5Hcre0P54",
+  authDomain: "order-b15a8.firebaseapp.com",
+  databaseURL: "https://order-b15a8-default-rtdb.firebaseio.com",
+  projectId: "order-b15a8",
+  storageBucket: "order-b15a8.firebasestorage.app",
+  messagingSenderId: "614443594278",
+  appId: "1:614443594278:web:7ddf6234d7380629326ce7"
+};
 const CLOUD_ROOT="ds_world_growth_os_v1";
-let db=null, firebaseReady=false, cloudListenersStarted=false;
+const USER_REGISTRY_PATH=`${CLOUD_ROOT}/users`;
+const USER_BACKUP_PATH=`${CLOUD_ROOT}/user_backups`;
+const STABLE_DATA_ROOT="ds_world_growth_os_v1";
+/* DO NOT CHANGE ROOT IN FUTURE VERSIONS: all historical users and entries remain under this path. */
+let db=null, legacyDb=null, firebaseReady=false, legacyReady=false, cloudListenersStarted=false, recoveryRunning=false;
 try{
   if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   db=firebase.database();
   firebaseReady=true;
 }catch(err){console.warn("Firebase init failed",err)}
+try{
+  let legacyApp=firebase.apps.find(a=>a.name==="legacy");
+  if(!legacyApp) legacyApp=firebase.initializeApp(legacyFirebaseConfig,"legacy");
+  legacyDb=legacyApp.database();
+  legacyReady=true;
+}catch(err){console.warn("Legacy Firebase init failed",err)}
 
 function setCloudStatus(type,text){
   const el=document.getElementById("cloudStatus"); if(!el)return;
   el.className="badge "+(type||"");
-  el.textContent=text||"☁️ Sync";
+  el.textContent=text||"☁️ Firebase";
 }
 function safeCloudKey(v){return String(v||"").replace(/[.#$\[\]\/]/g,"_")}
 async function hashPassword(value){
@@ -486,24 +685,292 @@ async function hashPassword(value){
 function cleanUserForSession(u){return {name:u.name,username:u.username,role:u.role,active:u.active!==false}}
 function cloudUserPath(username){return `${CLOUD_ROOT}/users/${safeCloudKey(username)}`}
 function cloudEntriesPath(username){return `${CLOUD_ROOT}/entries/${safeCloudKey(username)}`}
+
+function getUsersFromKey(key){
+  try{
+    const v=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(v)?v:[];
+  }catch(e){return []}
+}
+function getEntriesFromKey(key){
+  try{return JSON.parse(localStorage.getItem(key)||"{}")||{}}catch(e){return {}}
+}
+function mergeUserSources(...sources){
+  const map=new Map();
+  sources.flat().filter(Boolean).forEach(u=>{
+    if(!u||!u.username)return;
+    const old=map.get(String(u.username))||{};
+    const newer=Number(u.updatedAt||0)>=Number(old.updatedAt||0);
+    const merged=newer?{...old,...u}:{...u,...old};
+    if(old.password&&!merged.password)merged.password=old.password;
+    if(old.passwordHash&&!merged.passwordHash)merged.passwordHash=old.passwordHash;
+    map.set(String(u.username),merged);
+  });
+  return [...map.values()];
+}
+async function readPath(database,path){
+  if(!database)return null;
+  try{
+    const s=await database.ref(path).once("value");
+    return s.exists()?s.val():null;
+  }catch(e){console.warn("Read failed:",path,e);return null}
+}
+function normalizeRemoteUsers(obj){
+  return Object.values(obj||{}).filter(x=>x&&x.username);
+}
+function mergeEntrySets(...sets){
+  const out={};
+  sets.filter(Boolean).forEach(s=>{
+    Object.entries(s||{}).forEach(([d,v])=>{
+      if(!out[d])out[d]=v;
+      else{
+        const a=out[d]||{},b=v||{};
+        const ta=Number(a.updatedAt||0),tb=Number(b.updatedAt||0);
+        if(tb>ta)out[d]={...a,...b};
+        else if(ta>tb)out[d]={...b,...a};
+        else{
+          const m={...a};
+          Object.keys(b).forEach(k=>{
+            if(typeof m[k]==="number"&&typeof b[k]==="number")m[k]=Math.max(m[k],b[k]);
+            else if(m[k]===undefined||m[k]===null||m[k]==="")m[k]=b[k];
+          });
+          out[d]=m;
+        }
+      }
+    });
+  });
+  return out;
+}
+async function recoverOldUsersAndData(showMessage=true){
+  if(recoveryRunning)return;
+  recoveryRunning=true;
+  if(showMessage)setCloudStatus("","♻️ Recovering");
+  try{
+    const localOld=getUsersFromKey("ds_growth_users");
+    const localV2=getUsersFromKey("ds_v2_users");
+    const localCurrent=getUsers();
+
+    const [curUsersObj,legacyUsersObj,curEntriesObj,legacyEntriesObj]=await Promise.all([
+      readPath(db,`${CLOUD_ROOT}/users`),
+      readPath(legacyDb,`${CLOUD_ROOT}/users`),
+      readPath(db,`${CLOUD_ROOT}/entries`),
+      readPath(legacyDb,`${CLOUD_ROOT}/entries`)
+    ]);
+
+    let mergedUsers=mergeUserSources(
+      localOld,localV2,localCurrent,
+      normalizeRemoteUsers(curUsersObj),
+      normalizeRemoteUsers(legacyUsersObj)
+    );
+
+    if(!mergedUsers.find(x=>x.username==="admin"))mergedUsers.unshift(ADMIN_DEFAULT);
+
+    // Preserve any legacy plaintext password locally just long enough to hash it.
+    for(const u of mergedUsers){
+      if(u.username==="admin")continue;
+      if(!u.passwordHash&&u.password)u.passwordHash=await hashPassword(u.password);
+    }
+
+    setUsers(mergedUsers);
+
+    // Merge entries from every known local namespace and both Firebase projects.
+    const currentEntries=curEntriesObj||{},legacyEntries=legacyEntriesObj||{};
+    for(const u of mergedUsers){
+      if(u.username==="admin")continue;
+      const sk=safeCloudKey(u.username);
+      const e1=getEntriesFromKey("ds_entries_"+u.username);
+      const e2=getEntriesFromKey("ds_v2_entries_"+u.username);
+      const mergedEntries=mergeEntrySets(e1,e2,currentEntries[sk]||{},legacyEntries[sk]||{});
+      localStorage.setItem("ds_entries_"+u.username,JSON.stringify(mergedEntries));
+
+      // Write recovered user and data only to the stable current Firebase root.
+      if(firebaseReady&&db){
+        const payload={
+          name:u.name||u.username,
+          username:String(u.username),
+          role:u.role||"leader",
+          active:u.active!==false,
+          passwordHash:u.passwordHash||"",
+          createdAt:Number(u.createdAt||Date.now()),
+          updatedAt:Date.now()
+        };
+        await db.ref(cloudUserPath(u.username)).update(payload);
+        if(Object.keys(mergedEntries).length)await db.ref(cloudEntriesPath(u.username)).update(mergedEntries);
+      }
+    }
+
+    // Remove plaintext passwords from the current stored user list after recovery.
+    const safeUsers=getUsers().map(u=>{
+      if(u.username==="admin")return u;
+      const x={...u};delete x.password;return x;
+    });
+    setUsers(safeUsers);
+    localStorage.setItem("ds_last_recovery",String(Date.now()));
+    setCloudStatus("online","☁️ Firebase Online");
+    if(currentUser)renderAll();
+    if(showMessage)showToast("जुने Users + Data शोधून Sync केले ✅");
+  }catch(e){
+    console.warn("Recovery error",e);
+    setCloudStatus("error","☁️ Recovery Error");
+    if(showMessage)showToast("Recovery पूर्ण झाली नाही; Firebase rules तपासा");
+  }finally{
+    recoveryRunning=false;
+  }
+}
+
+
+function setFirebaseHealth(text,type=""){
+  const el=document.getElementById("firebaseHealthText");
+  if(el)el.textContent=text;
+  if(type==="ok")setCloudStatus("online","☁️ Firebase Online");
+  else if(type==="rules")setCloudStatus("error","☁️ Rules Block");
+  else if(type==="offline")setCloudStatus("offline","☁️ Offline");
+  else setCloudStatus("testing","☁️ Testing");
+}
+
+async function testFirebaseConnection(showToastMsg=false){
+  if(!firebaseReady||!db){
+    setFirebaseHealth("Firebase SDK सुरू झाले नाही.","offline");
+    if(showToastMsg)showToast("Firebase SDK सुरू झाले नाही");
+    return false;
+  }
+  setFirebaseHealth("कनेक्शन तपासत आहे...");
+  try{
+    const connectedSnap=await db.ref(".info/connected").once("value");
+    if(connectedSnap.val()!==true){
+      setFirebaseHealth("Internet/Firebase server connection नाही.","offline");
+      if(showToastMsg)showToast("Firebase server connection नाही");
+      return false;
+    }
+    // Read test on the stable root.
+    try{
+      await db.ref(CLOUD_ROOT).limitToFirst(1).once("value");
+    }catch(e){
+      if(String(e&&e.code||"").toUpperCase().includes("PERMISSION_DENIED") || String(e).includes("PERMISSION_DENIED")){
+        setFirebaseHealth("Firebase connected आहे, पण Database Rules read block करत आहेत.","rules");
+        if(showToastMsg)showToast("Firebase Rules read block करत आहेत");
+        return false;
+      }
+      throw e;
+    }
+    // Write test in a harmless diagnostics path under the SAME stable root.
+    try{
+      const ref=db.ref(`${CLOUD_ROOT}/_system/connection_test`);
+      await ref.set({ok:true,time:firebase.database.ServerValue.TIMESTAMP,app:"DS WORLD Growth OS"});
+    }catch(e){
+      if(String(e&&e.code||"").toUpperCase().includes("PERMISSION_DENIED") || String(e).includes("PERMISSION_DENIED")){
+        setFirebaseHealth("Firebase connected आहे, पण Database Rules write block करत आहेत.","rules");
+        if(showToastMsg)showToast("Firebase Rules write block करत आहेत");
+        return false;
+      }
+      throw e;
+    }
+    setFirebaseHealth(`Connected • Project: smartreport-7ce05 • Root: ${CLOUD_ROOT}`,"ok");
+    if(showToastMsg)showToast("Firebase व्यवस्थित Connected ✅");
+    return true;
+  }catch(e){
+    console.warn("Firebase test failed",e);
+    const msg=(e&&e.message)?e.message:"Connection failed";
+    setFirebaseHealth("Connection error: "+msg,"offline");
+    if(showToastMsg)showToast("Firebase connection error");
+    return false;
+  }
+}
+
+function startFirebaseConnectionMonitor(){
+  if(!firebaseReady||!db){setFirebaseHealth("Firebase SDK सुरू झाले नाही.","offline");return}
+  db.ref(".info/connected").on("value",snap=>{
+    if(snap.val()===true){
+      setCloudStatus("testing","☁️ Connected");
+      testFirebaseConnection(false);
+    }else{
+      setFirebaseHealth("Firebase server शी connection नाही.","offline");
+    }
+  });
+}
+
+
+async function fetchAllCloudUsers(){
+  if(!firebaseReady||!db)return {};
+  try{
+    const s=await db.ref(USER_REGISTRY_PATH).once("value");
+    return s.exists()?(s.val()||{}):{};
+  }catch(e){
+    console.warn("fetchAllCloudUsers failed",e);
+    return {};
+  }
+}
+async function verifyCloudUser(username){
+  if(!firebaseReady||!db)return null;
+  try{
+    const s=await db.ref(`${USER_REGISTRY_PATH}/${safeCloudKey(username)}`).once("value");
+    return s.exists()?s.val():null;
+  }catch(e){
+    console.warn("verifyCloudUser failed",e);
+    return null;
+  }
+}
+async function backupUserRecord(user,reason="update"){
+  if(!firebaseReady||!db||!user||!user.username||user.username==="admin")return;
+  try{
+    const ts=Date.now();
+    await db.ref(`${USER_BACKUP_PATH}/${safeCloudKey(user.username)}/${ts}`).set({
+      name:user.name||"",
+      username:String(user.username),
+      role:user.role||"leader",
+      active:user.active!==false,
+      passwordHash:user.passwordHash||"",
+      createdAt:Number(user.createdAt||ts),
+      updatedAt:Number(user.updatedAt||ts),
+      reason
+    });
+  }catch(e){console.warn("backupUserRecord failed",e)}
+}
+async function mergeAllUsersFromFirebase(){
+  const remote=await fetchAllCloudUsers();
+  if(remote&&Object.keys(remote).length)mergeCloudUsers(remote);
+  return getUsers();
+}
+
 async function cloudSetUser(user,passwordPlain=null){
   if(!firebaseReady||!db||!user||user.username==="admin")return false;
   try{
-    const payload={name:user.name,username:user.username,role:user.role||"leader",active:user.active!==false,updatedAt:Date.now()};
-    if(passwordPlain!==null) payload.passwordHash=await hashPassword(passwordPlain);
-    else if(user.passwordHash) payload.passwordHash=user.passwordHash;
-    else if(user.password) payload.passwordHash=await hashPassword(user.password);
-    await db.ref(cloudUserPath(user.username)).update(payload);
-    setCloudStatus("online","☁️ Online");
+    const existing=await verifyCloudUser(user.username);
+    const now=Date.now();
+    const payload={
+      ...(existing||{}),
+      name:user.name||existing?.name||String(user.username),
+      username:String(user.username),
+      role:user.role||existing?.role||"leader",
+      active:user.active!==false,
+      createdAt:Number(existing?.createdAt||user.createdAt||now),
+      updatedAt:now
+    };
+    if(passwordPlain!==null)payload.passwordHash=await hashPassword(passwordPlain);
+    else if(user.passwordHash)payload.passwordHash=user.passwordHash;
+    else if(existing?.passwordHash)payload.passwordHash=existing.passwordHash;
+    else if(user.password)payload.passwordHash=await hashPassword(user.password);
+
+    await db.ref(`${USER_REGISTRY_PATH}/${safeCloudKey(user.username)}`).set(payload);
+    await backupUserRecord(payload,existing?"update":"create");
+
+    const check=await verifyCloudUser(user.username);
+    if(!check||String(check.username)!==String(user.username))throw new Error("Firebase user write verification failed");
+
+    setCloudStatus("online","☁️ Firebase Online");
     return true;
-  }catch(e){console.warn(e);setCloudStatus("error","☁️ Sync Error");return false}
+  }catch(e){
+    console.warn("cloudSetUser failed",e);
+    setCloudStatus("error","☁️ User Save Error");
+    return false;
+  }
 }
 async function cloudFetchUser(username){
   if(!firebaseReady||!db||username==="admin")return null;
   try{
     const s=await db.ref(cloudUserPath(username)).once("value");
     return s.exists()?s.val():null;
-  }catch(e){console.warn(e);setCloudStatus("error","☁️ Sync Error");return null}
+  }catch(e){console.warn(e);setCloudStatus("error","☁️ Firebase Error");return null}
 }
 function mergeCloudUsers(remote){
   const local=getUsers(), map=new Map(local.map(x=>[x.username,x]));
@@ -535,8 +1002,9 @@ async function migrateLocalToCloud(){
   }
 }
 async function syncCloudData(){
-  if(!firebaseReady||!db){setCloudStatus("offline","☁️ Local");return}
+  if(!firebaseReady||!db){setCloudStatus("offline","☁️ Offline");return}
   setCloudStatus("","☁️ Syncing");
+  await mergeAllUsersFromFirebase();
   try{
     if(currentUser&&currentUser.role==="admin") await migrateLocalToCloud();
     else if(currentUser){
@@ -555,7 +1023,7 @@ async function syncCloudData(){
       const user=getUsers().find(x=>safeCloudKey(x.username)===k);
       if(user) mergeEntryData(user.username,all[k]);
     });
-    setCloudStatus("online","☁️ Online");
+    setCloudStatus("online","☁️ Firebase Online");
     renderAll();
   }catch(e){console.warn(e);setCloudStatus("offline","☁️ Local")}
 }
@@ -578,6 +1046,7 @@ function startCloudListeners(){
 }
 window.addEventListener("online",()=>{setCloudStatus("","☁️ Syncing");syncCloudData();startCloudListeners()});
 window.addEventListener("offline",()=>setCloudStatus("offline","☁️ Offline"));
+
 
 const targets={names:2,calls:5,plans:2,pv:167,video:20,book:20,depth:1,meeting:1};
 let loginRole="leader";
@@ -621,10 +1090,16 @@ async function boot(){
   entryName.textContent=currentUser.name+" • "+new Date().toLocaleDateString("mr-IN");
   adminTabApp.classList.toggle("hidden",currentUser.role!=="admin");
   heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
+  if(currentUser.role==="admin")await mergeAllUsersFromFirebase();
   renderAll();
   if(currentUser.role==="admin")openAppTab("admin");
   startCloudListeners();
   await syncCloudData();
+  if(currentUser.role==="admin"){
+    const nonAdmin=getUsers().filter(x=>x.username!=="admin");
+    const last=Number(localStorage.getItem("ds_last_recovery")||0);
+    if(nonAdmin.length<3 || Date.now()-last>86400000)await recoverOldUsersAndData(false);
+  }
 }
 function logout(){localStorage.removeItem("ds_current_user");location.reload()}
 function showView(v,btn){
@@ -657,8 +1132,14 @@ async function saveEntry(){
   if(firebaseReady&&db){
     try{
       await db.ref(`${cloudEntriesPath(currentUser.username)}/${todayKey()}`).set(e);
-      setCloudStatus("online","☁️ Online");
-    }catch(err){console.warn(err);setCloudStatus("offline","☁️ Local")}
+      setCloudStatus("online","☁️ Firebase Online");
+    }catch(err){
+      console.warn(err);
+      if(String(err&&err.code||"").toUpperCase().includes("PERMISSION_DENIED")){
+        setFirebaseHealth("Data फोनमध्ये save झाला; Firebase Rules write block करत आहेत.","rules");
+        showToast("Local save झाला ✅ • Firebase Rules block");
+      }else setCloudStatus("offline","☁️ Local");
+    }
   }
 }
 function monthEntries(username){
@@ -801,38 +1282,95 @@ function renderLeaderboard(){
 async function addUser(){
   const name=newName.value.trim(),username=newUser.value.trim(),password=newPass.value,role=newRole.value;
   if(!name||!username||!password)return showToast("सर्व माहिती भरा");
-  let u=getUsers();if(u.some(x=>x.username===username))return showToast("हा Username आधीच आहे");
+
+  await mergeAllUsersFromFirebase();
+  let users=getUsers();
+  if(users.some(x=>String(x.username)===String(username)))return showToast("हा Username आधीच आहे");
+
+  const now=Date.now();
   const passwordHash=await hashPassword(password);
-  const obj={name,username,passwordHash,role,active:true};
-  u.push(obj);setUsers(u);
-  await cloudSetUser(obj,password);
-  newName.value=newUser.value=newPass.value="";
-  showToast("User तयार झाला ✅");renderUsers();renderLeaderboard();renderAdminWarRoom()
+  const obj={name,username:String(username),passwordHash,role,active:true,createdAt:now,updatedAt:now};
+
+  users.push(obj);
+  setUsers(users);
+
+  const saved=await cloudSetUser(obj,password);
+  const verified=await verifyCloudUser(username);
+
+  if(!saved||!verified){
+    showToast("User फोनमध्ये save आहे; Firebase save verify झाला नाही");
+    renderUsers();renderLeaderboard();renderAdminWarRoom();
+    return;
+  }
+
+  await mergeAllUsersFromFirebase();
+  newName.value="";newUser.value="";newPass.value="";
+  showToast("User Firebase मध्ये कायमचा save झाला ✅");
+  renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
 async function deleteUser(username){
-  if(username==="admin")return showToast("Default Admin delete करता येणार नाही");
-  if(!confirm("हा user हटवायचा?"))return;
-  setUsers(getUsers().filter(x=>x.username!==username));
-  if(firebaseReady&&db){try{await db.ref(cloudUserPath(username)).remove()}catch(e){console.warn(e)}}
-  renderUsers();renderLeaderboard();renderAdminWarRoom()
+  if(username==="admin")return showToast("Default Admin बदलता येणार नाही");
+  if(!confirm("हा User deactivate करायचा? त्याचा जुना Data delete होणार नाही."))return;
+
+  await mergeAllUsersFromFirebase();
+  const users=getUsers();
+  const x=users.find(u=>String(u.username)===String(username));
+  if(!x)return showToast("User सापडला नाही");
+
+  x.active=false;
+  x.updatedAt=Date.now();
+  setUsers(users);
+
+  const saved=await cloudSetUser(x,null);
+  showToast(saved?"User Deactivate झाला • Data सुरक्षित आहे ✅":"Local deactivate झाला; Firebase verify करा");
+  renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
+
+async function toggleUserActive(username){
+  await mergeAllUsersFromFirebase();
+  const u=getUsers(),x=u.find(a=>String(a.username)===String(username));if(!x)return;
+  x.active=x.active===false?true:false;
+  x.updatedAt=Date.now();
+  setUsers(u);
+  const saved=await cloudSetUser(x,null);
+  showToast(saved?(x.active?"User Active ✅":"User Deactivated • Data सुरक्षित"):"Firebase save verify झाला नाही");
+  renderUsers();renderLeaderboard();renderAdminWarRoom();
+}
+async function editUserName(username){
+  await mergeAllUsersFromFirebase();
+  const u=getUsers(),x=u.find(a=>String(a.username)===String(username));if(!x)return;
+  const n=prompt("नवीन नाव",x.name);if(!n||!n.trim())return;
+  x.name=n.trim();x.updatedAt=Date.now();setUsers(u);
+  const saved=await cloudSetUser(x,null);
+  if(currentUser&&String(currentUser.username)===String(username)){
+    currentUser.name=x.name;
+    localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+  }
+  showToast(saved?"नाव Firebase मध्ये update झाले ✅":"नाव local update झाले; Firebase verify करा");
+  renderUsers();renderLeaderboard();renderAdminWarRoom();
+}
+
 function renderUsers(){
   const u=getUsers();userCount.textContent=u.length;
   usersTable.innerHTML=u.map(x=>`<tr>
-    <td>${x.name}</td><td>${x.username}</td><td>${x.role}${x.active===false?" • Inactive":""}</td>
+    <td>${x.name}</td>
+    <td>${x.username}</td>
+    <td>${x.role}${x.active===false?" • Inactive":""}</td>
     <td>${x.username==="admin"?"—":`
-      <button class="actionMini" onclick="resetUserPassword('${x.username}')">Reset</button>
+      <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password Reset</button>
       <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
-      <button class="actionMini" onclick="editUserName('${x.username}')">Edit</button>
-      <button class="actionMini" onclick="deleteUser('${x.username}')">Delete</button>`}
-    </td></tr>`).join("")
+      <button class="actionMini" onclick="editUserName('${x.username}')">Edit</button>`}
+    </td>
+  </tr>`).join("")
 }
 async function resetUserPassword(username){
   const p=prompt("नवीन Password टाका");if(!p)return;
-  const u=getUsers(),x=u.find(a=>a.username===username);if(!x)return;
-  x.passwordHash=await hashPassword(p);delete x.password;setUsers(u);
-  await cloudSetUser(x,p);
-  showToast("Password reset झाला ✅");renderUsers()
+  await mergeAllUsersFromFirebase();
+  const u=getUsers(),x=u.find(a=>String(a.username)===String(username));if(!x)return;
+  x.passwordHash=await hashPassword(p);delete x.password;x.updatedAt=Date.now();setUsers(u);
+  const saved=await cloudSetUser(x,p);
+  showToast(saved?"Password Firebase मध्ये update झाला ✅":"Password local update झाला; Firebase verify करा");
+  renderUsers();
 }
 function renderReport(){if(!currentUser)return;const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis(),mt=a.totals,mtdPvPct=scorePct(mt.pv,5000);reportTitle.textContent=`${currentUser.name} — Performance Report`;reportMeta.textContent=`${new Date().toLocaleDateString("mr-IN")} • ${currentUser.role.toUpperCase()}`;reportKpis.innerHTML=`<div class="kpi"><div class="label">FTD Score</div><div class="value">${f}%</div><div class="sub">आजची कामगिरी</div></div><div class="kpi"><div class="label">MTD PV</div><div class="value">${mt.pv}</div><div class="sub">${mtdPvPct}% of 5000</div></div><div class="kpi"><div class="label">MTD Calls</div><div class="value">${mt.calls}</div><div class="sub">Target 150</div></div><div class="kpi"><div class="label">MTD Plans</div><div class="value">${mt.plans}</div><div class="sub">Target 60</div></div>`;gapAnalysis.innerHTML=a.gaps.map(x=>`<div>${x}</div>`).join("");actionPlan.innerHTML=a.actions.map(x=>`<div>${x}</div>`).join("");reportCoach.textContent=f>=90&&mtdPvPct>=70?"🏆 Performance मजबूत आहे. आता consistency टिकवून extra growth वर काम करा.":f>=70?"💪 दिशा योग्य आहे. सर्वात कमी असलेल्या activity वर आज अतिरिक्त 30–45 मिनिटे focus करा.":"⚡ आजचा दिवस recover करता येऊ शकतो. Calls → Presentations → PV या क्रमाने execution करा आणि दिवस संपण्याआधी पुन्हा score पाहा."}
 function printReport(){renderReport();window.print()}
@@ -1059,7 +1597,229 @@ function toggleTheme(){const now=localStorage.getItem("ds_theme")||"dark";setThe
 
 function showToast(msg){toast.textContent=msg;toast.style.display="block";setTimeout(()=>toast.style.display="none",2200)}
 
+
+function reportMonthTargets(){
+  const days=daysInCurrentMonth();
+  return {names:60,calls:150,plans:60,pv:5000,video:20*days,book:20*days,depth:20,meeting:28};
+}
+function reportMetricDefs(){
+  return [
+    {key:"names",label:"नवीन संपर्क",daily:2,monthKey:"names"},
+    {key:"calls",label:"कॉल / भेटी",daily:5,monthKey:"calls"},
+    {key:"plans",label:"प्लॅन / प्रेझेंटेशन",daily:2,monthKey:"plans"},
+    {key:"pv",label:"व्यवसाय PV",daily:167,monthKey:"pv"},
+    {key:"video",label:"व्हिडिओ मिनिटे",daily:20,monthKey:"video"},
+    {key:"book",label:"वाचन मिनिटे",daily:20,monthKey:"book"},
+    {key:"depth",label:"डेप्थ फॉलो-अप",daily:1,monthKey:"depth"},
+    {key:"meeting",label:"मिटिंग",daily:1,monthKey:"meeting"}
+  ];
+}
+function statusChip(pct){
+  const cls=pct>=85?'reportGood':pct>=60?'reportWarn':'reportBad';
+  const txt=pct>=85?'उत्कृष्ट':pct>=60?'लक्ष द्या':'तातडीने कृती';
+  return `<span class="reportChip ${cls}">${txt}</span>`;
+}
+function currentMonthTotalsForReport(){
+  const m=monthEntries(currentUser.username);
+  return {
+    names:sum(m,"names"),calls:sum(m,"calls"),plans:sum(m,"plans"),pv:sum(m,"pv"),
+    video:sum(m,"video"),book:sum(m,"book"),depth:sum(m,"depth"),meeting:sum(m,"meeting"),
+    activeDays:m.length
+  };
+}
+function projectedMonthPV(totalPv){
+  return Math.round((totalPv/Math.max(elapsedDays(),1))*daysInCurrentMonth());
+}
+function successProbability(mtdPct,consistencyPct){
+  return Math.min(Math.round(mtdPct*0.7 + consistencyPct*0.3),100);
+}
+function buildReportData(){
+  const today=(allEntries()[todayKey()]||{});
+  const ftd=ftdScore(today);
+  const monthTargets=reportMonthTargets();
+  const mt=currentMonthTotalsForReport();
+  const mtdPct=Math.min(Math.round((mt.pv/monthTargets.pv)*100),100);
+  const remainingPv=Math.max(monthTargets.pv-mt.pv,0);
+  const leftDays=Math.max(daysInCurrentMonth()-elapsedDays(),1);
+  const reqDailyPv=Math.ceil(remainingPv/leftDays);
+  const consistency=Math.min(Math.round((activeDayCount(currentUser.username)/elapsedDays())*100),100);
+  const streak=calcStreak(currentUser.username)||0;
+  const projectedPv=projectedMonthPV(mt.pv);
+  const probability=successProbability(mtdPct,consistency);
+  const defs=reportMetricDefs();
+
+  const ftdRows=defs.map(d=>{
+    const actual=Number(today[d.key]||0);
+    const pct=Math.min(Math.round(actual/Math.max(d.daily,1)*100),100);
+    return {...d,actual,target:d.daily,pct,statusHtml:statusChip(pct),remaining:Math.max(d.daily-actual,0)};
+  });
+
+  const mtdRows=defs.map(d=>{
+    const target=Number(monthTargets[d.monthKey]||0);
+    const actual=Number(mt[d.key]||0);
+    const pct=Math.min(Math.round(actual/Math.max(target,1)*100),100);
+    const rem=Math.max(target-actual,0);
+    const req=Math.ceil(rem/leftDays);
+    return {...d,actual,target,pct,remaining:rem,req,statusHtml:statusChip(pct)};
+  });
+
+  const weakMtd=[...mtdRows].sort((a,b)=>a.pct-b.pct).slice(0,3);
+  const strongFtd=[...ftdRows].sort((a,b)=>b.pct-a.pct)[0];
+  const notes=(today.notes||today.note||"").trim();
+
+  const actions=[];
+  weakMtd.forEach(r=>{
+    if(r.key==="pv")actions.push(`दररोज किमान ${r.req} PV करण्यावर भर द्या.`);
+    else if(r.key==="calls")actions.push(`दररोज किमान ${r.req} कॉल/भेटी पूर्ण करा.`);
+    else if(r.key==="plans")actions.push(`दररोज किमान ${r.req} प्लॅन/प्रेझेंटेशन करा.`);
+    else if(r.key==="video")actions.push(`दररोज ${r.req} मिनिटे व्हिडिओ शिक्षण पूर्ण करा.`);
+    else if(r.key==="book")actions.push(`दररोज ${r.req} मिनिटे वाचन पूर्ण करा.`);
+    else if(r.key==="names")actions.push(`दररोज किमान ${r.req} नवीन संपर्क जोडा.`);
+    else if(r.key==="depth")actions.push(`उर्वरित दिवसांत दररोज ${r.req} डेप्थ फॉलो-अप करा.`);
+    else if(r.key==="meeting")actions.push(`मिटिंग सातत्य वाढवा; दररोज ${r.req} मिटिंग आवश्यक आहे.`);
+  });
+
+  let coach=`आजचा FTD स्कोअर ${ftd}% आहे. `;
+  if(ftd>=85)coach+=`आजची कामगिरी चांगली आहे. सर्वात मजबूत क्षेत्र: ${strongFtd.label}. `;
+  else coach+=`आज अजून action आवश्यक आहे. आधी कमी असलेल्या 2-3 गोष्टी पूर्ण करा. `;
+  coach+=`मासिक PV ${mt.pv}/${monthTargets.pv} (${mtdPct}%) आहे. `;
+  coach+= remainingPv>0
+      ? `लक्ष्य पूर्ण करण्यासाठी उर्वरित ${leftDays} दिवसांत दररोज सुमारे ${reqDailyPv} PV आवश्यक आहे.`
+      : `मासिक PV लक्ष्य पूर्ण झाले आहे. आता consistency आणि extra growth वर लक्ष द्या.`;
+
+  return {
+    today,ftd,monthTargets,mt,mtdPct,remainingPv,leftDays,reqDailyPv,consistency,streak,projectedPv,probability,
+    ftdRows,mtdRows,weakMtd,strongFtd,actions,coach,notes
+  };
+}
+function renderReport(){
+  if(!currentUser)return;
+  const d=buildReportData();
+  const monthName=new Date().toLocaleDateString("mr-IN",{month:"long",year:"numeric"});
+  const nowTxt=new Date().toLocaleString("mr-IN");
+
+  const titleEl=document.getElementById("reportMainTitle");
+  const subEl=document.getElementById("reportSubTitle");
+  const meta=document.getElementById("reportMetaBox");
+  const kpi=document.getElementById("reportKpiGrid");
+  const ftdBody=document.getElementById("reportFtdTable");
+  const mtdBody=document.getElementById("reportMtdTable");
+  const gap=document.getElementById("reportGapAnalysis");
+  const actions=document.getElementById("reportActionList");
+  const coach=document.getElementById("reportCoachText");
+  const notes=document.getElementById("reportNotesText");
+
+  titleEl.textContent=`${currentUser.name} यांचा प्रगती अहवाल`;
+  subEl.textContent=`${monthName} • आजचा अहवाल + मासिक विश्लेषण + Smart Coach Action Plan`;
+  meta.innerHTML=`<div><b>नाव:</b> ${currentUser.name}</div>
+                  <div><b>युजरनेम:</b> ${currentUser.username}</div>
+                  <div><b>दिनांक:</b> ${nowTxt}</div>`;
+
+  kpi.innerHTML=[
+    {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD Performance"},
+    {l:"मासिक PV",v:d.mt.pv,s:`उर्वरित ${d.remainingPv}`},
+    {l:"मासिक प्रगती",v:d.mtdPct+"%",s:"MTD Achievement"},
+    {l:"सातत्य",v:d.consistency+"%",s:`Active Days ${d.mt.activeDays}`},
+    {l:"सलग दिवस",v:d.streak+" 🔥",s:"Current Streak"},
+    {l:"दररोज आवश्यक PV",v:d.reqDailyPv,s:`Days Left ${d.leftDays}`},
+    {l:"Projected PV",v:d.projectedPv,s:"Month End Projection"},
+    {l:"यशाची शक्यता",v:d.probability+"%",s:"Success Probability"}
+  ].map(x=>`<div class="reportKpi">
+      <div class="rkLbl">${x.l}</div>
+      <div class="rkVal">${x.v}</div>
+      <div class="rkSub">${x.s}</div>
+    </div>`).join("");
+
+  ftdBody.innerHTML=d.ftdRows.map(r=>`<tr>
+      <td>${r.label}</td>
+      <td>${r.target}</td>
+      <td>${r.actual}</td>
+      <td>${r.pct}%</td>
+      <td>${r.statusHtml}</td>
+    </tr>`).join("");
+
+  mtdBody.innerHTML=d.mtdRows.map(r=>`<tr>
+      <td>${r.label}</td>
+      <td>${r.target}</td>
+      <td>${r.actual}</td>
+      <td>${r.remaining}</td>
+      <td>${r.pct}%</td>
+      <td>${r.req}</td>
+    </tr>`).join("");
+
+  gap.innerHTML=d.weakMtd.map(r=>`<div style="margin:8px 0;padding:10px 12px;border:1px solid #e8eef6;border-radius:14px;background:#fafcff">
+      <b>${r.label}</b> — झाले: ${r.actual} / लक्ष्य: ${r.target} • उर्वरित: ${r.remaining} • सध्याचे Achievement: ${r.pct}%
+    </div>`).join("") || "सध्या प्रमुख gap दिसत नाही.";
+
+  actions.innerHTML=d.actions.slice(0,5).map(a=>`<li>${a}</li>`).join("") || `<li>आजची सातत्यपूर्ण कामगिरी कायम ठेवा.</li>`;
+  coach.textContent=d.coach;
+  notes.textContent=d.notes || "आज कोणतीही अतिरिक्त नोंद केलेली नाही.";
+}
+async function downloadPDFReport(){
+  renderReport();
+  if(!window.jspdf||!window.html2canvas){showToast("PDF library load झालेली नाही");return}
+  const node=document.getElementById("printableReport");
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF("p","mm","a4");
+  try{
+    await pdf.html(node,{
+      margin:[8,8,8,8],
+      autoPaging:"text",
+      html2canvas:{scale:0.55,useCORS:true,backgroundColor:"#ffffff"},
+      callback:(doc)=>doc.save(`${currentUser.username || 'report'}_${todayKey()}.pdf`)
+    });
+  }catch(e){
+    console.warn(e);showToast("PDF तयार करताना error आला");
+  }
+}
+function printReport(){
+  renderReport();
+  const content=document.getElementById("printableReport").outerHTML;
+  const w=window.open("","_blank","width=900,height=1200");
+  if(!w){window.print();return}
+  w.document.write(`<!DOCTYPE html><html><head><title>Report</title>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>${Array.from(document.querySelectorAll("style")).map(s=>s.innerHTML).join("\n")}</style>
+  </head><body style="background:#fff;padding:14px">${content}</body></html>`);
+  w.document.close();
+  setTimeout(()=>{w.focus();w.print()},500);
+}
+function buildWhatsAppReport(){
+  const d=buildReportData();
+  const weak=d.weakMtd.map(x=>`${x.label} ${x.pct}%`).join(", ");
+  const actions=d.actions.slice(0,3).map((x,i)=>`${i+1}. ${x}`).join("\n");
+  return `📄 RCM • DS WORLD Performance Report
+👤 ${currentUser.name}
+📅 ${new Date().toLocaleDateString("mr-IN")}
+🔥 आजचा स्कोअर: ${d.ftd}%
+📈 मासिक प्रगती: ${d.mtdPct}%
+💼 मासिक PV: ${d.mt.pv}
+🎯 उर्वरित PV: ${d.remainingPv}
+📌 दररोज आवश्यक PV: ${d.reqDailyPv}
+⭐ सातत्य: ${d.consistency}%
+🚀 Projected Month End PV: ${d.projectedPv}
+
+🔍 कमी असलेले भाग:
+${weak || "सध्या मोठा gap नाही"}
+
+🎯 पुढील Action:
+${actions || "काम सुरू ठेवा"}
+
+🧠 Smart Coach:
+${d.coach}
+
+Brand: RCM • DS WORLD`;
+}
+function shareWhatsAppReport(){
+  renderReport();
+  const txt=buildWhatsAppReport();
+  const url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
+  const win=window.open(url,"_blank");
+  if(!win) window.location.href=url;
+}
+
 applyTheme();
+startFirebaseConnectionMonitor();
 boot();
 </script>
 </body>
