@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V23.0 FINAL MASTER</title>
+<title>RCM • DS WORLD Growth OS — V24.0 LOGIN STABLE</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -620,13 +620,14 @@ body.lightTheme .logoutBtn{
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V23.0 • FINAL MASTER</div>
+      <div class="loginVersion">V24.0 • LOGIN STABLE</div>
     </div>
 
     <div class="loginTabs">
-      <button id="leaderTab" class="active" onclick="setLoginRole('leader')">Leader Login</button>
-      <button id="adminTab" onclick="setLoginRole('admin')">Admin Login</button>
+      <button id="leaderTab" class="active" onclick="setLoginRole('leader')">Leader</button>
+      <button id="adminTab" onclick="setLoginRole('admin')">Admin</button>
     </div>
+    <div class="small" style="text-align:center;margin:-2px 0 10px">Role auto-detect होईल — योग्य Mobile + Password टाका.</div>
 
     <div class="field"><label>युजरनेम / मोबाईल नंबर</label><input id="loginUser" placeholder="उदा. 9876543210"></div>
     <div class="field"><label>पासवर्ड</label><input id="loginPass" type="password" placeholder="पासवर्ड"></div>
@@ -644,7 +645,7 @@ body.lightTheme .logoutBtn{
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V23.0 • FINAL MASTER</span>
+            <span class="versionBadge">V24.0 • LOGIN STABLE</span>
           </div>
         </div>
       </div>
@@ -868,7 +869,7 @@ body.lightTheme .logoutBtn{
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V23.0 • FINAL MASTER</div>
+              <div><b>Version:</b> V24.0 • LOGIN STABLE</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -979,11 +980,11 @@ body.lightTheme .logoutBtn{
           <div><div class="small">Leader नाव</div><input id="newName" placeholder="पूर्ण नाव"></div>
           <div><div class="small">मोबाईल / Username</div><input id="newUser" placeholder="10 अंकी मोबाईल"></div>
           <div><div class="small">Password</div><input id="newPass" placeholder="पासवर्ड"></div>
-          <div><div class="small">Role</div><select id="newRole"><option value="leader">Leader</option><option value="admin">Admin</option></select></div>
+          <div><div class="small">Role</div><select id="newRole" disabled><option value="leader" selected>Leader</option></select></div>
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
-          <span class="safetyPill">Version: V23.0</span>
+          <span class="safetyPill">Version: V24.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -1054,9 +1055,9 @@ body.lightTheme .logoutBtn{
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V23.0";
+const APP_VERSION="V24.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="FINAL MASTER";
+const APP_RELEASE="LOGIN STABLE";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -1107,18 +1108,74 @@ function setCloudStatus(type,text){
   el.textContent=text||"☁️ Firebase";
 }
 function safeCloudKey(v){return String(v||"").replace(/[.#$\[\]\/]/g,"_")}
-async function hashPassword(value){
+
+function normalizeUsername(value){
+  let s=String(value||"").trim().replace(/\s+/g,"");
+  if(/^\+?91\d{10}$/.test(s))s=s.replace(/^\+?91/,"");
+  return s;
+}
+function legacyFallbackHash(value){
   const s=String(value||"");
-  try{
-    if(window.crypto&&crypto.subtle){
-      const data=new TextEncoder().encode(s);
-      const buf=await crypto.subtle.digest("SHA-256",data);
-      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-    }
-  }catch(e){}
   let h=2166136261;
   for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
   return "fallback_"+(h>>>0).toString(16);
+}
+function pureSha256(value){
+  const str=String(value||"");
+  let bytes;
+  try{bytes=Array.from(new TextEncoder().encode(str))}
+  catch(e){
+    const u=unescape(encodeURIComponent(str));
+    bytes=Array.from(u).map(c=>c.charCodeAt(0));
+  }
+  const K=[
+    0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+  ];
+  const H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  const rotr=(x,n)=>(x>>>n)|(x<<(32-n));
+  const bitLen=bytes.length*8;
+  bytes.push(0x80);
+  while(bytes.length%64!==56)bytes.push(0);
+  const hi=Math.floor(bitLen/0x100000000);
+  const lo=bitLen>>>0;
+  bytes.push((hi>>>24)&255,(hi>>>16)&255,(hi>>>8)&255,hi&255,(lo>>>24)&255,(lo>>>16)&255,(lo>>>8)&255,lo&255);
+
+  const w=new Array(64);
+  for(let offset=0;offset<bytes.length;offset+=64){
+    for(let i=0;i<16;i++){
+      const j=offset+i*4;
+      w[i]=((bytes[j]<<24)|(bytes[j+1]<<16)|(bytes[j+2]<<8)|bytes[j+3])>>>0;
+    }
+    for(let i=16;i<64;i++){
+      const s0=(rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>>3))>>>0;
+      const s1=(rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>>10))>>>0;
+      w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0;
+    }
+    let [a,b,c,d,e,f,g,h]=H;
+    for(let i=0;i<64;i++){
+      const S1=(rotr(e,6)^rotr(e,11)^rotr(e,25))>>>0;
+      const ch=((e&f)^((~e)&g))>>>0;
+      const t1=(h+S1+ch+K[i]+w[i])>>>0;
+      const S0=(rotr(a,2)^rotr(a,13)^rotr(a,22))>>>0;
+      const maj=((a&b)^(a&c)^(b&c))>>>0;
+      const t2=(S0+maj)>>>0;
+      h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+    }
+    H[0]=(H[0]+a)>>>0;H[1]=(H[1]+b)>>>0;H[2]=(H[2]+c)>>>0;H[3]=(H[3]+d)>>>0;
+    H[4]=(H[4]+e)>>>0;H[5]=(H[5]+f)>>>0;H[6]=(H[6]+g)>>>0;H[7]=(H[7]+h)>>>0;
+  }
+  return H.map(x=>x.toString(16).padStart(8,"0")).join("");
+}
+
+async function hashPassword(value){
+  return pureSha256(String(value||""));
 }
 function cleanUserForSession(u){
   return {
@@ -1455,7 +1512,10 @@ async function cloudSetUser(user,passwordPlain=null){
     ]);
     const existingMain=mainSnap.exists()?mainSnap.val():null;
     const existingPerm=permSnap.exists()?permSnap.val():null;
-    const existing=existingMain||existingPerm||null;
+    const existing=(existingMain||existingPerm)?{
+      ...(existingPerm||{}),...(existingMain||{}),
+      passwordHash:existingMain?.passwordHash||existingPerm?.passwordHash||""
+    }:null;
     const now=Date.now();
 
     const payload={
@@ -1506,10 +1566,36 @@ async function cloudSetUser(user,passwordPlain=null){
 }
 async function cloudFetchUser(username){
   if(!firebaseReady||!db||username==="admin")return null;
+  const user=normalizeUsername(username);
+  const key=safeCloudKey(user);
   try{
-    const s=await db.ref(cloudUserPath(username)).once("value");
-    return s.exists()?s.val():null;
-  }catch(e){console.warn(e);setCloudStatus("error","☁️ Firebase Error");return null}
+    const [mainSnap,permSnap]=await Promise.all([
+      db.ref(`${USER_REGISTRY_PATH}/${key}`).once("value"),
+      db.ref(`${USER_PERMANENT_PATH}/${key}`).once("value")
+    ]);
+    const main=mainSnap.exists()?mainSnap.val():null;
+    const perm=permSnap.exists()?permSnap.val():null;
+
+    // Prefer an active record with a password hash.
+    let picked=null;
+    const candidates=[main,perm].filter(Boolean);
+    picked=candidates.find(x=>x.active!==false&&x.archived!==true&&x.passwordHash) ||
+           candidates.find(x=>x.active!==false&&x.passwordHash) ||
+           candidates.find(x=>x.passwordHash) ||
+           candidates[0] || null;
+
+    if(picked&&perm&&perm.passwordHash&&!picked.passwordHash)picked={...picked,passwordHash:perm.passwordHash};
+    if(picked&&main&&main.passwordHash&&!picked.passwordHash)picked={...picked,passwordHash:main.passwordHash};
+
+    // Repair missing/stale canonical record from permanent registry.
+    if(picked&&perm&&(!main||main.passwordHash!==picked.passwordHash||main.active!==picked.active)){
+      const repaired={...picked,username:user,archived:picked.active===false?picked.archived:false};
+      await db.ref(`${USER_REGISTRY_PATH}/${key}`).set(repaired);
+    }
+    return picked;
+  }catch(e){
+    console.warn(e);setCloudStatus("error","☁️ Firebase Error");return null
+  }
 }
 function mergeCloudUsers(remote){
   const local=getUsers(),map=new Map(local.map(x=>[String(x.username),x]));
@@ -1735,20 +1821,40 @@ function setLoginRole(r){
   adminTab.classList.toggle("active",r==="admin");
 }
 async function login(){
-  const user=loginUser.value.trim(), pass=loginPass.value;
-  if(!user||!pass)return showToast("Username आणि Password भरा");
-  const ph=await hashPassword(pass);
-  let found=getUsers().find(x=>x.username===user&&x.role===loginRole&&x.active!==false&&(x.password===pass||x.passwordHash===ph));
+  const user=normalizeUsername(loginUser.value),pass=loginPass.value;
+  if(!user||!pass)return showToast("Mobile Number आणि Password भरा");
+
+  const canonical=await hashPassword(pass);
+  const legacy=legacyFallbackHash(pass);
+  const hashMatches=(u)=>u&&(u.password===pass||u.passwordHash===canonical||u.passwordHash===legacy);
+
+  // Local check first, role is auto-detected from saved user record.
+  let found=getUsers().find(x=>normalizeUsername(x.username)===user&&x.active!==false&&hashMatches(x));
+
+  // Always verify cloud when local credentials are stale/missing.
   if(!found&&firebaseReady){
     const remote=await cloudFetchUser(user);
-    if(remote&&remote.role===loginRole&&remote.active!==false&&remote.passwordHash===ph){
+    if(remote&&remote.active!==false&&hashMatches(remote)){
       found=remote;
       mergeCloudUsers({[safeCloudKey(user)]:remote});
     }
   }
-  if(!found)return showToast("Login details जुळले नाहीत");
+
+  if(!found)return showToast("Mobile Number किंवा Password चुकीचा आहे");
+
+  // Migrate any legacy/plain password record to one permanent canonical SHA-256 hash.
+  if(found.username!=="admin"&&(found.passwordHash!==canonical||found.password)){
+    found={...found,passwordHash:canonical};
+    delete found.password;
+    const migrated=await cloudSetUser(found,pass);
+    if(migrated)mergeCloudUsers({[safeCloudKey(user)]:found});
+  }
+
   currentUser=cleanUserForSession(found);
   localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+
+  // UI automatically follows the actual saved role; user does not need to select the correct tab.
+  loginRole=currentUser.role;
   await boot();
 }
 async function boot(){
@@ -1983,7 +2089,7 @@ function renderLeaderboard(){
     </div>`).join(""):`<div class="small">अजून Leader add केलेले नाहीत.</div>`;
 }
 async function addUser(){
-  const name=newName.value.trim(),username=String(newUser.value||"").trim(),password=newPass.value,role=newRole.value;
+  const name=newName.value.trim(),username=normalizeUsername(newUser.value),password=newPass.value,role="leader";
   if(!name||!username||!password)return showToast("सर्व माहिती भरा");
   if(!/^\d{10}$/.test(username))return showToast("10 अंकी Mobile Number टाका");
 
