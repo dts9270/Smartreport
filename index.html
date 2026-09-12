@@ -284,6 +284,34 @@ body.lightTheme .firebasePanel{background:#fffaf2}
   #printableReport{position:absolute!important;left:0;top:0;width:100%!important;box-shadow:none!important}
 }
 
+
+/* ===== FINAL STABLE FEATURES ===== */
+.profileMiniGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.profileMini{padding:11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035)}
+.profileMini small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
+.profileMini b{font-size:13px}
+.historyGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.historyCard{padding:13px;border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.035)}
+.historyCard h4{margin:0 0 8px}
+.activityItem{padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.5}
+.activityItem:last-child{border-bottom:0}
+.logoUploadGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.logoUploadCard{border:1px dashed var(--line);border-radius:16px;padding:12px}
+.brandPreview{height:62px;max-width:150px;object-fit:contain;display:none;background:#fff;border-radius:10px;padding:5px;margin:8px 0}
+.brandLogoImg{height:52px;max-width:100px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;display:none}
+.brandTextFallback{min-width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#1a4f9c,#0a2d66);color:#fff;display:grid;place-items:center;font-weight:1000;font-size:17px;padding:0 8px}
+.reportDualBrand{display:flex;gap:8px;align-items:center}
+.safetyStrip{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.safetyPill{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;border:1px solid var(--line)}
+.archiveRow{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.archiveRow:last-child{border-bottom:0}
+@media(max-width:650px){
+  .profileMiniGrid,.historyGrid,.logoUploadGrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:420px){
+  .profileMiniGrid,.historyGrid,.logoUploadGrid{grid-template-columns:1fr}
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -342,6 +370,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
       <button class="tab" onclick="showView('entry',this)">Daily Entry</button>
       <button class="tab" onclick="showView('leaderboard',this)">Leaderboard</button>
       <button class="tab" onclick="showView('report',this)">Reports</button>
+      <button id="historyTabApp" class="tab hidden" onclick="showView('history',this)">History</button>
       <button id="adminTabApp" class="tab hidden" onclick="showView('admin',this)">Admin Control</button>
     </div>
 
@@ -401,6 +430,19 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         </div>
       </div>
 
+
+      <div class="section glass" id="leaderProfileSection">
+        <div class="sectionHead"><h3>👤 माझी प्रोफाइल</h3><span class="badge">LEADER PROFILE</span></div>
+        <div class="profileMiniGrid">
+          <div class="profileMini"><small>Mobile / Username</small><b id="lpMobile">—</b></div>
+          <div class="profileMini"><small>Joining Date</small><b id="lpJoined">—</b></div>
+          <div class="profileMini"><small>Current Month PV</small><b id="lpCurrentPv">0</b></div>
+          <div class="profileMini"><small>Best Month</small><b id="lpBestMonth">—</b></div>
+          <div class="profileMini"><small>Total Active Days</small><b id="lpTotalActive">0</b></div>
+          <div class="profileMini"><small>Growth Level</small><b id="lpLevel">—</b></div>
+        </div>
+      </div>
+
       <div class="section glass">
         <div class="sectionHead"><h3>🧠 Smart Coach</h3><span class="badge">माझ्यासाठी काय करायचे?</span></div>
         <div id="coachSummary" style="margin-top:8px;font-size:14px;font-weight:900;line-height:1.55"></div>
@@ -451,7 +493,11 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         <div class="reportHead">
           <div class="reportHeadRow">
             <div class="reportBrandWrap">
-              <div class="reportLogo">RCM</div>
+              <div class="reportDualBrand">
+                <img id="reportRcmLogo" class="brandLogoImg" alt="RCM Logo">
+                <div id="reportRcmFallback" class="brandTextFallback">RCM</div>
+                <img id="reportDsLogo" class="brandLogoImg" alt="DS WORLD Logo">
+              </div>
               <div class="reportBrandText">
                 <h2>DS WORLD Performance Report</h2>
                 <div class="sub1">RCM Business Growth System</div>
@@ -521,9 +567,44 @@ body.lightTheme .firebasePanel{background:#fffaf2}
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
             </div>
-            <div class="reportSign">Authorized Growth Review</div>
+            <div class="reportSign">Admin / Mentor Signature</div>
           </div>
         </div>
+      </div>
+    </div>
+
+
+    <div id="historyView" class="hidden">
+      <div class="section glass">
+        <div class="sectionHead"><h3>🗂️ Month Archive & History</h3><span class="badge">LOCKED HISTORY</span></div>
+        <div class="historyGrid">
+          <div class="historyCard">
+            <h4>🔐 Month Lock & Archive</h4>
+            <div class="small">पूर्ण झालेला महिना archive करा. Archive झाल्यानंतर तो historical snapshot म्हणून सुरक्षित राहील.</div>
+            <div class="btnrow">
+              <input id="archiveMonthInput" type="month" style="max-width:180px">
+              <button class="primary gold" onclick="archiveSelectedMonth()">🔐 Lock & Archive</button>
+            </div>
+            <div id="archiveList" style="margin-top:8px"></div>
+          </div>
+          <div class="historyCard">
+            <h4>💾 Data Backup</h4>
+            <div id="backupStatus" class="small">Backup status...</div>
+            <div class="btnrow">
+              <button class="primary" onclick="createSystemBackup('manual',true)">💾 Backup Now</button>
+            </div>
+            <div class="safetyStrip">
+              <span class="safetyPill">Root: ds_world_growth_os_v1</span>
+              <span class="safetyPill">Hard Delete: OFF</span>
+              <span class="safetyPill">User Backup: ON</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section glass">
+        <div class="sectionHead"><h3>🧾 Activity Log</h3><span class="badge">ADMIN AUDIT</span></div>
+        <div id="activityLogList"></div>
       </div>
     </div>
 
@@ -587,9 +668,35 @@ body.lightTheme .firebasePanel{background:#fffaf2}
           <div><div class="small">Role</div><select id="newRole"><option value="leader">Leader</option><option value="admin">Admin</option></select></div>
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
+        <div class="safetyStrip">
+          <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
+          <span class="safetyPill">Hard Delete: Disabled</span>
+          <span class="safetyPill">Daily Backup: Enabled</span>
+          <span class="safetyPill">Month Archive: Enabled</span>
+          <span class="safetyPill">Audit Log: Enabled</span>
+        </div>
         <div class="firebasePanel">
           <b>Firebase:</b> <span id="firebaseHealthText">तपासणी सुरू...</span>
           <div class="btnrow"><button class="actionMini" onclick="testFirebaseConnection(true)">🔎 Firebase Test</button></div>
+        </div>
+      </div>
+
+
+      <div class="section glass">
+        <div class="sectionHead"><h3>🎨 Report Branding</h3><span class="badge">LETTERHEAD</span></div>
+        <div class="logoUploadGrid">
+          <div class="logoUploadCard">
+            <b>RCM Logo</b>
+            <div class="small">PNG/JPG/WebP • max 350 KB</div>
+            <img id="rcmLogoPreview" class="brandPreview" alt="RCM preview">
+            <input id="rcmLogoInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="saveBrandAsset('rcm',this)">
+          </div>
+          <div class="logoUploadCard">
+            <b>DS WORLD Logo</b>
+            <div class="small">PNG/JPG/WebP • max 350 KB</div>
+            <img id="dsLogoPreview" class="brandPreview" alt="DS preview">
+            <input id="dsLogoInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="saveBrandAsset('ds',this)">
+          </div>
         </div>
       </div>
 
@@ -598,9 +705,8 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         <div class="tableWrap">
           <table>
             <thead><tr><th>नाव</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
-            <tbody id="usersTable"></tbody></table></div><div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.<br>Mobile / Username बदलताना जुना Firebase record archive होतो; entries नवीन username वर copy होतात.</div><div style="display:none"><table>
-          </table>
-        </div>
+            <tbody id="usersTable"></tbody></table></div>
+        <div class="small" style="margin-top:8px">Users इथून hard-delete होत नाहीत; Deactivate केल्यावरही जुना Data सुरक्षित राहतो.<br>Mobile / Username बदलताना जुना Firebase record archive होतो; entries नवीन username वर copy होतात.</div>
       </div>
     </div>
 
@@ -648,6 +754,11 @@ const legacyFirebaseConfig = {
 const CLOUD_ROOT="ds_world_growth_os_v1";
 const USER_REGISTRY_PATH=`${CLOUD_ROOT}/users`;
 const USER_BACKUP_PATH=`${CLOUD_ROOT}/user_backups`;
+const ACTIVITY_LOG_PATH=`${CLOUD_ROOT}/activity_log`;
+const DAILY_BACKUP_PATH=`${CLOUD_ROOT}/backups/daily`;
+const ARCHIVE_PATH=`${CLOUD_ROOT}/archives`;
+const BRANDING_PATH=`${CLOUD_ROOT}/settings/branding`;
+const DATA_POLICY_VERSION="FINAL_STABLE_V1";
 const STABLE_DATA_ROOT="ds_world_growth_os_v1";
 /* DO NOT CHANGE ROOT IN FUTURE VERSIONS: all historical users and entries remain under this path. */
 let db=null, legacyDb=null, firebaseReady=false, legacyReady=false, cloudListenersStarted=false, recoveryRunning=false;
@@ -1100,12 +1211,15 @@ async function boot(){
   avatar.textContent=(currentUser.name||"U").trim()[0].toUpperCase();
   entryName.textContent=currentUser.name+" • "+new Date().toLocaleDateString("mr-IN");
   adminTabApp.classList.toggle("hidden",currentUser.role!=="admin");
+  const htab=document.getElementById("historyTabApp");if(htab)htab.classList.toggle("hidden",currentUser.role!=="admin");
   heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
+  await loadBranding();
   if(currentUser.role==="admin")await mergeAllUsersFromFirebase();
   renderAll();
   if(currentUser.role==="admin")openAppTab("admin");
   startCloudListeners();
   await syncCloudData();
+  if(currentUser.role==="admin"){await ensureDailyBackup();await autoArchivePreviousMonth();}
   if(currentUser.role==="admin"){
     const nonAdmin=getUsers().filter(x=>x.username!=="admin");
     const last=Number(localStorage.getItem("ds_last_recovery")||0);
@@ -1114,8 +1228,13 @@ async function boot(){
 }
 function logout(){localStorage.removeItem("ds_current_user");location.reload()}
 function showView(v,btn){
-  ["dashboard","entry","leaderboard","report","admin"].forEach(x=>document.getElementById(x+"View").classList.toggle("hidden",x!==v));
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active")
+  ["dashboard","entry","leaderboard","report","history","admin"].forEach(x=>{
+    const el=document.getElementById(x+"View");if(el)el.classList.toggle("hidden",x!==v)
+  });
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  if(v==="history")renderHistory();
+  if(v==="report"){renderReport();applyBrandingToUI()}
 }
 
 function openAppTab(name){
@@ -1144,6 +1263,7 @@ async function saveEntry(){
     try{
       await db.ref(`${cloudEntriesPath(currentUser.username)}/${todayKey()}`).set(e);
       setCloudStatus("online","☁️ Firebase Online");
+      if(currentUser.role==="admin")await logActivity("DAILY_ENTRY_SAVE",todayKey(),currentUser.username);
     }catch(err){
       console.warn(err);
       if(String(err&&err.code||"").toUpperCase().includes("PERMISSION_DENIED")){
@@ -1165,7 +1285,7 @@ function ftdScore(e){
   return Math.round(s/Object.keys(targets).length)
 }
 function renderAll(){
-  renderDash();renderExecutionIntelligence();renderLeaderboard();renderReport();if(currentUser.role==="admin"){renderUsers();renderAdminWarRoom()}
+  renderDash();renderExecutionIntelligence();renderLeaderProfile();renderLeaderboard();renderReport();if(currentUser.role==="admin"){renderUsers();renderAdminWarRoom()}
 }
 function renderDash(){
   const e=allEntries()[todayKey()]||{};
@@ -1316,6 +1436,7 @@ async function addUser(){
 
   await mergeAllUsersFromFirebase();
   newName.value="";newUser.value="";newPass.value="";
+  await logActivity("USER_ADD",`${obj.name} • ${obj.role}`,obj.username);
   showToast("User Firebase मध्ये कायमचा save झाला ✅");
   renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
@@ -1344,6 +1465,7 @@ async function toggleUserActive(username){
   x.updatedAt=Date.now();
   setUsers(u);
   const saved=await cloudSetUser(x,null);
+  if(saved)await logActivity(x.active?"USER_ACTIVATE":"USER_DEACTIVATE",x.name||"",x.username);
   showToast(saved?(x.active?"User Active ✅":"User Deactivated • Data सुरक्षित"):"Firebase save verify झाला नाही");
   renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
@@ -1357,6 +1479,7 @@ async function editUserName(username){
     currentUser.name=x.name;
     localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
   }
+  if(saved)await logActivity("USER_NAME_EDIT",x.name||"",x.username);
   showToast(saved?"नाव Firebase मध्ये update झाले ✅":"नाव local update झाले; Firebase verify करा");
   renderUsers();renderLeaderboard();renderAdminWarRoom();
 }
@@ -1472,6 +1595,7 @@ async function editUserUsername(oldUsername){
     }
 
     await mergeAllUsersFromFirebase();
+    await logActivity("USERNAME_EDIT",`${oldUsername} → ${newUsername}`,newUsername);
     showToast("Mobile / Username सुरक्षितपणे बदलला ✅");
     renderUsers();renderLeaderboard();renderAdminWarRoom();
   }catch(e){
@@ -1500,6 +1624,7 @@ async function resetUserPassword(username){
   const u=getUsers(),x=u.find(a=>String(a.username)===String(username));if(!x)return;
   x.passwordHash=await hashPassword(p);delete x.password;x.updatedAt=Date.now();setUsers(u);
   const saved=await cloudSetUser(x,p);
+  if(saved)await logActivity("PASSWORD_RESET","Admin reset",x.username);
   showToast(saved?"Password Firebase मध्ये update झाला ✅":"Password local update झाला; Firebase verify करा");
   renderUsers();
 }
@@ -1698,7 +1823,8 @@ window.addEventListener("resize",()=>{clearTimeout(adminChartResizeTimer);adminC
 function openLeader360(username){
   const u=getUsers().find(x=>x.username===username);if(!u)return;
   const s=leaderSnapshot(u),d=new Date(),left=Math.max(daysInCurrentMonth()-d.getDate(),1),req=Math.ceil(Math.max(5000-s.m.pv,0)/left),proj=Math.round(s.m.pv/elapsedDays()*daysInCurrentMonth());
-  l360Name.textContent=u.name+" — 360° Profile";l360Meta.textContent=u.username+" • "+monthKey();
+  const bm=bestMonthFor(u.username),allDays=totalActiveDaysAllTime(u.username);
+  l360Name.textContent=u.name+" — 360° Profile";l360Meta.textContent=u.username+" • Joined "+formatDateSafe(u.createdAt)+" • Best "+(bm?bm.ym+" / "+bm.pv+" PV":"—")+" • Total Active "+allDays;
   l360Kpis.innerHTML=`
     <div class="kpi"><div class="label">FTD</div><div class="value">${s.f}%</div><div class="sub">Today Score</div></div>
     <div class="kpi"><div class="label">Growth Score</div><div class="value">${s.g}</div><div class="sub">${growthLevelText(s.g)}</div></div>
@@ -1947,6 +2073,322 @@ function shareWhatsAppReport(){
   const url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
   const win=window.open(url,"_blank");
   if(!win) window.location.href=url;
+}
+
+
+/* ===== FINAL STABLE DATA / HISTORY / BRANDING ===== */
+function localActivityLog(){
+  try{return JSON.parse(localStorage.getItem("ds_activity_log")||"[]")}catch(e){return []}
+}
+async function logActivity(action,details="",targetUsername=""){
+  const item={
+    action,details,targetUsername:targetUsername||"",
+    by:currentUser?currentUser.username:"system",
+    byName:currentUser?currentUser.name:"System",
+    at:Date.now()
+  };
+  const arr=localActivityLog();arr.unshift(item);
+  localStorage.setItem("ds_activity_log",JSON.stringify(arr.slice(0,200)));
+  if(firebaseReady&&db){
+    try{await db.ref(ACTIVITY_LOG_PATH).push(item)}catch(e){console.warn("Activity log cloud failed",e)}
+  }
+  if(currentUser&&currentUser.role==="admin"&&!document.getElementById("historyView")?.classList.contains("hidden"))renderActivityLog();
+}
+
+function getAllUserEntries(username){
+  try{return JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}")}catch(e){return {}}
+}
+function monthTotalsFromEntries(entries,ym){
+  const rows=Object.entries(entries||{}).filter(([d])=>String(d).startsWith(ym)).map(x=>x[1]||{});
+  return {
+    activeDays:rows.length,
+    names:sum(rows,"names"),calls:sum(rows,"calls"),plans:sum(rows,"plans"),pv:sum(rows,"pv"),
+    video:sum(rows,"video"),book:sum(rows,"book"),depth:sum(rows,"depth"),meeting:sum(rows,"meeting")
+  };
+}
+function userMonthMap(username){
+  const entries=getAllUserEntries(username),map={};
+  Object.entries(entries).forEach(([date,val])=>{
+    const ym=String(date).slice(0,7);
+    if(!/^\d{4}-\d{2}$/.test(ym))return;
+    if(!map[ym])map[ym]=[];
+    map[ym].push(val||{});
+  });
+  return map;
+}
+function bestMonthFor(username){
+  const map=userMonthMap(username);
+  const arr=Object.entries(map).map(([ym,rows])=>({ym,pv:sum(rows,"pv")}));
+  arr.sort((a,b)=>b.pv-a.pv);
+  return arr[0]||null;
+}
+function totalActiveDaysAllTime(username){
+  return Object.keys(getAllUserEntries(username)).length;
+}
+function formatDateSafe(ts){
+  if(!Number(ts))return "—";
+  try{return new Date(Number(ts)).toLocaleDateString("mr-IN")}catch(e){return "—"}
+}
+function renderLeaderProfile(){
+  if(!currentUser||currentUser.role==="admin")return;
+  const u=getUsers().find(x=>String(x.username)===String(currentUser.username))||currentUser;
+  const best=bestMonthFor(currentUser.username);
+  const mt=monthTotalsFromEntries(getAllUserEntries(currentUser.username),localMonthKey());
+  const gs=growthScoreFor(currentUser.username);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set("lpMobile",currentUser.username||"—");
+  set("lpJoined",formatDateSafe(u.createdAt));
+  set("lpCurrentPv",mt.pv||0);
+  set("lpBestMonth",best?`${best.ym} • ${best.pv} PV`:"—");
+  set("lpTotalActive",totalActiveDaysAllTime(currentUser.username));
+  set("lpLevel",growthLevelText(gs));
+}
+
+async function createSystemBackup(reason="auto",force=false){
+  if(!currentUser||currentUser.role!=="admin")return false;
+  const today=localDateKey();
+  const last=localStorage.getItem("ds_last_daily_backup");
+  if(!force&&last===today)return true;
+
+  try{
+    const usersObj=await readPath(db,USER_REGISTRY_PATH);
+    const entriesObj=await readPath(db,`${CLOUD_ROOT}/entries`);
+    const payload={
+      createdAt:Date.now(),reason,root:CLOUD_ROOT,policy:DATA_POLICY_VERSION,
+      users:usersObj||{},
+      entries:entriesObj||{},
+      branding:(await readPath(db,BRANDING_PATH))||{}
+    };
+    if(firebaseReady&&db)await db.ref(`${DAILY_BACKUP_PATH}/${today}`).set(payload);
+    localStorage.setItem("ds_last_daily_backup",today);
+    localStorage.setItem("ds_last_backup_time",String(Date.now()));
+    await logActivity("SYSTEM_BACKUP",`${reason} backup • ${today}`);
+    const bs=document.getElementById("backupStatus");
+    if(bs)bs.textContent="Last Backup: "+new Date().toLocaleString("mr-IN");
+    if(force)showToast("पूर्ण Firebase Backup तयार झाला ✅");
+    return true;
+  }catch(e){
+    console.warn("Backup failed",e);
+    if(force)showToast("Backup पूर्ण झाला नाही");
+    return false;
+  }
+}
+async function ensureDailyBackup(){return createSystemBackup("daily_auto",false)}
+
+function previousMonthKey(){
+  const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+}
+function archiveMetaLocal(){
+  try{return JSON.parse(localStorage.getItem("ds_month_archives_meta")||"{}")}catch(e){return {}}
+}
+function setArchiveMetaLocal(v){localStorage.setItem("ds_month_archives_meta",JSON.stringify(v||{}))}
+async function archiveMonth(ym,manual=false){
+  if(!currentUser||currentUser.role!=="admin")return false;
+  if(!/^\d{4}-\d{2}$/.test(String(ym)))return false;
+  if(ym>=localMonthKey()){
+    if(manual)showToast("चालू किंवा भविष्यातील महिना Lock करता येणार नाही");
+    return false;
+  }
+  const meta=archiveMetaLocal();
+  if(meta[ym]?.locked&&!manual)return true;
+
+  try{
+    const usersObj=await readPath(db,USER_REGISTRY_PATH)||{};
+    const entriesObj=await readPath(db,`${CLOUD_ROOT}/entries`)||{};
+    const filtered={};let entryDays=0,teamPv=0;
+    Object.entries(entriesObj).forEach(([uk,entries])=>{
+      const monthRows={};
+      Object.entries(entries||{}).forEach(([date,val])=>{
+        if(String(date).startsWith(ym)){
+          monthRows[date]=val;entryDays++;teamPv+=Number(val?.pv||0);
+        }
+      });
+      if(Object.keys(monthRows).length)filtered[uk]=monthRows;
+    });
+    const payload={
+      month:ym,locked:true,createdAt:Date.now(),
+      createdBy:currentUser.username,root:CLOUD_ROOT,
+      users:usersObj,entries:filtered,
+      summary:{leaders:Object.keys(filtered).length,entryDays,teamPv}
+    };
+    if(firebaseReady&&db)await db.ref(`${ARCHIVE_PATH}/${ym}`).set(payload);
+    meta[ym]={locked:true,createdAt:payload.createdAt,summary:payload.summary};
+    setArchiveMetaLocal(meta);
+    await logActivity("MONTH_ARCHIVE",`${ym} locked • PV ${teamPv}`);
+    if(manual)showToast(`${ym} Archive & Lock पूर्ण ✅`);
+    await renderHistory();
+    return true;
+  }catch(e){
+    console.warn("Archive failed",e);
+    if(manual)showToast("Archive पूर्ण झाला नाही");
+    return false;
+  }
+}
+async function autoArchivePreviousMonth(){
+  const ym=previousMonthKey();
+  const meta=archiveMetaLocal();
+  if(meta[ym]?.locked)return true;
+  return archiveMonth(ym,false);
+}
+async function archiveSelectedMonth(){
+  const input=document.getElementById("archiveMonthInput");
+  if(!input||!input.value)return showToast("महिना निवडा");
+  await archiveMonth(input.value,true);
+}
+
+async function renderActivityLog(){
+  const el=document.getElementById("activityLogList");if(!el)return;
+  let rows=localActivityLog();
+  if(firebaseReady&&db){
+    try{
+      const s=await db.ref(ACTIVITY_LOG_PATH).limitToLast(40).once("value");
+      const remote=s.exists()?Object.values(s.val()||{}):[];
+      const map=new Map();
+      [...rows,...remote].forEach(x=>{
+        if(!x)return;
+        const k=`${x.at}_${x.action}_${x.by}_${x.targetUsername||""}`;
+        map.set(k,x)
+      });
+      rows=[...map.values()].sort((a,b)=>Number(b.at||0)-Number(a.at||0)).slice(0,40);
+      localStorage.setItem("ds_activity_log",JSON.stringify(rows));
+    }catch(e){console.warn(e)}
+  }
+  el.innerHTML=rows.length?rows.map(x=>`<div class="activityItem">
+    <b>${x.action}</b> ${x.targetUsername?`• ${x.targetUsername}`:""}
+    <div>${x.details||""}</div>
+    <div class="small">${new Date(Number(x.at||Date.now())).toLocaleString("mr-IN")} • ${x.byName||x.by||"System"}</div>
+  </div>`).join(""):`<div class="small">Activity log अजून रिकामा आहे.</div>`;
+}
+async function renderArchiveList(){
+  const el=document.getElementById("archiveList");if(!el)return;
+  let meta=archiveMetaLocal();
+  if(firebaseReady&&db){
+    try{
+      const s=await db.ref(ARCHIVE_PATH).once("value");
+      if(s.exists()){
+        const rem=s.val()||{};
+        Object.entries(rem).forEach(([ym,a])=>{
+          meta[ym]={locked:a.locked===true,createdAt:a.createdAt||0,summary:a.summary||{}}
+        });
+        setArchiveMetaLocal(meta);
+      }
+    }catch(e){console.warn(e)}
+  }
+  const rows=Object.entries(meta).sort((a,b)=>b[0].localeCompare(a[0]));
+  el.innerHTML=rows.length?rows.map(([ym,x])=>`<div class="archiveRow">
+    <div><b>${ym}</b><div class="small">${x.summary?.leaders||0} Leaders • ${x.summary?.teamPv||0} PV</div></div>
+    <span class="badge">${x.locked?"🔒 LOCKED":"OPEN"}</span>
+  </div>`).join(""):`<div class="small">अजून archived month नाही.</div>`;
+}
+async function renderHistory(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const bs=document.getElementById("backupStatus");
+  if(bs){
+    const t=Number(localStorage.getItem("ds_last_backup_time")||0);
+    bs.textContent=t?"Last Backup: "+new Date(t).toLocaleString("mr-IN"):"आजचा Backup pending";
+  }
+  const inp=document.getElementById("archiveMonthInput");
+  if(inp&&!inp.value)inp.value=previousMonthKey();
+  await Promise.all([renderArchiveList(),renderActivityLog()]);
+}
+
+function getBrandingLocal(){
+  try{return JSON.parse(localStorage.getItem("ds_branding")||"{}")}catch(e){return {}}
+}
+function setBrandingLocal(v){localStorage.setItem("ds_branding",JSON.stringify(v||{}))}
+async function loadBranding(){
+  let branding=getBrandingLocal();
+  if(firebaseReady&&db){
+    try{
+      const s=await db.ref(BRANDING_PATH).once("value");
+      if(s.exists()){branding={...branding,...(s.val()||{})};setBrandingLocal(branding)}
+    }catch(e){console.warn("Branding read failed",e)}
+  }
+  applyBrandingToUI(branding);
+  return branding;
+}
+function applyBrandingToUI(branding=getBrandingLocal()){
+  const rcm=branding.rcmLogo||"",ds=branding.dsLogo||"";
+  const setImg=(id,src)=>{
+    const el=document.getElementById(id);if(!el)return;
+    if(src){el.src=src;el.style.display="block"}else el.style.display="none";
+  };
+  setImg("reportRcmLogo",rcm);setImg("reportDsLogo",ds);
+  setImg("rcmLogoPreview",rcm);setImg("dsLogoPreview",ds);
+  const fb=document.getElementById("reportRcmFallback");if(fb)fb.style.display=rcm?"none":"grid";
+}
+async function saveBrandAsset(kind,input){
+  const file=input?.files?.[0];if(!file)return;
+  if(file.size>350*1024){input.value="";return showToast("Logo 350 KB पेक्षा कमी ठेवा")}
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    const branding=getBrandingLocal();
+    if(kind==="rcm")branding.rcmLogo=reader.result;
+    else branding.dsLogo=reader.result;
+    setBrandingLocal(branding);applyBrandingToUI(branding);
+    if(firebaseReady&&db){
+      try{await db.ref(BRANDING_PATH).set(branding)}catch(e){console.warn(e)}
+    }
+    await logActivity("BRANDING_UPDATE",kind==="rcm"?"RCM Logo updated":"DS WORLD Logo updated");
+    showToast("Report Logo save झाला ✅");
+  };
+  reader.readAsDataURL(file);
+}
+
+function reportNumber(){
+  const d=new Date();
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+  const tail=String(currentUser?.username||"0000").slice(-4);
+  return `DSW-${y}${m}${day}-${tail}`;
+}
+
+
+function renderReport(){
+  if(!currentUser)return;
+  const d=buildReportData();
+  const monthName=new Date().toLocaleDateString("mr-IN",{month:"long",year:"numeric"});
+  const nowTxt=new Date().toLocaleString("mr-IN");
+  const titleEl=document.getElementById("reportMainTitle");
+  const subEl=document.getElementById("reportSubTitle");
+  const meta=document.getElementById("reportMetaBox");
+  const kpi=document.getElementById("reportKpiGrid");
+  const ftdBody=document.getElementById("reportFtdTable");
+  const mtdBody=document.getElementById("reportMtdTable");
+  const gap=document.getElementById("reportGapAnalysis");
+  const actions=document.getElementById("reportActionList");
+  const coach=document.getElementById("reportCoachText");
+  const notes=document.getElementById("reportNotesText");
+  if(!titleEl)return;
+
+  titleEl.textContent=`${currentUser.name} यांचा प्रगती अहवाल`;
+  subEl.textContent=`${monthName} • FTD + MTD + Smart Coach Action Plan`;
+  meta.innerHTML=`<div><b>Report No:</b> ${reportNumber()}</div>
+                  <div><b>नाव:</b> ${currentUser.name}</div>
+                  <div><b>Mobile:</b> ${currentUser.username}</div>
+                  <div><b>Generated:</b> ${nowTxt}</div>`;
+
+  kpi.innerHTML=[
+    {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD Performance"},
+    {l:"मासिक PV",v:d.mt.pv,s:`उर्वरित ${d.remainingPv}`},
+    {l:"मासिक प्रगती",v:d.mtdPct+"%",s:"MTD Achievement"},
+    {l:"सातत्य",v:d.consistency+"%",s:`Active Days ${d.mt.activeDays}`},
+    {l:"सलग दिवस",v:d.streak+" 🔥",s:"Current Streak"},
+    {l:"दररोज आवश्यक PV",v:d.reqDailyPv,s:`Days Left ${d.leftDays}`},
+    {l:"Projected PV",v:d.projectedPv,s:"Month End Projection"},
+    {l:"यशाची शक्यता",v:d.probability+"%",s:"Success Probability"}
+  ].map(x=>`<div class="reportKpi"><div class="rkLbl">${x.l}</div><div class="rkVal">${x.v}</div><div class="rkSub">${x.s}</div></div>`).join("");
+
+  ftdBody.innerHTML=d.ftdRows.map(r=>`<tr><td>${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.pct}%</td><td>${r.statusHtml}</td></tr>`).join("");
+  mtdBody.innerHTML=d.mtdRows.map(r=>`<tr><td>${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.remaining}</td><td>${r.pct}%</td><td>${r.req}</td></tr>`).join("");
+
+  gap.innerHTML=d.weakMtd.map(r=>`<div style="margin:8px 0;padding:10px 12px;border:1px solid #e8eef6;border-radius:14px;background:#fafcff">
+      <b>${r.label}</b> — झाले: ${r.actual} / लक्ष्य: ${r.target} • उर्वरित: ${r.remaining} • Achievement: ${r.pct}%
+    </div>`).join("") || "सध्या प्रमुख gap दिसत नाही.";
+  actions.innerHTML=d.actions.slice(0,5).map(a=>`<li>${a}</li>`).join("") || `<li>आजची सातत्यपूर्ण कामगिरी कायम ठेवा.</li>`;
+  coach.textContent=d.coach;
+  notes.textContent=d.notes || "आज कोणतीही अतिरिक्त नोंद केलेली नाही.";
+  applyBrandingToUI();
 }
 
 applyTheme();
