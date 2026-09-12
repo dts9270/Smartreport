@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V21.0</title>
+<title>RCM • DS WORLD Growth OS — V22.0</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -492,6 +492,7 @@ input,select,button,a{max-width:100%}
   #printableReport .reportFooter{margin-top:5px!important;padding-top:5px!important;font-size:6.6px!important}
 }
 
+\n/* ===== V22 LOGOUT ALWAYS VISIBLE ===== */\n.topbar,.brand,.userchip{min-width:0}\n@media(max-width:700px){\n  .topbar{flex-wrap:wrap!important;align-items:stretch!important;gap:8px!important}\n  .brand{width:100%!important;min-width:0!important}\n  .brand>div:last-child{min-width:0!important;max-width:100%!important}\n  .brand h1{overflow-wrap:anywhere!important}\n  .brandVersionLine{max-width:100%!important}\n  .userchip{\n    width:100%!important;min-width:0!important;\n    display:grid!important;\n    grid-template-columns:auto minmax(0,1fr) auto auto!important;\n    gap:7px!important;align-items:center!important\n  }\n  .userchip .nm{min-width:0!important;overflow:hidden!important}\n  .userchip .nm b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n  .userchip #cloudStatus{grid-column:1/-1!important;grid-row:2!important;justify-self:start!important;max-width:100%!important}\n  .userchip .themeBtn,.userchip .iconbtn{white-space:nowrap!important;padding:7px 9px!important;min-width:0!important}\n  .userchip .iconbtn{display:inline-flex!important;align-items:center!important;justify-content:center!important}\n}\n@media(max-width:390px){\n  .userchip{grid-template-columns:auto minmax(0,1fr) auto!important}\n  .userchip .themeBtn{grid-column:1/3!important;grid-row:3!important;justify-self:stretch!important}\n  .userchip .iconbtn{grid-column:3!important;grid-row:3!important}\n  .userchip #cloudStatus{grid-column:1/-1!important;grid-row:2!important}\n}\n
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -510,7 +511,7 @@ input,select,button,a{max-width:100%}
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V21.0 • MOBILE COMPACT + PRIVATE LEADER</div>
+      <div class="loginVersion">V22.0 • LOGOUT VISIBLE FIX</div>
     </div>
 
     <div class="loginTabs">
@@ -534,7 +535,7 @@ input,select,button,a{max-width:100%}
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V21.0 • MOBILE COMPACT + PRIVATE LEADER</span>
+            <span class="versionBadge">V22.0 • LOGOUT VISIBLE FIX</span>
           </div>
         </div>
       </div>
@@ -758,7 +759,7 @@ input,select,button,a{max-width:100%}
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V21.0 • MOBILE COMPACT + PRIVATE LEADER</div>
+              <div><b>Version:</b> V22.0 • LOGOUT VISIBLE FIX</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -873,7 +874,7 @@ input,select,button,a{max-width:100%}
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
-          <span class="safetyPill">Version: V21.0</span>
+          <span class="safetyPill">Version: V22.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -944,9 +945,9 @@ input,select,button,a{max-width:100%}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V21.0";
+const APP_VERSION="V22.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="MOBILE COMPACT + PRIVATE LEADER";
+const APP_RELEASE="LOGOUT VISIBLE FIX";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
