@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V24.0 LOGIN STABLE</title>
+<title>RCM • DS WORLD Growth OS — V25.0 OLD USER LOGIN REPAIR</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -620,7 +620,7 @@ body.lightTheme .logoutBtn{
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V24.0 • LOGIN STABLE</div>
+      <div class="loginVersion">V25.0 • OLD USER LOGIN REPAIR</div>
     </div>
 
     <div class="loginTabs">
@@ -645,7 +645,7 @@ body.lightTheme .logoutBtn{
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V24.0 • LOGIN STABLE</span>
+            <span class="versionBadge">V25.0 • OLD USER LOGIN REPAIR</span>
           </div>
         </div>
       </div>
@@ -869,7 +869,7 @@ body.lightTheme .logoutBtn{
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V24.0 • LOGIN STABLE</div>
+              <div><b>Version:</b> V25.0 • OLD USER LOGIN REPAIR</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -982,9 +982,9 @@ body.lightTheme .logoutBtn{
           <div><div class="small">Password</div><input id="newPass" placeholder="पासवर्ड"></div>
           <div><div class="small">Role</div><select id="newRole" disabled><option value="leader" selected>Leader</option></select></div>
         </div>
-        <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
+        <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="repairAllOldUserLogins()">🔐 Old Login Repair</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
-          <span class="safetyPill">Version: V24.0</span>
+          <span class="safetyPill">Version: V25.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -1055,9 +1055,9 @@ body.lightTheme .logoutBtn{
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V24.0";
+const APP_VERSION="V25.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="LOGIN STABLE";
+const APP_RELEASE="OLD USER LOGIN REPAIR";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -2391,6 +2391,146 @@ async function editOwnProfile(){
   }else showToast("Profile Firebase मध्ये save झाली नाही");
 }
 
+
+async function collectUserLoginSources(username){
+  const user=normalizeUsername(username),key=safeCloudKey(user);
+  const out={main:null,permanent:null,backups:[]};
+  if(!firebaseReady||!db)return out;
+  try{
+    const [m,p,b]=await Promise.all([
+      db.ref(`${USER_REGISTRY_PATH}/${key}`).once("value"),
+      db.ref(`${USER_PERMANENT_PATH}/${key}`).once("value"),
+      db.ref(`${USER_BACKUP_PATH}/${key}`).once("value")
+    ]);
+    out.main=m.exists()?m.val():null;
+    out.permanent=p.exists()?p.val():null;
+    out.backups=b.exists()?Object.values(b.val()||{}).filter(Boolean):[];
+  }catch(e){console.warn("collectUserLoginSources",e)}
+  return out;
+}
+function chooseBestPasswordRecord(records){
+  const valid=(records||[]).filter(r=>r&&(r.passwordHash||r.password));
+  if(!valid.length)return null;
+  const rank=r=>{
+    const h=String(r.passwordHash||"");
+    let s=0;
+    if(/^[a-f0-9]{64}$/i.test(h))s+=300;
+    else if(h.startsWith("fallback_"))s+=200;
+    else if(h)s+=100;
+    if(r.password)s+=50;
+    s+=Math.min(Number(r.updatedAt||r.createdAt||0)/1e13,10);
+    return s;
+  };
+  valid.sort((a,b)=>rank(b)-rank(a));
+  return valid[0];
+}
+async function diagnoseAndRepairUserLogin(username,showMessage=true){
+  if(!currentUser||currentUser.role!=="admin")return {ok:false,status:"admin_only"};
+  const user=normalizeUsername(username);
+  const sources=await collectUserLoginSources(user);
+  const local=getUsers().find(x=>normalizeUsername(x.username)===user)||null;
+  const all=[sources.main,sources.permanent,...sources.backups,local].filter(Boolean);
+
+  if(!all.length){
+    if(showMessage)showToast(`${user}: User record सापडला नाही`);
+    return {ok:false,status:"missing_user"};
+  }
+
+  const pwdRecord=chooseBestPasswordRecord(all);
+  if(!pwdRecord){
+    if(showMessage)showToast(`${user}: Password record नाही • Password Reset करा`);
+    return {ok:false,status:"missing_password"};
+  }
+
+  const activeRecord=all.find(r=>r.active!==false&&r.archived!==true) ||
+                     all.find(r=>r.active!==false) ||
+                     sources.main || sources.permanent || pwdRecord;
+
+  // Intentionally deactivated users are not force-activated.
+  const explicitlyInactive=(sources.main&&sources.main.active===false) &&
+                           (sources.permanent&&sources.permanent.active===false);
+  if(explicitlyInactive){
+    if(showMessage)showToast(`${user}: User Deactivated आहे • आधी Activate करा`);
+    return {ok:false,status:"inactive"};
+  }
+
+  let passwordHash=String(pwdRecord.passwordHash||"");
+  if(!passwordHash&&pwdRecord.password)passwordHash=await hashPassword(pwdRecord.password);
+  if(!passwordHash){
+    if(showMessage)showToast(`${user}: Password Hash नाही • Password Reset करा`);
+    return {ok:false,status:"missing_password"};
+  }
+
+  const now=Date.now();
+  const base={
+    ...(sources.permanent||{}),
+    ...(sources.main||{}),
+    ...(activeRecord||{}),
+    username:user,
+    name:(activeRecord&&activeRecord.name)||(local&&local.name)||user,
+    role:(activeRecord&&activeRecord.role)||(local&&local.role)||"leader",
+    active:true,
+    archived:false,
+    migratedTo:null,
+    passwordHash,
+    permissions:(activeRecord&&activeRecord.permissions)||(local&&local.permissions)||defaultPermissions("leader"),
+    profile:(activeRecord&&activeRecord.profile)||(local&&local.profile)||{},
+    createdAt:Number((activeRecord&&activeRecord.createdAt)||(local&&local.createdAt)||now),
+    updatedAt:now,
+    cloudVerifiedAt:now,
+    loginRepairAt:now
+  };
+  delete base.password;
+
+  const key=safeCloudKey(user);
+  const updates={};
+  updates[`users/${key}`]=base;
+  updates[`users_permanent/${key}`]=base;
+  await db.ref(CLOUD_ROOT).update(updates);
+  await backupUserRecord(base,"login_repair");
+
+  const [mCheck,pCheck]=await Promise.all([
+    db.ref(`${USER_REGISTRY_PATH}/${key}`).once("value"),
+    db.ref(`${USER_PERMANENT_PATH}/${key}`).once("value")
+  ]);
+  const verified=mCheck.exists()&&pCheck.exists()&&
+                 !!mCheck.val()?.passwordHash&&!!pCheck.val()?.passwordHash&&
+                 mCheck.val()?.active!==false&&pCheck.val()?.active!==false;
+
+  if(!verified){
+    if(showMessage)showToast(`${user}: Login repair verify झाला नाही`);
+    return {ok:false,status:"verify_failed"};
+  }
+
+  const users=getUsers().filter(x=>normalizeUsername(x.username)!==user);
+  users.push(base);setUsers(users);
+  await logActivity("LOGIN_REPAIR","Old user password/role/status repaired",user);
+  renderUsers();
+
+  if(showMessage)showToast(`${base.name}: Login record Repair झाला ✅`);
+  return {ok:true,status:"repaired",user:base};
+}
+async function repairAllOldUserLogins(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  showToast("Old Users Login तपासत आहे...");
+  await restorePermanentUsers();
+  await mergeAllUsersFromFirebase();
+  const users=getUsers().filter(u=>u.username!=="admin");
+  let fixed=0,missing=0,inactive=0,failed=0;
+  for(const u of users){
+    const r=await diagnoseAndRepairUserLogin(u.username,false);
+    if(r.ok)fixed++;
+    else if(r.status==="missing_password")missing++;
+    else if(r.status==="inactive")inactive++;
+    else failed++;
+  }
+  await refreshAdminLive(false);
+  renderUsers();
+  const msg=`Login Check: ${fixed} repaired • ${missing} password reset needed • ${inactive} inactive • ${failed} other`;
+  showToast(msg);
+  alert(msg+"\n\nPassword reset needed असलेल्या User समोर Password button वापरा.");
+}
+
 function renderUsers(){
   const el=document.getElementById("usersTable");if(!el)return;
   const u=getUsers().filter(x=>x.username==="admin"||!(x.archived===true&&x.active===false));
@@ -2402,8 +2542,11 @@ function renderUsers(){
       <td>—</td><td><span class="badge">FULL ADMIN</span></td><td>Core Admin</td><td>—</td>
     </tr>`;
     const p=userPermissions(x),st=entryStatusFor(x.username),profile=x.profile||{};
+    const loginHealth=x.passwordHash
+      ? `<span class="rightBadge rightOn">🔐 Login Record</span>`
+      : `<span class="rightBadge rightOff">⚠️ Password Missing</span>`;
     return `<tr>
-      <td><b>${x.name}</b><div class="small">${x.username} • ${x.active===false?"Inactive":"Active"}</div></td>
+      <td><b>${x.name}</b><div class="small">${x.username} • ${x.active===false?"Inactive":"Active"}</div><div style="margin-top:5px">${loginHealth}</div></td>
       <td>${st.has?`<span class="badge">🟢 Received</span><div class="small">FTD ${st.ftd}% • PV ${Number(st.e.pv||0)}</div>`:`<span class="badge">🔴 Pending</span>`}</td>
       <td>
         <div class="rightsWrap">
@@ -2422,6 +2565,7 @@ function renderUsers(){
         <button class="actionMini" onclick="editLeaderProfileAdmin('${x.username}')">Edit Profile</button>
       </td>
       <td>
+        <button class="actionMini" onclick="diagnoseAndRepairUserLogin('${x.username}',true)">🔐 Login Check/Fix</button>
         <button class="actionMini" onclick="openLeader360('${x.username}')">360°</button>
         <button class="actionMini" onclick="resetUserPassword('${x.username}')">Password</button>
         <button class="actionMini" onclick="toggleUserActive('${x.username}')">${x.active===false?"Activate":"Deactivate"}</button>
@@ -2433,12 +2577,20 @@ function renderUsers(){
 }
 async function resetUserPassword(username){
   const p=prompt("नवीन Password टाका");if(!p)return;
+  if(p.length<4)return showToast("Password किमान 4 अक्षर/अंक ठेवा");
   await mergeAllUsersFromFirebase();
-  const u=getUsers(),x=u.find(a=>String(a.username)===String(username));if(!x)return;
-  x.passwordHash=await hashPassword(p);delete x.password;x.updatedAt=Date.now();setUsers(u);
+  const user=normalizeUsername(username);
+  const u=getUsers(),x=u.find(a=>normalizeUsername(a.username)===user);if(!x)return;
+  x.passwordHash=await hashPassword(p);delete x.password;
+  x.active=x.active!==false;
+  x.archived=false;
+  x.updatedAt=Date.now();setUsers(u);
   const saved=await cloudSetUser(x,p);
-  if(saved)await logActivity("PASSWORD_RESET","Admin reset",x.username);
-  showToast(saved?"Password Firebase मध्ये update झाला ✅":"Password local update झाला; Firebase verify करा");
+  if(saved){
+    await diagnoseAndRepairUserLogin(user,false);
+    await logActivity("PASSWORD_RESET","Admin reset + verified",user);
+  }
+  showToast(saved?"Password update + Login verify झाला ✅":"Password Firebase मध्ये save झाला नाही");
   renderUsers();
 }
 function renderReport(){if(!currentUser)return;const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis(),mt=a.totals,mtdPvPct=scorePct(mt.pv,5000);reportTitle.textContent=`${currentUser.name} — Performance Report`;reportMeta.textContent=`${new Date().toLocaleDateString("mr-IN")} • ${currentUser.role.toUpperCase()}`;reportKpis.innerHTML=`<div class="kpi"><div class="label">FTD Score</div><div class="value">${f}%</div><div class="sub">आजची कामगिरी</div></div><div class="kpi"><div class="label">MTD PV</div><div class="value">${mt.pv}</div><div class="sub">${mtdPvPct}% of 5000</div></div><div class="kpi"><div class="label">MTD Calls</div><div class="value">${mt.calls}</div><div class="sub">Target 150</div></div><div class="kpi"><div class="label">MTD Plans</div><div class="value">${mt.plans}</div><div class="sub">Target 60</div></div>`;gapAnalysis.innerHTML=a.gaps.map(x=>`<div>${x}</div>`).join("");actionPlan.innerHTML=a.actions.map(x=>`<div>${x}</div>`).join("");reportCoach.textContent=f>=90&&mtdPvPct>=70?"🏆 Performance मजबूत आहे. आता consistency टिकवून extra growth वर काम करा.":f>=70?"💪 दिशा योग्य आहे. सर्वात कमी असलेल्या activity वर आज अतिरिक्त 30–45 मिनिटे focus करा.":"⚡ आजचा दिवस recover करता येऊ शकतो. Calls → Presentations → PV या क्रमाने execution करा आणि दिवस संपण्याआधी पुन्हा score पाहा."}
