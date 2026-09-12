@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — Stable Firebase</title>
+<title>RCM • DS WORLD Growth OS — V19.0 FINAL STABLE</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -312,6 +312,37 @@ body.lightTheme .firebasePanel{background:#fffaf2}
   .profileMiniGrid,.historyGrid,.logoUploadGrid{grid-template-columns:1fr}
 }
 
+
+/* ===== VERSION BADGE ===== */
+.versionBadge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 9px;border-radius:999px;
+  font-size:9px;font-weight:1000;letter-spacing:.7px;
+  white-space:nowrap;
+  color:#fff;
+  background:linear-gradient(135deg,rgba(20,151,215,.9),rgba(21,122,99,.9));
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 5px 14px rgba(0,0,0,.16)
+}
+body.lightTheme .versionBadge{
+  color:#183b5c;
+  background:linear-gradient(135deg,#e9f7ff,#e9fff6);
+  border-color:#c7deea;
+  box-shadow:none
+}
+.brandVersionLine{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:2px}
+.brandVersionLine small{margin:0}
+.loginVersion{
+  margin:10px auto 0;width:max-content;
+  font-size:10px;font-weight:950;letter-spacing:.5px;
+  padding:5px 9px;border-radius:999px;border:1px solid var(--line);
+  color:var(--muted);background:rgba(255,255,255,.04)
+}
+@media(max-width:430px){
+  .versionBadge{font-size:8px;padding:4px 7px;letter-spacing:.35px}
+  .brandVersionLine small{font-size:8px}
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -330,6 +361,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
+      <div class="loginVersion">V19.0 • FINAL STABLE</div>
     </div>
 
     <div class="loginTabs">
@@ -349,7 +381,13 @@ body.lightTheme .firebasePanel{background:#fffaf2}
     <div class="topbar glass">
       <div class="brand">
         <div class="logo">DS</div>
-        <div><h1>RCM • DS WORLD Growth OS</h1><small>Leader Growth & Performance System</small></div>
+        <div>
+          <h1>RCM • DS WORLD Growth OS</h1>
+          <div class="brandVersionLine">
+            <small>Leader Growth & Performance System</small>
+            <span class="versionBadge">V19.0 • FINAL STABLE</span>
+          </div>
+        </div>
       </div>
       <div class="userchip">
         <div class="avatar" id="avatar">D</div>
@@ -566,6 +604,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
+              <div><b>Version:</b> V19.0 • FINAL STABLE</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -669,6 +708,7 @@ body.lightTheme .firebasePanel{background:#fffaf2}
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
+          <span class="safetyPill">Version: V19.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -731,6 +771,9 @@ body.lightTheme .firebasePanel{background:#fffaf2}
 <div class="toast" id="toast"></div>
 
 <script>
+const APP_VERSION="V19.0";
+const APP_BUILD="12 SEP 2026";
+const APP_RELEASE="FINAL STABLE";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -1986,6 +2029,7 @@ function applyTheme(){
 function setTheme(t){localStorage.setItem("ds_theme",t==="light"?"light":"dark");applyTheme();setTimeout(()=>{if(currentUser&&currentUser.role==="admin")renderAdminWarRoom()},80)}
 function toggleTheme(){const now=localStorage.getItem("ds_theme")||"dark";setTheme(now==="dark"?"light":"dark")}
 
+function appVersionText(){return `${APP_VERSION} • ${APP_RELEASE} • ${APP_BUILD}`}
 function showToast(msg){toast.textContent=msg;toast.style.display="block";setTimeout(()=>toast.style.display="none",2200)}
 
 
@@ -2500,7 +2544,8 @@ function renderReport(){
   meta.innerHTML=`<div><b>Report No:</b> ${reportNumber()}</div>
                   <div><b>नाव:</b> ${currentUser.name}</div>
                   <div><b>Mobile:</b> ${currentUser.username}</div>
-                  <div><b>Generated:</b> ${nowTxt}</div>`;
+                  <div><b>Generated:</b> ${nowTxt}</div>
+                  <div><b>Version:</b> ${APP_VERSION} • ${APP_RELEASE}</div>`;
 
   kpi.innerHTML=[
     {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD Performance"},
