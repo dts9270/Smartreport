@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V28.0 ADMIN-FIRST WORKFLOW</title>
+<title>RCM • DS WORLD Growth OS — V32.0 CLEAR TODAY ENTRY DASHBOARD</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -750,6 +750,612 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
   .morningGrid{grid-template-columns:1fr 1fr}
 }
 
+
+/* ===== V29 LEADER FTD / MTD / YTD REPORT ===== */
+.periodScoreGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:10px}
+.periodScoreCard{border:1px solid var(--line);border-radius:15px;padding:11px;min-width:0;background:rgba(255,255,255,.035)}
+body.lightTheme .periodScoreCard{background:#fffaf3}
+.periodScoreCard small{display:block;color:var(--muted);font-size:9px;font-weight:850}
+.periodScoreCard b{display:block;font-size:22px;margin-top:3px}
+.periodScoreCard span{display:block;font-size:9px;color:var(--muted);margin-top:2px;line-height:1.35}
+.periodMatrix{width:100%!important;table-layout:fixed!important;border-collapse:collapse;margin-top:10px;font-size:9px}
+.periodMatrix th,.periodMatrix td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:center;overflow-wrap:anywhere}
+.periodMatrix th:first-child,.periodMatrix td:first-child{text-align:left}
+.periodMatrix .periodCell b{display:block;font-size:10px}
+.periodMatrix .periodCell small{display:block;color:var(--muted);font-size:8px;margin-top:2px}
+@media(max-width:600px){
+  .periodScoreGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .periodScoreCard{padding:8px}.periodScoreCard b{font-size:18px}
+  .periodMatrix{font-size:8px}.periodMatrix th,.periodMatrix td{padding:6px 2px}
+}
+
+
+/* ===== V30 ADMIN 5-TAB UX ===== */
+.adminSectionTabsWrap{
+  margin-bottom:12px;
+  position:relative;
+  z-index:24;
+}
+.adminSectionTabs{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+  padding:7px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(10,27,49,.97),rgba(13,31,56,.97));
+  box-shadow:var(--shadow);
+}
+body.lightTheme .adminSectionTabs{
+  background:linear-gradient(180deg,#fffdf8,#f4ecdf);
+}
+.adminSectionTabs button{
+  min-width:0;
+  border:1px solid transparent;
+  border-radius:13px;
+  padding:9px 6px;
+  background:transparent;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:950;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.adminSectionTabs button.active{
+  color:#fff;
+  border-color:rgba(255,255,255,.14);
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  box-shadow:0 8px 20px rgba(0,0,0,.16);
+}
+.adminSectionTitle{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  margin-top:8px;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+}
+body.lightTheme .adminSectionTitle{background:#fffaf3}
+.adminSectionTitle b{font-size:13px}
+.adminPage{display:none}
+.adminPage.active{display:block}
+.adminPage > .section,
+.adminPage > .adminTwoCol,
+.adminPage > details{animation:adminPageIn .16s ease both}
+@keyframes adminPageIn{from{opacity:.45;transform:translateY(3px)}to{opacity:1;transform:none}}
+.adminPage .section:first-child,
+.adminPage details:first-child{margin-top:0}
+#adminPage_home .commandKpiGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#adminPage_home .warGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.adminTabQuickNote{
+  padding:8px 10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;
+  font-size:10px;color:var(--muted)
+}
+@media(max-width:720px){
+  #adminView{padding-bottom:82px}
+  .adminSectionTabsWrap{margin-bottom:9px}
+  .adminSectionTabs{
+    position:fixed;
+    left:8px;right:8px;bottom:8px;
+    z-index:90;
+    gap:4px;
+    padding:6px;
+    border-radius:18px;
+    box-shadow:0 16px 45px rgba(0,0,0,.35);
+  }
+  .adminSectionTabs button{
+    padding:8px 2px 7px;
+    font-size:16px;
+    line-height:1;
+  }
+  .adminSectionTabs button span{
+    display:block;
+    font-size:8px;
+    margin-top:5px;
+    line-height:1;
+  }
+  .adminSectionTitle{margin-top:0;margin-bottom:9px}
+  #adminPage_home .commandKpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #adminPage_home .warGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:380px){
+  .adminSectionTabs{left:5px;right:5px;bottom:5px}
+  .adminSectionTabs button span{font-size:7px}
+}
+
+
+/* ===== V31 EXECUTIVE PRO THEME ===== */
+:root{
+  --bg:#07111d;
+  --bg2:#0b1624;
+  --card:#0f1b2b;
+  --card2:#132236;
+  --text:#f5f8fc;
+  --muted:#91a0b5;
+  --line:#203148;
+  --blue:#2563eb;
+  --cyan:#38bdf8;
+  --green:#21b879;
+  --gold:#d7b45f;
+  --red:#ef6273;
+  --violet:#4968d7;
+  --shadow:0 16px 42px rgba(0,0,0,.28);
+}
+body{
+  background:
+    radial-gradient(circle at 12% -4%,rgba(37,99,235,.14),transparent 28%),
+    radial-gradient(circle at 92% 0%,rgba(33,184,121,.07),transparent 24%),
+    linear-gradient(155deg,#06101b 0%,#0a1422 52%,#0b1726 100%);
+  letter-spacing:.01em;
+}
+.glass{
+  background:linear-gradient(180deg,rgba(16,29,46,.975),rgba(11,24,39,.975));
+  border:1px solid rgba(154,175,205,.13);
+  box-shadow:0 14px 36px rgba(0,0,0,.23);
+  backdrop-filter:blur(12px);
+}
+.shell{max-width:1220px}
+.topbar{
+  border-radius:18px;
+  border-color:rgba(159,179,207,.14);
+  box-shadow:0 12px 32px rgba(0,0,0,.22);
+}
+.logo,.loginLogo{
+  background:linear-gradient(145deg,#1f5bd8,#2448a9);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 24px rgba(27,80,194,.26);
+}
+.brand h1{font-weight:900;letter-spacing:-.01em}
+.avatar{
+  background:linear-gradient(145deg,#ddbd6a,#b88e39);
+  color:#191710;
+  border:1px solid rgba(255,255,255,.18);
+}
+.role{color:#65c8ef}
+.hero{
+  border-radius:20px;
+  background:
+    linear-gradient(135deg,rgba(17,50,95,.98),rgba(19,75,112,.94) 52%,rgba(18,78,73,.92));
+  border:1px solid rgba(145,180,225,.15);
+  box-shadow:0 18px 42px rgba(4,22,48,.32);
+}
+.hero:after{
+  width:300px;height:300px;right:-125px;top:-145px;
+  background:radial-gradient(circle,rgba(215,180,95,.15),rgba(255,255,255,.025) 58%,transparent 70%);
+}
+.hero h2{font-weight:900;letter-spacing:-.015em}
+.rcmHeroBadge{
+  background:rgba(215,180,95,.12)!important;
+  color:#ead49b!important;
+  border:1px solid rgba(215,180,95,.22)!important;
+}
+.tab,.iconbtn,.themeBtn,.actionMini{
+  border-radius:10px!important;
+  border-color:rgba(149,168,194,.17)!important;
+  background:#101f31!important;
+  color:#dce6f3!important;
+  box-shadow:none!important;
+}
+.tab.active{
+  background:#1f5bd8!important;
+  color:#fff!important;
+  border-color:#2e6deb!important;
+}
+.section{
+  border-radius:17px;
+  border-color:rgba(153,173,201,.13);
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+}
+.sectionHead h3,.section h3{letter-spacing:-.01em}
+.kpi,.quickCard,.warKpi,.chartCard,.analysisBox,.historyCard,.dailyReportCard,
+.smartActionCard,.opsLeaderCard,.opportunityCard,.alertCard,.reviewCard{
+  border-radius:14px!important;
+  border-color:rgba(148,169,198,.13)!important;
+  background:linear-gradient(180deg,rgba(17,31,49,.96),rgba(13,26,42,.96))!important;
+  box-shadow:none!important;
+}
+.kpi .value,.quickCard .qvalue,.warKpi .wv{
+  font-weight:900!important;
+  letter-spacing:-.025em;
+}
+.badge,.metricpill,.rightBadge,.safetyPill{
+  border-radius:999px!important;
+  background:rgba(34,52,76,.72)!important;
+  border:1px solid rgba(147,168,196,.14)!important;
+  color:#d9e3ef!important;
+}
+.primary{
+  border-radius:10px!important;
+  background:#1f5bd8!important;
+  border:1px solid #2a67e5!important;
+  box-shadow:0 6px 14px rgba(31,91,216,.18)!important;
+}
+.primary:hover{filter:brightness(1.06)}
+.primary.green,.green{
+  background:#159b66!important;
+  border-color:#1dad73!important;
+}
+.primary.gold,.gold{
+  background:#c29c49!important;
+  border-color:#d1ad5b!important;
+  color:#17140d!important;
+}
+.primary.red,.red{
+  background:#c94859!important;
+  border-color:#df5b6b!important;
+}
+input,select,.v27Textarea{
+  background:#0d1928!important;
+  border:1px solid rgba(144,166,197,.18)!important;
+  color:#f4f7fb!important;
+  border-radius:10px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+input:focus,select:focus,.v27Textarea:focus{
+  border-color:#3b82f6!important;
+  box-shadow:0 0 0 3px rgba(59,130,246,.10)!important;
+}
+table th{
+  color:#9fb0c5;
+  font-weight:850;
+  background:rgba(255,255,255,.018);
+}
+table td{color:#e7edf6}
+.progress,.entryOverallProgress,.entryMiniProgress{
+  background:#1b2a3d!important;
+}
+.bar,.entryOverallProgress i,.entryMiniProgress i{
+  background:linear-gradient(90deg,#2f78e8,#22aa78)!important;
+}
+.rankcard,.priorityItem,.priorityLeader,.coachStep{
+  background:linear-gradient(180deg,#111f31,#0e1a2a)!important;
+  border-color:rgba(149,169,197,.13)!important;
+}
+.reportLetter{
+  box-shadow:0 12px 32px rgba(0,0,0,.22)!important;
+}
+
+/* Executive Admin Tabs */
+.adminSectionTabs{
+  background:linear-gradient(180deg,#0d1928,#0b1624)!important;
+  border:1px solid rgba(151,171,199,.14)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.22)!important;
+  border-radius:15px!important;
+}
+.adminSectionTabs button{
+  border-radius:10px!important;
+  color:#93a4b9!important;
+  transition:.15s ease;
+}
+.adminSectionTabs button.active{
+  background:linear-gradient(135deg,#1f5bd8,#1749ae)!important;
+  border-color:#2e6de4!important;
+  box-shadow:0 6px 16px rgba(31,91,216,.2)!important;
+  color:#fff!important;
+}
+.adminSectionTitle{
+  border-radius:12px!important;
+  background:#0d1928!important;
+  border-color:rgba(151,171,199,.12)!important;
+}
+.v27HeroPanel{
+  background:
+    linear-gradient(135deg,rgba(15,39,73,.98),rgba(17,57,78,.97),rgba(15,64,60,.95))!important;
+  border-color:rgba(105,165,190,.16)!important;
+}
+.commandKpi{
+  border-radius:12px!important;
+  background:rgba(11,24,39,.76)!important;
+  border-color:rgba(137,162,192,.14)!important;
+}
+.commandKpi:hover{
+  border-color:rgba(72,137,231,.38)!important;
+  background:rgba(17,34,54,.9)!important;
+}
+.commandKpi b{letter-spacing:-.02em}
+.premiumDetails{
+  border-radius:15px!important;
+}
+.premiumDetails>summary{
+  padding:12px 14px!important;
+  color:#e8eef7;
+}
+.filterChips button{
+  background:#0e1b2b!important;
+  color:#9fb0c4!important;
+  border-color:rgba(145,166,196,.15)!important;
+}
+.filterChips button.active{
+  background:#1f5bd8!important;
+  color:#fff!important;
+  border-color:#2c69e5!important;
+}
+.followupCalCard,.periodScoreCard,.dailyMetricBox,.reviewKpi,.healthRow,.morningBox{
+  border-radius:11px!important;
+  background:rgba(14,27,43,.84)!important;
+  border-color:rgba(144,164,193,.13)!important;
+}
+.logoutBtn{
+  background:#a93f4e!important;
+  border-color:#bd4d5d!important;
+}
+.statusDot.dotGreen{background:#31bd82}
+.statusDot.dotYellow{background:#d8b552}
+.statusDot.dotRed{background:#dc6371}
+
+/* Light Executive Theme */
+body.lightTheme{
+  --bg:#f4f1eb;
+  --bg2:#fbfaf7;
+  --card:#ffffff;
+  --card2:#f7f5f0;
+  --text:#202936;
+  --muted:#6c7787;
+  --line:#dfe4ea;
+  --blue:#245fc7;
+  --cyan:#277fa8;
+  --green:#23825f;
+  --gold:#a8843f;
+  --red:#bd4d5e;
+  --violet:#4866ba;
+  --shadow:0 12px 30px rgba(28,40,57,.08);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(36,95,199,.055),transparent 26%),
+    linear-gradient(155deg,#f4f1eb,#fbfaf7 58%,#f3f5f6);
+}
+body.lightTheme .glass{
+  background:rgba(255,255,255,.96)!important;
+  border-color:#e2e6eb!important;
+  box-shadow:0 10px 26px rgba(30,43,60,.075)!important;
+}
+body.lightTheme .hero{
+  background:linear-gradient(135deg,#f7f9fc,#edf3f7 55%,#e9f2ef)!important;
+  color:#1f2b38!important;
+  border-color:#dbe3ea!important;
+  box-shadow:0 12px 28px rgba(31,49,70,.08)!important;
+}
+body.lightTheme .hero h2{color:#1f2b38!important}
+body.lightTheme .hero p{color:#647386!important}
+body.lightTheme .rcmHeroBadge{
+  background:#f3ead5!important;color:#806526!important;border-color:#e5d3a7!important
+}
+body.lightTheme .tab,
+body.lightTheme .iconbtn,
+body.lightTheme .themeBtn,
+body.lightTheme .actionMini{
+  background:#fff!important;color:#344253!important;border-color:#dfe4ea!important
+}
+body.lightTheme .tab.active{
+  background:#245fc7!important;color:#fff!important;border-color:#245fc7!important
+}
+body.lightTheme .section,
+body.lightTheme .kpi,
+body.lightTheme .quickCard,
+body.lightTheme .warKpi,
+body.lightTheme .chartCard,
+body.lightTheme .analysisBox,
+body.lightTheme .historyCard,
+body.lightTheme .dailyReportCard,
+body.lightTheme .smartActionCard,
+body.lightTheme .opsLeaderCard,
+body.lightTheme .opportunityCard,
+body.lightTheme .alertCard,
+body.lightTheme .reviewCard{
+  background:#fff!important;
+  border-color:#e3e7ec!important;
+  box-shadow:0 8px 20px rgba(33,47,64,.055)!important;
+}
+body.lightTheme .badge,
+body.lightTheme .metricpill,
+body.lightTheme .rightBadge,
+body.lightTheme .safetyPill{
+  background:#f4f6f8!important;color:#4a5868!important;border-color:#e1e6eb!important
+}
+body.lightTheme input,
+body.lightTheme select,
+body.lightTheme .v27Textarea{
+  background:#fff!important;color:#283443!important;border-color:#dfe4e9!important
+}
+body.lightTheme .rankcard,
+body.lightTheme .priorityItem,
+body.lightTheme .priorityLeader,
+body.lightTheme .coachStep{
+  background:#f8fafb!important;border-color:#e3e8ed!important
+}
+body.lightTheme .adminSectionTabs{
+  background:#fff!important;border-color:#e0e5ea!important;box-shadow:0 8px 22px rgba(33,47,64,.07)!important
+}
+body.lightTheme .adminSectionTabs button{color:#6d7988!important}
+body.lightTheme .adminSectionTabs button.active{
+  background:#245fc7!important;color:#fff!important;border-color:#245fc7!important
+}
+body.lightTheme .adminSectionTitle{
+  background:#fff!important;border-color:#e1e6eb!important
+}
+body.lightTheme .v27HeroPanel{
+  background:linear-gradient(135deg,#f8fafc,#eef5f7,#edf5f2)!important;
+  border-color:#dce6e8!important
+}
+body.lightTheme .commandKpi,
+body.lightTheme .followupCalCard,
+body.lightTheme .periodScoreCard,
+body.lightTheme .dailyMetricBox,
+body.lightTheme .reviewKpi,
+body.lightTheme .healthRow,
+body.lightTheme .morningBox{
+  background:#fafbfc!important;border-color:#e2e7eb!important
+}
+body.lightTheme .filterChips button{
+  background:#f7f8fa!important;color:#657183!important;border-color:#dfe4e9!important
+}
+body.lightTheme .filterChips button.active{
+  background:#245fc7!important;color:#fff!important;border-color:#245fc7!important
+}
+body.lightTheme table th{background:#f7f9fb;color:#5a6879}
+body.lightTheme table td{color:#2f3d4d}
+body.lightTheme .progress,
+body.lightTheme .entryOverallProgress,
+body.lightTheme .entryMiniProgress{background:#e8edf2!important}
+
+/* Cleaner mobile spacing */
+@media(max-width:720px){
+  .shell{padding:8px!important}
+  .topbar{border-radius:15px!important}
+  .hero{border-radius:17px!important;padding:15px!important}
+  .section{border-radius:14px!important;padding:11px!important}
+  .adminSectionTabs{border-radius:15px!important}
+}
+
+
+/* ===== V32 CLEAR TODAY ENTRY DASHBOARD ===== */
+.todayEntryStatusSection{
+  border-color:rgba(72,137,231,.18)!important;
+}
+.todayEntrySummaryGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+.todayEntrySummaryCard{
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  background:rgba(255,255,255,.025);
+}
+.todayEntrySummaryCard small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:900;
+}
+.todayEntrySummaryCard b{
+  display:block;
+  margin-top:3px;
+  font-size:22px;
+  letter-spacing:-.025em;
+}
+.todayEntrySummaryCard span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:8px;
+}
+.todayEntrySummaryCard.received{border-color:rgba(33,184,121,.25)}
+.todayEntrySummaryCard.received b{color:var(--green)}
+.todayEntrySummaryCard.pending{border-color:rgba(239,98,115,.25)}
+.todayEntrySummaryCard.pending b{color:var(--red)}
+.todayEntryProgress{
+  height:8px;
+  margin-top:10px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(120,145,170,.16);
+}
+.todayEntryProgress i{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#188d60,#2fc58b);
+  transition:width .25s ease;
+}
+.todayEntryColumns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+.todayEntryPanel{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px;
+  min-width:0;
+  background:rgba(255,255,255,.018);
+}
+.receivedPanel{border-color:rgba(33,184,121,.22)}
+.pendingPanel{border-color:rgba(239,98,115,.20)}
+.todayEntryPanelHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  padding-bottom:7px;
+  border-bottom:1px solid var(--line);
+}
+.todayLeaderStatusCard{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:9px 0;
+  border-bottom:1px dashed rgba(145,165,192,.14);
+}
+.todayLeaderStatusCard:last-child{border-bottom:0}
+.todayLeaderMain{min-width:0}
+.todayLeaderMain b{
+  display:block;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.todayLeaderMain .small{
+  margin-top:2px;
+  font-size:9px;
+}
+.todayLeaderMetrics{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+.todayLeaderMetrics span{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:4px 6px;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.todayLeaderTime{
+  font-size:8px;
+  color:var(--muted);
+  text-align:right;
+  white-space:nowrap;
+}
+.todayLeaderActions{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+  margin-top:5px;
+}
+.todayLeaderActions button,.todayLeaderActions a{
+  font-size:8px!important;
+  padding:5px 6px!important;
+}
+.todayEmptyState{
+  padding:14px 6px;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+}
+body.lightTheme .todayEntrySummaryCard,
+body.lightTheme .todayEntryPanel{
+  background:#fafbfc!important;
+  border-color:#e3e8ed!important;
+}
+body.lightTheme .receivedPanel{border-color:#cde9dc!important}
+body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
+@media(max-width:720px){
+  .todayEntrySummaryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .todayEntryColumns{grid-template-columns:1fr}
+  .todayEntryPanel{padding:9px}
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -768,7 +1374,7 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V28.0 • ADMIN-FIRST WORKFLOW</div>
+      <div class="loginVersion">V32.0 • CLEAR TODAY ENTRY DASHBOARD</div>
     </div>
 
     <div class="loginTabs">
@@ -793,7 +1399,7 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V28.0 • ADMIN-FIRST WORKFLOW</span>
+            <span class="versionBadge">V32.0 • CLEAR TODAY ENTRY DASHBOARD</span>
           </div>
         </div>
       </div>
@@ -1061,7 +1667,7 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V28.0 • ADMIN-FIRST WORKFLOW</div>
+              <div><b>Version:</b> V32.0 • CLEAR TODAY ENTRY DASHBOARD</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -1106,256 +1712,277 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
 
     
 <div id="adminView" class="hidden">
-      <!-- V27: Today Command Center -->
-      <div class="section glass v27HeroPanel">
-        <div class="sectionHead">
-          <div>
-            <div class="v27Eyebrow">ADMIN EXECUTION OS</div>
-            <h3>🎯 TODAY COMMAND CENTER</h3>
-            <div class="small" id="commandCenterSub">Admin साठी Leader Daily Entry नाही — फक्त Team Execution, Follow-up आणि Growth Actions.</div>
-          </div>
-          <span class="badge">₹1 CRORE COMMAND</span>
+
+      <div class="adminSectionTabsWrap">
+        <div class="adminSectionTabs" id="adminSectionTabs">
+          <button class="active" data-admin-section="home" onclick="switchAdminSection('home',this)">🏠 <span>Home</span></button>
+          <button data-admin-section="actions" onclick="switchAdminSection('actions',this)">⚡ <span>Actions</span></button>
+          <button data-admin-section="leaders" onclick="switchAdminSection('leaders',this)">👥 <span>Leaders</span></button>
+          <button data-admin-section="reports" onclick="switchAdminSection('reports',this)">📊 <span>Reports</span></button>
+          <button data-admin-section="more" onclick="switchAdminSection('more',this)">⋯ <span>More</span></button>
         </div>
-        <div id="commandKpiGrid" class="commandKpiGrid"></div>
-        <div id="commandFilteredList" class="commandFilteredList"></div>
+        <div class="adminSectionTitle">
+          <div><b id="adminSectionTitleText">🏠 Admin Home</b><div class="small" id="adminSectionHint">आजची स्थिती आणि मुख्य निर्णय एका स्क्रीनवर.</div></div>
+          <span class="badge" id="adminSectionBadge">HOME</span>
+        </div>
       </div>
 
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>⚡ आज Admin ने ही कामे करायची</h3><div class="small">Auto Priority • Max 10 actions • actual performance वर आधारित</div></div>
-          <span class="badge">SMART ACTION QUEUE</span>
-        </div>
-        <div id="smartActionQueue"></div>
+      <div class="adminPage active" id="adminPage_home" data-page="home">
+        <div class="section glass v27HeroPanel">
+<div class="sectionHead">
+<div>
+<div class="v27Eyebrow">ADMIN EXECUTION OS</div>
+<h3>🎯 TODAY COMMAND CENTER</h3>
+<div class="small" id="commandCenterSub">आजचे मुख्य निर्णय — बाकी कामांसाठी खालील 5 tabs वापरा.</div>
+</div>
+<span class="badge">₹1 CRORE COMMAND</span>
+</div>
+<div class="commandKpiGrid" id="commandKpiGrid"></div>
+<div class="commandFilteredList" id="commandFilteredList"></div>
+</div>
+<div class="section glass">
+<div class="sectionHead">
+<div><h3>⚡ Admin War Room</h3></div>
+<span class="badge">COMMAND CENTER</span>
+</div>
+<div class="warGrid">
+<div class="warKpi"><div class="wl">Total Leaders</div><div class="wv" id="warTotal">0</div></div>
+<div class="warKpi"><div class="wl">आज Active</div><div class="wv good" id="warActive">0</div></div>
+<div class="warKpi"><div class="wl">No Entry Today</div><div class="wv bad" id="warNoEntry">0</div></div>
+<div class="warKpi"><div class="wl">At Risk</div><div class="wv warn" id="warRisk">0</div></div>
+<div class="warKpi"><div class="wl">Team FTD Avg</div><div class="wv" id="warFtd">0%</div></div>
+<div class="warKpi"><div class="wl">Team MTD PV</div><div class="wv" id="warPv">0</div></div>
+<div class="warKpi"><div class="wl">Projected Team PV</div><div class="wv" id="warProjected">0</div></div>
+<div class="warKpi"><div class="wl">High Performers</div><div class="wv good" id="warHigh">0</div></div>
+</div>
+</div>
       </div>
+    
 
-      <div class="adminTwoCol">
+      <div class="adminPage" id="adminPage_actions" data-page="actions">
         <div class="section glass">
-          <div class="sectionHead"><h3>🔥 आज Result देऊ शकणारे Leaders</h3><span class="badge">OPPORTUNITY</span></div>
-          <div id="opportunityDetector"></div>
-        </div>
-        <div class="section glass">
-          <div class="sectionHead"><h3>🚨 Smart Alerts</h3><span class="badge">SIGNAL ONLY</span></div>
-          <div id="smartAlerts"></div>
-        </div>
+<div class="sectionHead">
+<div><h3>⚡ आज Admin ने ही कामे करायची</h3><div class="small">Auto Priority • Max 10 actions • actual performance वर आधारित</div></div>
+<span class="badge">SMART ACTION QUEUE</span>
+</div>
+<div id="smartActionQueue"></div>
+</div>
+<div class="adminTwoCol">
+<div class="section glass">
+<div class="sectionHead"><h3>🔥 आज Result देऊ शकणारे Leaders</h3><span class="badge">OPPORTUNITY</span></div>
+<div id="opportunityDetector"></div>
+</div>
+<div class="section glass">
+<div class="sectionHead"><h3>🚨 Smart Alerts</h3><span class="badge">SIGNAL ONLY</span></div>
+<div id="smartAlerts"></div>
+</div>
+</div>
+<details class="section glass premiumDetails" open="">
+<summary>📅 Follow-up Calendar &amp; One-Tap Follow-up <span class="badge" id="followupOverdueBadge">0 Overdue</span></summary>
+<div class="followupCalendarCards" id="followupCalendarCards"></div>
+<div id="followupCalendarList"></div>
+</details>
+<div class="section glass">
+<div class="sectionHead">
+<div><h3>📞 आज कोणत्या Leader ला Follow-up करायचा?</h3></div>
+<span class="badge">AUTO PRIORITY</span>
+</div>
+<div id="adminPriorityList"></div>
+</div>
+<details class="section glass premiumDetails">
+<summary>🌙 Day Close Review</summary>
+<div id="nightReviewSummary"></div>
+<textarea class="v27Textarea" id="nightReviewNote" placeholder="आजचा Admin note / उद्याचा मुख्य focus..."></textarea>
+<div class="btnrow"><button class="primary green" onclick="saveNightReview()">💾 Day Close Save करा</button></div>
+<div id="nightReviewHistory"></div>
+</details>
       </div>
+    
 
-      <details class="section glass premiumDetails" open>
-        <summary>📅 Follow-up Calendar & One-Tap Follow-up <span id="followupOverdueBadge" class="badge">0 Overdue</span></summary>
-        <div class="followupCalendarCards" id="followupCalendarCards"></div>
-        <div id="followupCalendarList"></div>
-      </details>
-
-      <details class="section glass premiumDetails">
-        <summary>🔎 Leader Search & Smart Filters</summary>
-        <div class="explorerTools">
-          <input id="adminLeaderSearch" placeholder="Leader नाव / Mobile शोधा" oninput="renderLeaderExplorer()">
-          <div class="filterChips" id="adminFilterChips">
-            <button onclick="setLeaderExplorerFilter('all',this)" class="active">All</button>
-            <button onclick="setLeaderExplorerFilter('activeToday',this)">Active Today</button>
-            <button onclick="setLeaderExplorerFilter('noEntry',this)">No Entry</button>
-            <button onclick="setLeaderExplorerFilter('ftdLow',this)">FTD &lt; 60%</button>
-            <button onclick="setLeaderExplorerFilter('pvBehind',this)">PV Behind</button>
-            <button onclick="setLeaderExplorerFilter('opportunity',this)">High Opportunity</button>
-            <button onclick="setLeaderExplorerFilter('risk',this)">At Risk</button>
-            <button onclick="setLeaderExplorerFilter('inactive3',this)">Inactive 3 Days</button>
-            <button onclick="setLeaderExplorerFilter('followupDue',this)">Follow-up Due</button>
-            <button onclick="setLeaderExplorerFilter('targetDone',this)">Target Completed</button>
-          </div>
-        </div>
-        <div id="leaderExplorerList"></div>
-      </details>
-
-      <details class="section glass premiumDetails">
-        <summary>📈 Weekly Leader Review</summary>
-        <div class="reviewControls">
-          <select id="weeklyLeaderSelect"></select>
-          <button class="primary" onclick="renderWeeklyReview(true)">👁️ Weekly Review</button>
-          <button class="primary gold" onclick="downloadWeeklyPDF()">📥 Weekly PDF</button>
-        </div>
-        <div id="weeklyReviewPreview"></div>
-      </details>
-
-      <details class="section glass premiumDetails">
-        <summary>📊 Monthly Leader Scorecard</summary>
-        <div class="reviewControls">
-          <select id="monthlyLeaderSelect"></select>
-          <input id="monthlyScoreMonth" type="month">
-          <button class="primary" onclick="renderMonthlyScorecard(true)">👁️ Scorecard</button>
-          <button class="primary gold" onclick="downloadMonthlyScorecardPDF()">📥 Monthly PDF</button>
-        </div>
-        <div id="monthlyScorecardPreview"></div>
-      </details>
-
-      <details class="section glass premiumDetails">
-        <summary>🗓️ 30-Day Leader Activity Heatmap</summary>
-        <div class="heatLegend"><span>🟢 Strong</span><span>🟡 Partial</span><span>🔴 Weak</span><span>⚪ No Entry</span></div>
-        <div id="leaderHeatmap"></div>
-      </details>
-
-      <div class="adminTwoCol">
+      <div class="adminPage" id="adminPage_leaders" data-page="leaders">
         <details class="section glass premiumDetails">
-          <summary>🔻 Team Business Funnel</summary>
-          <div id="v27TeamFunnel"></div>
-        </details>
-        <details class="section glass premiumDetails">
-          <summary>🧭 Admin Execution Score</summary>
-          <div id="adminExecutionScoreBox"></div>
-        </details>
-      </div>
-
-      <div class="adminTwoCol">
-        <details class="section glass premiumDetails">
-          <summary>🏅 Recognition Suggestions</summary>
-          <div id="recognitionEngine"></div>
-        </details>
-        <details class="section glass premiumDetails">
-          <summary>🛡️ Data Quality & Safety Center</summary>
-          <div class="btnrow"><button class="primary" onclick="runAdminHealthCheck(true)">🩺 RUN HEALTH CHECK</button></div>
-          <div id="dataHealthPanel"></div>
-        </details>
-      </div>
-
-      <details class="section glass premiumDetails">
-        <summary>🌙 Day Close Review</summary>
-        <div id="nightReviewSummary"></div>
-        <textarea id="nightReviewNote" class="v27Textarea" placeholder="आजचा Admin note / उद्याचा मुख्य focus..."></textarea>
-        <div class="btnrow"><button class="primary green" onclick="saveNightReview()">💾 Day Close Save करा</button></div>
-        <div id="nightReviewHistory"></div>
-      </details>
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>⚡ Admin War Room</h3></div>
-          <span class="badge">COMMAND CENTER</span>
-        </div>
-        <div class="warGrid">
-          <div class="warKpi"><div class="wl">Total Leaders</div><div class="wv" id="warTotal">0</div></div>
-          <div class="warKpi"><div class="wl">आज Active</div><div class="wv good" id="warActive">0</div></div>
-          <div class="warKpi"><div class="wl">No Entry Today</div><div class="wv bad" id="warNoEntry">0</div></div>
-          <div class="warKpi"><div class="wl">At Risk</div><div class="wv warn" id="warRisk">0</div></div>
-          <div class="warKpi"><div class="wl">Team FTD Avg</div><div class="wv" id="warFtd">0%</div></div>
-          <div class="warKpi"><div class="wl">Team MTD PV</div><div class="wv" id="warPv">0</div></div>
-          <div class="warKpi"><div class="wl">Projected Team PV</div><div class="wv" id="warProjected">0</div></div>
-          <div class="warKpi"><div class="wl">High Performers</div><div class="wv good" id="warHigh">0</div></div>
-        </div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <h3><span class="livePulse"></span>Live Leader Entry Monitor</h3>
-          <div><span class="badge" id="liveMonitorTime">LIVE FIREBASE</span></div>
-        </div>
-        <div class="btnrow">
-          <button class="primary" onclick="refreshAdminLive(true)">🔄 Live Data Refresh</button>
-        </div>
-        <div id="adminLiveEntryList" class="liveMonitorGrid"></div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>📄 Leader-wise Daily Report</h3><div class="small">Leader आणि Date निवडा — Daily performance टक्केवारीसह पहा.</div></div>
-          <span class="badge">ADMIN REPORT</span>
-        </div>
-        <div class="dailyReportControls">
-          <select id="dailyReportLeaderSelect"></select>
-          <input id="dailyReportDate" type="date">
-          <button class="primary" onclick="renderLeaderDailyReport(true)">👁️ Report पहा</button>
-          <button class="primary gold" onclick="downloadLeaderDailyPDF()">📥 Daily PDF</button>
-        </div>
-        <div id="leaderDailyReportPreview" class="leaderDailyPreview"></div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead"><h3>📊 Team Analysis</h3><span class="badge">LIVE DATA</span></div>
-        <div class="adminChartGrid">
-          <div class="chartCard"><h4>Leader-wise MTD PV</h4><canvas id="pvBarChart"></canvas></div>
-          <div class="chartCard"><h4>आजचा FTD Score</h4><canvas id="ftdBarChart"></canvas></div>
-          <div class="chartCard"><h4>Team Activity Achievement</h4><canvas id="activityBarChart"></canvas></div>
-          <div class="chartCard"><h4>Leader Status</h4><canvas id="riskDonutChart"></canvas></div>
-          <div class="chartCard" style="grid-column:1/-1"><h4>गेल्या 7 दिवसांचा Team PV</h4><canvas id="pvTrendChart"></canvas></div>
-        </div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead"><h3>🧠 Admin Smart Analysis</h3><span class="badge">DECISION</span></div>
-        <div class="analysisGrid">
-          <div class="analysisBox" id="adminAnalysisText"></div>
-          <div class="analysisBox">
-            <h4 style="margin:0">Contacts → Calls → Plans</h4>
-            <div id="teamFunnel"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>📞 आज कोणत्या Leader ला Follow-up करायचा?</h3></div>
-          <span class="badge">AUTO PRIORITY</span>
-        </div>
-        <div id="adminPriorityList"></div>
-      </div>
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>🛡️ Admin Control Center</h3></div>
-          <span class="badge">FIREBASE LIVE</span>
-        </div>
-        <div class="formGrid">
-          <div><div class="small">Leader नाव</div><input id="newName" placeholder="पूर्ण नाव"></div>
-          <div><div class="small">मोबाईल / Username</div><input id="newUser" placeholder="10 अंकी मोबाईल"></div>
-          <div><div class="small">Password</div><input id="newPass" placeholder="पासवर्ड"></div>
-          <div><div class="small">Role</div><select id="newRole" disabled><option value="leader" selected>Leader</option></select></div>
-        </div>
-        <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="repairAllOldUserLogins()">🔐 Old Login Repair</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
-        <div class="safetyStrip">
-          <span class="safetyPill">Version: V28.0</span>
-          <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
-          <span class="safetyPill">Hard Delete: Disabled</span>
-          <span class="safetyPill">Daily Backup: Enabled</span>
-          <span class="safetyPill">Month Archive: Enabled</span>
-          <span class="safetyPill">Audit Log: Enabled</span>
-        </div>
-        <div class="firebasePanel">
-          <b>Firebase:</b> <span id="firebaseHealthText">तपासणी सुरू...</span>
-          <div class="btnrow"><button class="actionMini" onclick="testFirebaseConnection(true)">🔎 Firebase Test</button></div>
-        </div>
-      </div>
-
-
-      <div class="section glass">
-        <div class="sectionHead">
-          <div><h3>👥 Leader Directory & Rights</h3><div class="small">हीच Admin ची Master Leader List आहे.</div></div>
-          <div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div>
-        </div>
-        <div class="tableWrap">
-          <table>
-            <thead><tr><th>नाव / Mobile</th><th>आजची Entry</th><th>Rights</th><th>Profile</th><th>Admin Action</th></tr></thead>
-            <tbody id="usersTable"></tbody>
-          </table>
-        </div>
-        <div class="small directoryNote">
+<summary>🔎 Leader Search &amp; Smart Filters</summary>
+<div class="explorerTools">
+<input id="adminLeaderSearch" oninput="renderLeaderExplorer()" placeholder="Leader नाव / Mobile शोधा"/>
+<div class="filterChips" id="adminFilterChips">
+<button class="active" onclick="setLeaderExplorerFilter('all',this)">All</button>
+<button onclick="setLeaderExplorerFilter('activeToday',this)">Active Today</button>
+<button onclick="setLeaderExplorerFilter('noEntry',this)">No Entry</button>
+<button onclick="setLeaderExplorerFilter('ftdLow',this)">FTD &lt; 60%</button>
+<button onclick="setLeaderExplorerFilter('pvBehind',this)">PV Behind</button>
+<button onclick="setLeaderExplorerFilter('opportunity',this)">High Opportunity</button>
+<button onclick="setLeaderExplorerFilter('risk',this)">At Risk</button>
+<button onclick="setLeaderExplorerFilter('inactive3',this)">Inactive 3 Days</button>
+<button onclick="setLeaderExplorerFilter('followupDue',this)">Follow-up Due</button>
+<button onclick="setLeaderExplorerFilter('targetDone',this)">Target Completed</button>
+</div>
+</div>
+<div id="leaderExplorerList"></div>
+</details>
+<div class="section glass">
+<div class="sectionHead">
+<h3><span class="livePulse"></span>Live Leader Entry Monitor</h3>
+<div><span class="badge" id="liveMonitorTime">LIVE FIREBASE</span></div>
+</div>
+<div class="btnrow">
+<button class="primary" onclick="refreshAdminLive(true)">🔄 Live Data Refresh</button>
+</div>
+<div class="liveMonitorGrid" id="adminLiveEntryList"></div>
+</div>
+<div class="section glass">
+<div class="sectionHead">
+<div><h3>👥 Leader Directory &amp; Rights</h3><div class="small">हीच Admin ची Master Leader List आहे.</div></div>
+<div><span class="badge">FIREBASE MASTER</span> <span class="badge" id="userCount">0</span></div>
+</div>
+<div class="tableWrap">
+<table>
+<thead><tr><th>नाव / Mobile</th><th>आजची Entry</th><th>Rights</th><th>Profile</th><th>Admin Action</th></tr></thead>
+<tbody id="usersTable"></tbody>
+</table>
+</div>
+<div class="small directoryNote">
           Core Profile (Name, Mobile, Role) फक्त Admin बदलू शकतो. Leader ला स्वतःची Personal Profile भरायची असेल तर Admin ने <b>Profile Edit Right</b> ON करायचा.
         </div>
+</div>
       </div>
+    
 
-      <div class="section glass">
-        <div class="sectionHead"><h3>🎨 Report Branding</h3><span class="badge">LETTERHEAD</span></div>
-        <div class="logoUploadGrid">
-          <div class="logoUploadCard">
-            <b>RCM Logo</b>
-            <div class="small">PNG/JPG/WebP • max 350 KB</div>
-            <img id="rcmLogoPreview" class="brandPreview" alt="RCM preview">
-            <input id="rcmLogoInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="saveBrandAsset('rcm',this)">
-          </div>
-          <div class="logoUploadCard">
-            <b>DS WORLD Logo</b>
-            <div class="small">PNG/JPG/WebP • max 350 KB</div>
-            <img id="dsLogoPreview" class="brandPreview" alt="DS preview">
-            <input id="dsLogoInput" type="file" accept="image/png,image/jpeg,image/webp" onchange="saveBrandAsset('ds',this)">
-          </div>
-        </div>
+      <div class="adminPage" id="adminPage_reports" data-page="reports">
+        <details class="section glass premiumDetails" open="">
+<summary>📄 Leader FTD • MTD • YTD Report <span class="badge">TOTAL PERFORMANCE</span></summary>
+<div class="reviewControls">
+<select id="leaderSummaryReportSelect"></select>
+<button class="primary" onclick="renderLeaderSummaryReport(true)">👁️ Full Report</button>
+<button class="primary gold" onclick="downloadLeaderSummaryPDF()">📥 FTD-MTD-YTD PDF</button>
+</div>
+<div id="leaderSummaryReportPreview"></div>
+</details>
+<div class="section glass">
+<div class="sectionHead">
+<div><h3>📄 Leader-wise Daily Report</h3><div class="small">Leader आणि Date निवडा — Daily performance टक्केवारीसह पहा.</div></div>
+<span class="badge">ADMIN REPORT</span>
+</div>
+<div class="dailyReportControls">
+<select id="dailyReportLeaderSelect"></select>
+<input id="dailyReportDate" type="date"/>
+<button class="primary" onclick="renderLeaderDailyReport(true)">👁️ Report पहा</button>
+<button class="primary gold" onclick="downloadLeaderDailyPDF()">📥 Daily PDF</button>
+</div>
+<div class="leaderDailyPreview" id="leaderDailyReportPreview"></div>
+</div>
+<details class="section glass premiumDetails">
+<summary>📈 Weekly Leader Review</summary>
+<div class="reviewControls">
+<select id="weeklyLeaderSelect"></select>
+<button class="primary" onclick="renderWeeklyReview(true)">👁️ Weekly Review</button>
+<button class="primary gold" onclick="downloadWeeklyPDF()">📥 Weekly PDF</button>
+</div>
+<div id="weeklyReviewPreview"></div>
+</details>
+<details class="section glass premiumDetails">
+<summary>📊 Monthly Leader Scorecard</summary>
+<div class="reviewControls">
+<select id="monthlyLeaderSelect"></select>
+<input id="monthlyScoreMonth" type="month"/>
+<button class="primary" onclick="renderMonthlyScorecard(true)">👁️ Scorecard</button>
+<button class="primary gold" onclick="downloadMonthlyScorecardPDF()">📥 Monthly PDF</button>
+</div>
+<div id="monthlyScorecardPreview"></div>
+</details>
+<details class="section glass premiumDetails">
+<summary>🗓️ 30-Day Leader Activity Heatmap</summary>
+<div class="heatLegend"><span>🟢 Strong</span><span>🟡 Partial</span><span>🔴 Weak</span><span>⚪ No Entry</span></div>
+<div id="leaderHeatmap"></div>
+</details>
+<div class="section glass">
+<div class="sectionHead"><h3>📊 Team Analysis</h3><span class="badge">LIVE DATA</span></div>
+<div class="adminChartGrid">
+<div class="chartCard"><h4>Leader-wise MTD PV</h4><canvas id="pvBarChart"></canvas></div>
+<div class="chartCard"><h4>आजचा FTD Score</h4><canvas id="ftdBarChart"></canvas></div>
+<div class="chartCard"><h4>Team Activity Achievement</h4><canvas id="activityBarChart"></canvas></div>
+<div class="chartCard"><h4>Leader Status</h4><canvas id="riskDonutChart"></canvas></div>
+<div class="chartCard" style="grid-column:1/-1"><h4>गेल्या 7 दिवसांचा Team PV</h4><canvas id="pvTrendChart"></canvas></div>
+</div>
+</div>
+<div class="section glass">
+<div class="sectionHead"><h3>🧠 Admin Smart Analysis</h3><span class="badge">DECISION</span></div>
+<div class="analysisGrid">
+<div class="analysisBox" id="adminAnalysisText"></div>
+<div class="analysisBox">
+<h4 style="margin:0">Contacts → Calls → Plans</h4>
+<div id="teamFunnel"></div>
+</div>
+</div>
+</div>
+<div class="adminTwoCol">
+<details class="section glass premiumDetails">
+<summary>🔻 Team Business Funnel</summary>
+<div id="v27TeamFunnel"></div>
+</details>
+<details class="section glass premiumDetails">
+<summary>🧭 Admin Execution Score</summary>
+<div id="adminExecutionScoreBox"></div>
+</details>
+</div>
       </div>
+    
 
+      <div class="adminPage" id="adminPage_more" data-page="more">
+        <div class="adminTwoCol">
+<details class="section glass premiumDetails">
+<summary>🏅 Recognition Suggestions</summary>
+<div id="recognitionEngine"></div>
+</details>
+<details class="section glass premiumDetails">
+<summary>🛡️ Data Quality &amp; Safety Center</summary>
+<div class="btnrow"><button class="primary" onclick="runAdminHealthCheck(true)">🩺 RUN HEALTH CHECK</button></div>
+<div id="dataHealthPanel"></div>
+</details>
+</div>
+<div class="section glass">
+<div class="sectionHead">
+<div><h3>🛡️ Admin Control Center</h3></div>
+<span class="badge">FIREBASE LIVE</span>
+</div>
+<div class="formGrid">
+<div><div class="small">Leader नाव</div><input id="newName" placeholder="पूर्ण नाव"/></div>
+<div><div class="small">मोबाईल / Username</div><input id="newUser" placeholder="10 अंकी मोबाईल"/></div>
+<div><div class="small">Password</div><input id="newPass" placeholder="पासवर्ड"/></div>
+<div><div class="small">Role</div><select disabled="" id="newRole"><option selected="" value="leader">Leader</option></select></div>
+</div>
+<div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="repairAllOldUserLogins()">🔐 Old Login Repair</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
+<div class="safetyStrip">
+<span class="safetyPill">Version: V32.0</span>
+<span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
+<span class="safetyPill">Hard Delete: Disabled</span>
+<span class="safetyPill">Daily Backup: Enabled</span>
+<span class="safetyPill">Month Archive: Enabled</span>
+<span class="safetyPill">Audit Log: Enabled</span>
+</div>
+<div class="firebasePanel">
+<b>Firebase:</b> <span id="firebaseHealthText">तपासणी सुरू...</span>
+<div class="btnrow"><button class="actionMini" onclick="testFirebaseConnection(true)">🔎 Firebase Test</button></div>
+</div>
+</div>
+<div class="section glass">
+<div class="sectionHead"><h3>🎨 Report Branding</h3><span class="badge">LETTERHEAD</span></div>
+<div class="logoUploadGrid">
+<div class="logoUploadCard">
+<b>RCM Logo</b>
+<div class="small">PNG/JPG/WebP • max 350 KB</div>
+<img alt="RCM preview" class="brandPreview" id="rcmLogoPreview"/>
+<input accept="image/png,image/jpeg,image/webp" id="rcmLogoInput" onchange="saveBrandAsset('rcm',this)" type="file"/>
+</div>
+<div class="logoUploadCard">
+<b>DS WORLD Logo</b>
+<div class="small">PNG/JPG/WebP • max 350 KB</div>
+<img alt="DS preview" class="brandPreview" id="dsLogoPreview"/>
+<input accept="image/png,image/jpeg,image/webp" id="dsLogoInput" onchange="saveBrandAsset('ds',this)" type="file"/>
+</div>
+</div>
+</div>
+      </div>
+    
     </div>
 
   </div>
@@ -1427,9 +2054,9 @@ body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V28.0";
+const APP_VERSION="V32.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="ADMIN-FIRST WORKFLOW";
+const APP_RELEASE="CLEAR TODAY ENTRY DASHBOARD";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -4141,11 +4768,13 @@ function renderAdminCommandSuite(){
   if(!currentUser||currentUser.role!=="admin")return;
   populateV27LeaderSelectors();
   renderTodayCommandCenter();
+  renderTodayEntryStatusDashboard();
   renderSmartActionQueue();
   renderOpportunityDetector();
   renderSmartAlerts();
   renderFollowupCalendar();
   renderLeaderExplorer();
+  renderLeaderSummaryReport(false);
   renderWeeklyReview(false);
   renderMonthlyScorecard(false);
   renderLeaderHeatmap();
@@ -4395,7 +5024,7 @@ function renderLeaderExplorer(){
 }
 function populateV27LeaderSelectors(){
   const leaders=activeLeaders();
-  ["weeklyLeaderSelect","monthlyLeaderSelect"].forEach(id=>{
+  ["weeklyLeaderSelect","monthlyLeaderSelect","leaderSummaryReportSelect"].forEach(id=>{
     const sel=document.getElementById(id);if(!sel)return;
     const old=sel.value;
     sel.innerHTML=leaders.map(u=>`<option value="${u.username}">${u.name} • ${u.username}</option>`).join("");
@@ -4743,13 +5372,389 @@ async function downloadWeeklyPDF(){
 }
 async function downloadMonthlyScorecardPDF(){
   const sel=document.getElementById("monthlyLeaderSelect"),mi=document.getElementById("monthlyScoreMonth"),d=monthlyScoreData(sel?.value,mi?.value||localMonthKey());if(!d)return showToast("Leader निवडा");
+  const period=leaderPeriodReportData(d.u.username);
   const body=`<div style="margin-top:9px;padding:8px;background:#f3f7fb;border-radius:8px"><b>${d.u.name}</b> • ${d.u.username}<span style="float:right">${d.ym}</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px;font-size:9px">
+    <div style="padding:7px;background:#eef5ff;border-radius:7px;text-align:center">FTD <b>${period?.ftd||0}%</b></div>
+    <div style="padding:7px;background:#eefaf5;border-radius:7px;text-align:center">MTD <b>${period?.mtdScore||0}%</b></div>
+    <div style="padding:7px;background:#fff8e9;border-radius:7px;text-align:center">YTD <b>${period?.ytdScore||0}%</b></div>
+  </div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px;font-size:9px"><div>PV <b>${d.tot.pv}/5000</b></div><div>Consistency <b>${d.consistency}%</b></div><div>Projected <b>${d.projected}</b></div><div>Health <b>${d.health.score}</b></div></div>
   <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:9px"><thead><tr style="background:#173b67;color:#fff"><th>Metric</th><th>Target</th><th>Actual</th><th>Achievement</th></tr></thead><tbody>
   ${d.defs.map(r=>`<tr><td style="padding:6px;border-bottom:1px solid #ddd">${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.actual}/${r.target} (${r.pct}%)</td></tr>`).join("")}</tbody></table>
   <div style="margin-top:8px;font-size:9px"><b>Weakest:</b> ${d.weak.label} ${d.weak.pct}% • <b>Best Week:</b> W${d.bestWeek?.week||"—"} ${d.bestWeek?.pv||0} PV<br><b>Admin Note:</b> ${escapeHtml(d.note||"—")}</div>`;
   await htmlStringToA4PDF(reportPdfShell("Monthly Leader Scorecard",`Report ID: M-${d.ym.replace("-","")}-${String(d.u.username).slice(-4)}`,body),`${d.u.name.replace(/\s+/g,"_")}_${d.ym}_Monthly.pdf`);
   trackAdminReport("monthly_pdf",d.u.username);
+}
+
+
+/* ===== V29 LEADER-WISE FTD / MTD / YTD TOTAL REPORT ===== */
+function yearDayNumber(date=new Date()){
+  const start=new Date(date.getFullYear(),0,1);
+  return Math.floor((new Date(date.getFullYear(),date.getMonth(),date.getDate())-start)/86400000)+1;
+}
+function monthsElapsedEquivalent(date=new Date()){
+  const monthIndex=date.getMonth();
+  const daysInMonth=new Date(date.getFullYear(),date.getMonth()+1,0).getDate();
+  return monthIndex + (date.getDate()/daysInMonth);
+}
+function sumEntriesForPeriod(username,predicate){
+  const entries=getEntriesFor(username);
+  const rows=Object.entries(entries).filter(([date])=>predicate(date)).map(([,e])=>e||{});
+  return {
+    rows,
+    activeDays:rows.length,
+    names:sum(rows,"names"),calls:sum(rows,"calls"),plans:sum(rows,"plans"),pv:sum(rows,"pv"),
+    video:sum(rows,"video"),book:sum(rows,"book"),depth:sum(rows,"depth"),meeting:sum(rows,"meeting")
+  };
+}
+function ytdTotalsFor(username){
+  const y=String(new Date().getFullYear());
+  return sumEntriesForPeriod(username,date=>String(date).startsWith(y+"-")&&String(date)<=todayKey());
+}
+function reportPeriodMetricDefs(){
+  const monthDays=daysInCurrentMonth();
+  const dayNo=yearDayNumber();
+  const monthEq=monthsElapsedEquivalent();
+  return [
+    {key:"names",label:"नवीन संपर्क",daily:2,monthly:60,ytdTarget:Math.round(60*monthEq)},
+    {key:"calls",label:"कॉल / भेटी",daily:5,monthly:150,ytdTarget:Math.round(150*monthEq)},
+    {key:"plans",label:"प्लॅन / Presentation",daily:2,monthly:60,ytdTarget:Math.round(60*monthEq)},
+    {key:"pv",label:"PV",daily:167,monthly:5000,ytdTarget:Math.round(5000*monthEq)},
+    {key:"video",label:"Video Learning (min)",daily:20,monthly:20*monthDays,ytdTarget:20*dayNo},
+    {key:"book",label:"Book Reading (min)",daily:20,monthly:20*monthDays,ytdTarget:20*dayNo},
+    {key:"depth",label:"Depth Follow-up",daily:1,monthly:20,ytdTarget:Math.round(20*monthEq)},
+    {key:"meeting",label:"Meeting",daily:1,monthly:28,ytdTarget:Math.round(28*monthEq)}
+  ];
+}
+function leaderPeriodReportData(username){
+  const u=getUsers().find(x=>String(x.username)===String(username));
+  if(!u)return null;
+
+  const entries=getEntriesFor(username);
+  const today=entries[todayKey()]||{};
+  const mtd=getMonthTotals(username);
+  const ytd=ytdTotalsFor(username);
+  const defs=reportPeriodMetricDefs();
+
+  const rows=defs.map(d=>{
+    const fActual=Number(today[d.key]||0),mActual=Number(mtd[d.key]||0),yActual=Number(ytd[d.key]||0);
+    const fPct=Math.round(fActual/Math.max(d.daily,1)*100);
+    const mPct=Math.round(mActual/Math.max(d.monthly,1)*100);
+    const yPct=Math.round(yActual/Math.max(d.ytdTarget,1)*100);
+    return {...d,fActual,mActual,yActual,fPct,mPct,yPct};
+  });
+
+  const avgCapped=(key)=>Math.round(rows.reduce((s,r)=>s+Math.min(Number(r[key]||0),100),0)/Math.max(rows.length,1));
+  const ftd=ftdScore(today);
+  const mtdScore=avgCapped("mPct");
+  const ytdScore=avgCapped("yPct");
+  const ytdAvgFtd=ytd.rows.length?Math.round(ytd.rows.reduce((s,e)=>s+ftdScore(e),0)/ytd.rows.length):0;
+  const strongest=[...rows].sort((a,b)=>b.mPct-a.mPct)[0];
+  const weakest=[...rows].sort((a,b)=>a.mPct-b.mPct)[0];
+
+  return {
+    u,today,mtd,ytd,rows,ftd,mtdScore,ytdScore,ytdAvgFtd,strongest,weakest,
+    generatedAt:Date.now(),year:new Date().getFullYear(),
+    monthLabel:new Date().toLocaleDateString("mr-IN",{month:"long",year:"numeric"})
+  };
+}
+function populateLeaderSummaryReportSelector(){
+  const sel=document.getElementById("leaderSummaryReportSelect");
+  if(!sel||!currentUser||currentUser.role!=="admin")return;
+  const leaders=activeLeaders(),old=sel.value;
+  sel.innerHTML=leaders.map(u=>`<option value="${u.username}">${u.name} • ${u.username}</option>`).join("");
+  if(old&&leaders.some(u=>String(u.username)===String(old)))sel.value=old;
+}
+function periodCell(actual,target,pct){
+  return `<div class="periodCell"><b>${actual} / ${target} (${pct}%)</b><small>${pct>=100?"Target achieved":pct>=60?"In progress":"Needs action"}</small></div>`;
+}
+function renderLeaderSummaryReport(track=false){
+  const box=document.getElementById("leaderSummaryReportPreview");
+  const sel=document.getElementById("leaderSummaryReportSelect");
+  if(!box||!sel?.value||!currentUser||currentUser.role!=="admin")return;
+  const d=leaderPeriodReportData(sel.value);if(!d)return;
+
+  box.innerHTML=`<div class="reviewCard">
+    <div class="reviewTop">
+      <div><b>${d.u.name}</b><div class="small">${d.u.username} • ${d.monthLabel} • YTD ${d.year}</div></div>
+      <span class="badge">FTD • MTD • YTD</span>
+    </div>
+
+    <div class="periodScoreGrid">
+      <div class="periodScoreCard"><small>FTD • Today</small><b>${d.ftd}%</b><span>आजची total execution score</span></div>
+      <div class="periodScoreCard"><small>MTD • Current Month</small><b>${d.mtdScore}%</b><span>${d.mtd.activeDays} active days • PV ${d.mtd.pv}</span></div>
+      <div class="periodScoreCard"><small>YTD • ${d.year}</small><b>${d.ytdScore}%</b><span>${d.ytd.activeDays} active days • PV ${d.ytd.pv}</span></div>
+    </div>
+
+    <table class="periodMatrix">
+      <thead><tr><th>Activity</th><th>FTD</th><th>MTD</th><th>YTD</th></tr></thead>
+      <tbody>
+        ${d.rows.map(r=>`<tr>
+          <td><b>${r.label}</b></td>
+          <td>${periodCell(r.fActual,r.daily,r.fPct)}</td>
+          <td>${periodCell(r.mActual,r.monthly,r.mPct)}</td>
+          <td>${periodCell(r.yActual,r.ytdTarget,r.yPct)}</td>
+        </tr>`).join("")}
+      </tbody>
+    </table>
+
+    <div class="reviewKpis">
+      <div class="reviewKpi"><small>MTD Strongest</small><b>${d.strongest?.label||"—"} ${d.strongest?.mPct||0}%</b></div>
+      <div class="reviewKpi"><small>MTD Weakest</small><b>${d.weakest?.label||"—"} ${d.weakest?.mPct||0}%</b></div>
+      <div class="reviewKpi"><small>YTD Avg FTD</small><b>${d.ytdAvgFtd}%</b></div>
+      <div class="reviewKpi"><small>YTD Active Days</small><b>${d.ytd.activeDays}</b></div>
+    </div>
+  </div>`;
+
+  if(track)trackAdminReport("ftd_mtd_ytd",d.u.username);
+}
+function buildLeaderSummaryPdfHTML(d){
+  const rows=d.rows.map(r=>`
+    <tr>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:left"><b>${r.label}</b></td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${r.fActual}/${r.daily}<br><b>(${r.fPct}%)</b></td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${r.mActual}/${r.monthly}<br><b>(${r.mPct}%)</b></td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${r.yActual}/${r.ytdTarget}<br><b>(${r.yPct}%)</b></td>
+    </tr>`).join("");
+
+  return `
+    <div style="width:190mm;background:#fff;color:#172033;padding:8mm;font-family:system-ui,-apple-system,'Noto Sans Devanagari','Segoe UI',sans-serif">
+      <div style="border-top:5px solid #1f5fae;padding-top:7px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:19px;font-weight:950">RCM • DS WORLD</div>
+            <div style="font-size:10px;color:#667085">Leader Total Performance Report • FTD / MTD / YTD</div>
+          </div>
+          <div style="text-align:right;font-size:8px;color:#667085">
+            Report: FMY-${todayKey().replaceAll("-","")}-${String(d.u.username).slice(-4)}<br>
+            Generated: ${new Date(d.generatedAt).toLocaleString("mr-IN")}<br>
+            ${APP_VERSION}
+          </div>
+        </div>
+
+        <div style="margin-top:9px;padding:8px 10px;background:#f3f7fb;border-radius:9px;display:flex;justify-content:space-between">
+          <div><b style="font-size:15px">${d.u.name}</b><div style="font-size:9px;color:#667085">${d.u.username} • ${d.monthLabel} • YTD ${d.year}</div></div>
+          <div style="text-align:right;font-size:9px;color:#667085">YTD target = target till today</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px">
+          <div style="padding:8px;background:#eef5ff;border-radius:8px;text-align:center"><div style="font-size:9px;color:#667085">FTD</div><b style="font-size:22px">${d.ftd}%</b><div style="font-size:8px">Today</div></div>
+          <div style="padding:8px;background:#eefaf5;border-radius:8px;text-align:center"><div style="font-size:9px;color:#667085">MTD</div><b style="font-size:22px">${d.mtdScore}%</b><div style="font-size:8px">${d.mtd.activeDays} active days • PV ${d.mtd.pv}</div></div>
+          <div style="padding:8px;background:#fff8e9;border-radius:8px;text-align:center"><div style="font-size:9px;color:#667085">YTD</div><b style="font-size:22px">${d.ytdScore}%</b><div style="font-size:8px">${d.ytd.activeDays} active days • PV ${d.ytd.pv}</div></div>
+        </div>
+
+        <table style="width:100%;border-collapse:collapse;margin-top:9px;font-size:8.5px">
+          <thead>
+            <tr style="background:#173b67;color:#fff">
+              <th style="padding:6px;text-align:left">Activity</th>
+              <th style="padding:6px">FTD Actual/Target</th>
+              <th style="padding:6px">MTD Actual/Target</th>
+              <th style="padding:6px">YTD Actual/Target*</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;font-size:8.5px">
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>MTD Strongest</b><br>${d.strongest?.label||"—"} ${d.strongest?.mPct||0}%</div>
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>MTD Weakest</b><br>${d.weakest?.label||"—"} ${d.weakest?.mPct||0}%</div>
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>YTD Avg FTD</b><br>${d.ytdAvgFtd}%</div>
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>YTD Active Days</b><br>${d.ytd.activeDays}</div>
+        </div>
+
+        <div style="margin-top:7px;font-size:8px;color:#667085;line-height:1.45">
+          * YTD Target म्हणजे 1 जानेवारीपासून आजच्या तारखेपर्यंतचे proportional target. Numeric achievement 100% पेक्षा जास्त असल्यास actual percentage तसेच दाखवले आहे.
+        </div>
+
+        <div style="margin-top:17px;display:flex;justify-content:space-between;font-size:8px;color:#667085">
+          <span>RCM • DS WORLD Growth OS</span>
+          <span>Admin / Mentor Signature __________________</span>
+        </div>
+      </div>
+    </div>`;
+}
+async function downloadLeaderSummaryPDF(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const sel=document.getElementById("leaderSummaryReportSelect");
+  const d=leaderPeriodReportData(sel?.value);
+  if(!d)return showToast("Leader निवडा");
+  await htmlStringToA4PDF(buildLeaderSummaryPdfHTML(d),`${d.u.name.replace(/\s+/g,"_")}_${todayKey()}_FTD_MTD_YTD.pdf`);
+  trackAdminReport("ftd_mtd_ytd_pdf",d.u.username);
+  showToast("FTD • MTD • YTD PDF तयार झाला ✅");
+}
+
+
+/* ===== V30 ADMIN 5-TAB NAVIGATION ===== */
+const ADMIN_SECTION_META={
+  home:{title:"🏠 Admin Home",hint:"आजची स्थिती आणि मुख्य निर्णय एका स्क्रीनवर.",badge:"HOME"},
+  actions:{title:"⚡ Actions",hint:"आज कोणाला call/follow-up करायचा आणि पुढची action काय.",badge:"ACTIONS"},
+  leaders:{title:"👥 Leaders",hint:"Leader search, live status, profile, rights आणि management.",badge:"LEADERS"},
+  reports:{title:"📊 Reports",hint:"FTD • MTD • YTD, Daily, Weekly, Monthly आणि team analytics.",badge:"REPORTS"},
+  more:{title:"⋯ More",hint:"Users, Firebase/Data Health, branding आणि system controls.",badge:"MORE"}
+};
+let currentAdminSection="home";
+
+function switchAdminSection(section,btn=null,scrollTop=true){
+  if(!currentUser||currentUser.role!=="admin")return;
+  if(!ADMIN_SECTION_META[section])section="home";
+  currentAdminSection=section;
+
+  document.querySelectorAll("#adminView .adminPage").forEach(p=>p.classList.toggle("active",p.dataset.page===section));
+  document.querySelectorAll("#adminSectionTabs button").forEach(b=>b.classList.toggle("active",b.dataset.adminSection===section));
+
+  const meta=ADMIN_SECTION_META[section];
+  const title=document.getElementById("adminSectionTitleText");
+  const hint=document.getElementById("adminSectionHint");
+  const badge=document.getElementById("adminSectionBadge");
+  if(title)title.textContent=meta.title;
+  if(hint)hint.textContent=meta.hint;
+  if(badge)badge.textContent=meta.badge;
+
+  try{sessionStorage.setItem("ds_admin_section",section)}catch(e){}
+
+  // Refresh only the tools relevant to the visible section.
+  if(section==="home"){
+    renderTodayCommandCenter();
+    renderTodayEntryStatusDashboard();
+    renderAdminWarRoom();
+  }else if(section==="actions"){
+    renderSmartActionQueue();
+    renderOpportunityDetector();
+    renderSmartAlerts();
+    renderFollowupCalendar();
+    renderNightReview();
+  }else if(section==="leaders"){
+    renderAdminLiveMonitor();
+    renderLeaderExplorer();
+    renderUsers();
+  }else if(section==="reports"){
+    populateAdminDailyReportLeaders();
+    populateV27LeaderSelectors();
+    populateLeaderSummaryReportSelector();
+    renderLeaderSummaryReport(false);
+    renderWeeklyReview(false);
+    renderMonthlyScorecard(false);
+    renderLeaderHeatmap();
+    renderV27TeamFunnel();
+    const leaders=activeLeaders().map(leaderSnapshot);
+    renderAdminAnalytics(leaders);
+  }else if(section==="more"){
+    renderRecognitionEngine();
+    renderDataHealthFromCache();
+    renderUsers();
+  }
+
+  if(scrollTop){
+    const target=document.getElementById("adminView");
+    if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+}
+function initAdminTabs(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  let saved="home";
+  try{saved=sessionStorage.getItem("ds_admin_section")||"home"}catch(e){}
+  if(!ADMIN_SECTION_META[saved])saved="home";
+  switchAdminSection(saved,null,false);
+}
+function openAdminReports(){
+  openAppTab("admin");
+  setTimeout(()=>switchAdminSection("reports"),50);
+}
+function openAdminLeaders(){
+  openAppTab("admin");
+  setTimeout(()=>switchAdminSection("leaders"),50);
+}
+function openAdminActions(){
+  openAppTab("admin");
+  setTimeout(()=>switchAdminSection("actions"),50);
+}
+
+
+/* ===== V32 CLEAR TODAY ENTRY STATUS ===== */
+function todayEntryStatusData(){
+  const leaders=activeLeaders();
+  const rows=leaders.map(u=>{
+    const entries=getEntriesFor(u.username);
+    const e=entries[todayKey()]||{};
+    const has=!!entries[todayKey()];
+    return {
+      u,e,has,
+      ftd:has?ftdScore(e):0,
+      pv:Number(e.pv||0),
+      calls:Number(e.calls||0),
+      plans:Number(e.plans||0),
+      updatedAt:Number(e.updatedAt||0)
+    };
+  });
+  const received=rows.filter(x=>x.has).sort((a,b)=>b.updatedAt-a.updatedAt);
+  const pending=rows.filter(x=>!x.has).sort((a,b)=>String(a.u.name).localeCompare(String(b.u.name),"mr"));
+  const pct=rows.length?Math.round(received.length/rows.length*100):0;
+  const avgFtd=received.length?Math.round(received.reduce((s,x)=>s+x.ftd,0)/received.length):0;
+  const teamPv=received.reduce((s,x)=>s+x.pv,0);
+  return {rows,received,pending,total:rows.length,pct,avgFtd,teamPv};
+}
+function formatEntrySaveTime(ts){
+  if(!ts)return "Save time नाही";
+  try{
+    return new Date(ts).toLocaleTimeString("mr-IN",{hour:"2-digit",minute:"2-digit"});
+  }catch(e){return "—"}
+}
+function renderTodayEntryStatusDashboard(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const receivedBox=document.getElementById("todayReceivedLeaderList");
+  const pendingBox=document.getElementById("todayPendingLeaderList");
+  if(!receivedBox||!pendingBox)return;
+
+  const d=todayEntryStatusData();
+
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
+  set("todayEntryHeadline",`${d.received.length} / ${d.total} Received`);
+  set("todayEntryReceivedCount",d.received.length);
+  set("todayEntryPendingCount",d.pending.length);
+  set("todayEntryReceivedPct",`${d.pct}% team updated`);
+  set("todayEntryAvgFtd",`${d.avgFtd}%`);
+  set("todayEntryTeamPv",d.teamPv);
+  set("receivedLeaderBadge",d.received.length);
+  set("pendingLeaderBadge",d.pending.length);
+
+  const bar=document.getElementById("todayEntryProgressBar");
+  if(bar)bar.style.width=d.pct+"%";
+
+  receivedBox.innerHTML=d.received.length?d.received.map(x=>`
+    <div class="todayLeaderStatusCard">
+      <div class="todayLeaderMain">
+        <b>✅ ${x.u.name}</b>
+        <div class="small">${x.u.username}</div>
+        <div class="todayLeaderMetrics">
+          <span>FTD ${x.ftd}%</span>
+          <span>PV ${x.pv}</span>
+          <span>Calls ${x.calls}</span>
+          <span>Plans ${x.plans}</span>
+        </div>
+        <div class="todayLeaderActions">
+          <button class="actionMini" onclick="openDailyReportFor('${x.u.username}',todayKey())">📄 Report</button>
+          <button class="actionMini" onclick="openLeader360('${x.u.username}')">👁 360°</button>
+        </div>
+      </div>
+      <div class="todayLeaderTime">🕒 ${formatEntrySaveTime(x.updatedAt)}</div>
+    </div>`).join("")
+    :`<div class="todayEmptyState">आज अजून कोणाचीही entry आलेली नाही.</div>`;
+
+  pendingBox.innerHTML=d.pending.length?d.pending.map(x=>`
+    <div class="todayLeaderStatusCard">
+      <div class="todayLeaderMain">
+        <b>⏳ ${x.u.name}</b>
+        <div class="small">${x.u.username} • आज entry नाही</div>
+        <div class="todayLeaderActions">
+          <button class="actionMini" onclick="startCall('${x.u.username}')">📞 Call</button>
+          <button class="actionMini" onclick="whatsAppLeader('${x.u.username}')">📲 WhatsApp</button>
+          <button class="actionMini" onclick="openFollowupModal('${x.u.username}','entry_pending')">📝 Follow-up</button>
+        </div>
+      </div>
+      <div class="todayLeaderTime" style="color:var(--red)">PENDING</div>
+    </div>`).join("")
+    :`<div class="todayEmptyState">🎉 सर्व Leaders ची आजची entry आली आहे.</div>`;
 }
 
 const _v26ShowView=showView;
@@ -4759,6 +5764,7 @@ showView=function(v,btn){
   if(v==="admin"){
     populateAdminDailyReportLeaders();
     scheduleAdminSuiteRender();
+    setTimeout(()=>initAdminTabs(),0);
   }
   return result;
 };
