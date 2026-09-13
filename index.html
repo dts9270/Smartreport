@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V25.0 OLD USER LOGIN REPAIR</title>
+<title>RCM • DS WORLD Growth OS — V28.0 ADMIN-FIRST WORKFLOW</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -602,6 +602,154 @@ body.lightTheme .logoutBtn{
   }
 }
 
+
+/* ===== V26 SMART DAILY ENTRY ===== */
+.smartEntryShell{overflow:hidden}
+.entryScoreStrip{
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  margin:10px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;
+  background:linear-gradient(135deg,rgba(42,127,255,.10),rgba(45,205,137,.07))
+}
+.entryScoreStrip>div:first-child{display:flex;gap:7px;align-items:baseline}
+.entryScoreStrip small{color:var(--muted);font-weight:800}
+.entryScoreStrip b{font-size:19px}
+.entryOverallProgress,.entryMiniProgress{height:7px;border-radius:999px;background:rgba(127,154,190,.18);overflow:hidden}
+.entryOverallProgress i,.entryMiniProgress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .25s ease}
+.smartEntryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.entryMetricCard{
+  min-width:0;padding:11px;border:1px solid var(--line);border-radius:17px;
+  background:linear-gradient(180deg,rgba(19,41,72,.82),rgba(10,27,49,.88))
+}
+body.lightTheme .entryMetricCard{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
+.entryMetricTop{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-bottom:8px}
+.entryMetricIcon{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:rgba(62,147,255,.12);font-size:17px}
+.entryMetricTop b{display:block;font-size:12px}
+.entryMetricTop small{display:block;margin-top:2px;color:var(--muted);font-size:9px;font-weight:800}
+.entryPct{font-size:10px;font-weight:950;padding:4px 6px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+.entryMetricCard input{width:100%;font-size:20px!important;font-weight:950!important;text-align:center;padding:9px!important;border-radius:12px!important;margin-bottom:8px}
+.entrySaveRow{margin-top:12px}
+.entrySaveBtn{width:100%;min-height:46px;font-size:14px!important}
+@media(max-width:520px){
+  .entryScoreStrip{grid-template-columns:auto 1fr}
+  .entryScoreStrip .small{grid-column:1/-1}
+  .smartEntryGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .entryMetricCard{padding:9px}
+  .entryMetricTop{grid-template-columns:auto 1fr}
+  .entryPct{grid-column:1/-1;justify-self:end;margin-top:-28px}
+}
+@media(max-width:360px){.smartEntryGrid{grid-template-columns:1fr}}
+
+/* ===== V26 LEADER-WISE DAILY REPORT ===== */
+.dailyReportControls{
+  display:grid;grid-template-columns:minmax(160px,1.5fr) minmax(140px,1fr) auto auto;
+  gap:8px;margin-top:10px;align-items:center
+}
+.leaderDailyPreview{margin-top:12px}
+.dailyReportCard{
+  border:1px solid var(--line);border-radius:18px;padding:13px;
+  background:linear-gradient(180deg,rgba(17,35,65,.8),rgba(12,28,51,.88))
+}
+body.lightTheme .dailyReportCard{background:linear-gradient(180deg,#fffdf8,#f7f0e5)}
+.dailyReportHero{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.dailyReportHero h4{margin:0 0 3px;font-size:15px}
+.dailyReportScore{font-size:23px;font-weight:1000}
+.dailyMetricGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.dailyMetricBox{padding:8px;border:1px solid var(--line);border-radius:12px;min-width:0}
+.dailyMetricBox small{display:block;color:var(--muted);font-size:9px;font-weight:800}
+.dailyMetricBox b{display:block;margin-top:3px;font-size:12px;overflow-wrap:anywhere}
+.dailyReportStatusGood{color:var(--green)}
+.dailyReportStatusWarn{color:var(--gold)}
+.dailyReportStatusBad{color:var(--red)}
+@media(max-width:720px){
+  .dailyReportControls{grid-template-columns:1fr 1fr}
+  .dailyReportControls button{width:100%}
+  .dailyMetricGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* ===== V27 ₹1 CRORE ADMIN COMMAND CENTER ===== */
+.v27Eyebrow{font-size:9px;font-weight:1000;letter-spacing:1.2px;color:var(--cyan);margin-bottom:3px}
+.v27HeroPanel{background:linear-gradient(145deg,rgba(25,56,99,.94),rgba(11,31,57,.94))!important}
+body.lightTheme .v27HeroPanel{background:linear-gradient(145deg,#fffdf7,#f0f6ff)!important}
+.commandKpiGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.commandKpi{border:1px solid var(--line);border-radius:15px;padding:10px;background:rgba(255,255,255,.035);cursor:pointer;min-width:0}
+.commandKpi:hover{transform:translateY(-1px)}
+.commandKpi small{display:block;color:var(--muted);font-size:9px;font-weight:850;line-height:1.25}
+.commandKpi b{display:block;font-size:21px;margin-top:4px;overflow-wrap:anywhere}
+.commandKpi .cksub{font-size:8px;color:var(--muted);margin-top:2px}
+.commandFilteredList{margin-top:10px}
+.adminTwoCol{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.smartActionCard,.opsLeaderCard,.opportunityCard,.alertCard,.followupItem,.recognitionCard,.healthRow,.nightSnapshot,.reviewCard{
+  border:1px solid var(--line);border-radius:15px;padding:10px;margin-top:8px;background:rgba(255,255,255,.03)
+}
+body.lightTheme .smartActionCard,body.lightTheme .opsLeaderCard,body.lightTheme .opportunityCard,
+body.lightTheme .alertCard,body.lightTheme .followupItem,body.lightTheme .recognitionCard,
+body.lightTheme .healthRow,body.lightTheme .nightSnapshot,body.lightTheme .reviewCard{background:#fffaf3}
+.actionTop,.opsTop,.reviewTop{display:flex;justify-content:space-between;gap:9px;align-items:flex-start}
+.priorityCritical{color:#ff7387}.priorityHigh{color:#ffb34f}.priorityMedium{color:#ffe173}.priorityGood{color:#4bdd99}
+.healthStrong{color:#4bdd99}.healthStable{color:#e8d75b}.healthSupport{color:#ffad4a}.healthCritical{color:#ff7387}
+.healthExplain{font-size:10px;color:var(--muted);line-height:1.55;margin-top:6px}
+.actionReason{font-size:11px;line-height:1.5;margin-top:6px}
+.actionAdvice{font-size:11px;font-weight:900;margin-top:5px}
+.actionBtnGrid{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.actionBtnGrid button,.actionBtnGrid a{font-size:9px!important;padding:6px 7px!important}
+.premiumDetails{padding:0!important;overflow:hidden}
+.premiumDetails>summary{list-style:none;cursor:pointer;padding:13px 15px;font-size:13px;font-weight:950;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.premiumDetails>summary::-webkit-details-marker{display:none}
+.premiumDetails[open]>summary{border-bottom:1px solid var(--line)}
+.premiumDetails>div:not(.sectionHead){margin-left:12px;margin-right:12px}
+.premiumDetails>div:last-child{margin-bottom:12px}
+.followupCalendarCards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.followupCalCard{border:1px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;background:rgba(255,255,255,.03)}
+.followupCalCard small{display:block;color:var(--muted);font-size:9px}.followupCalCard b{font-size:19px}
+.explorerTools{margin-top:12px}
+.filterChips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.filterChips button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900}
+.filterChips button.active{background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff}
+.reviewControls{display:grid;grid-template-columns:minmax(160px,1.5fr) minmax(130px,1fr) auto auto;gap:8px;margin-top:12px;align-items:center}
+.reviewKpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:10px}
+.reviewKpi{border:1px solid var(--line);border-radius:12px;padding:8px;min-width:0}.reviewKpi small{display:block;color:var(--muted);font-size:8px}.reviewKpi b{display:block;margin-top:2px;font-size:14px;overflow-wrap:anywhere}
+.compactTable{width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse;margin-top:9px;font-size:9px}
+.compactTable th,.compactTable td{padding:6px 3px;border-bottom:1px solid var(--line);text-align:center;overflow-wrap:anywhere}
+.compactTable th:first-child,.compactTable td:first-child{text-align:left}
+.heatLegend{display:flex;gap:10px;flex-wrap:wrap;font-size:9px;color:var(--muted);margin-top:10px}
+.heatLeader{border:1px solid var(--line);border-radius:14px;padding:9px;margin-top:8px}
+.heatLeaderTitle{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px}
+.heatGrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.heatCell{aspect-ratio:1;border:0;border-radius:5px;min-width:0;padding:0;cursor:pointer}
+.heatStrong{background:#25b879}.heatPartial{background:#d9b93e}.heatWeak{background:#d75a66}.heatNone{background:rgba(125,145,170,.22)}
+.funnelMetric{margin-top:9px}.funnelMetricTop{display:flex;justify-content:space-between;font-size:10px}.funnelMetricTrack{height:8px;border-radius:999px;background:rgba(125,145,170,.18);overflow:hidden;margin-top:4px}.funnelMetricTrack i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:999px}
+.execRing{width:95px;height:95px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--p),rgba(120,145,170,.18) 0);margin:8px auto}.execRing:after{content:"";position:absolute}.execRing b{font-size:22px}
+.healthGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:9px}
+.healthRow{margin:0}.healthStatus{font-size:10px;font-weight:950}
+.v27Textarea{width:100%;min-height:78px;resize:vertical;border:1px solid var(--line);background:#0b1d35;color:var(--text);border-radius:13px;padding:10px;font:inherit}
+body.lightTheme .v27Textarea{background:#fffaf2;color:#263243}
+.morningSheet{max-width:650px!important}
+.morningGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.morningBox{border:1px solid var(--line);border-radius:13px;padding:9px}.morningBox small{display:block;color:var(--muted);font-size:9px}.morningBox b{display:block;font-size:17px;margin-top:2px}
+.morningTopActions{margin-top:10px}
+.trendUp{color:var(--green)}.trendDown{color:var(--red)}.trendFlat{color:var(--muted)}
+.followupHistoryRow{padding:7px 0;border-bottom:1px dashed var(--line);font-size:10px;line-height:1.45}
+.statusDot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.dotGreen{background:#36d391}.dotYellow{background:#e3bd4d}.dotRed{background:#e46170}
+@media(max-width:900px){
+  .commandKpiGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .reviewControls{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .adminTwoCol{grid-template-columns:1fr}
+  .commandKpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .followupCalendarCards{grid-template-columns:repeat(2,1fr)}
+  .reviewKpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .healthGrid{grid-template-columns:1fr}
+  .reviewControls{grid-template-columns:1fr 1fr}
+}
+@media(max-width:430px){
+  .commandKpi b{font-size:18px}
+  .reviewControls{grid-template-columns:1fr}
+  .morningGrid{grid-template-columns:1fr 1fr}
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -620,7 +768,7 @@ body.lightTheme .logoutBtn{
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V25.0 • OLD USER LOGIN REPAIR</div>
+      <div class="loginVersion">V28.0 • ADMIN-FIRST WORKFLOW</div>
     </div>
 
     <div class="loginTabs">
@@ -645,7 +793,7 @@ body.lightTheme .logoutBtn{
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V25.0 • OLD USER LOGIN REPAIR</span>
+            <span class="versionBadge">V28.0 • ADMIN-FIRST WORKFLOW</span>
           </div>
         </div>
       </div>
@@ -664,12 +812,12 @@ body.lightTheme .logoutBtn{
 </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="showView('dashboard',this)">Dashboard</button>
+      <button id="dashboardTabApp" class="tab active" onclick="showView('dashboard',this)">Dashboard</button>
       <button id="entryTabApp" class="tab" onclick="showView('entry',this)">Daily Entry</button>
       <button id="leaderboardTabApp" class="tab" onclick="showView('leaderboard',this)">Leaderboard</button>
       <button id="reportTabApp" class="tab" onclick="showView('report',this)">Reports</button>
       <button id="historyTabApp" class="tab hidden" onclick="showView('history',this)">History</button>
-      <button id="adminTabApp" class="tab hidden" onclick="showView('admin',this)">Admin Control</button>
+      <button id="adminTabApp" class="tab hidden" onclick="showView('admin',this)">Command Center</button>
     </div>
 
     <div id="dashboardView">
@@ -755,19 +903,63 @@ body.lightTheme .logoutBtn{
     </div>
 
     <div id="entryView" class="hidden">
-      <div class="section glass">
-        <div class="sectionHead"><div><h3>📱 Daily Performance Entry</h3><div class="small" id="entryName"></div></div><span class="badge">Today</span></div>
-        <div class="formGrid">
-          <div><div class="small">नवीन संपर्क</div><input id="names" type="number" value="0"></div>
-          <div><div class="small">कॉल / भेटी</div><input id="calls" type="number" value="0"></div>
-          <div><div class="small">प्लॅन</div><input id="plans" type="number" value="0"></div>
-          <div><div class="small">PV</div><input id="pv" type="number" value="0"></div>
-          <div><div class="small">व्हिडिओ मिनिटे</div><input id="video" type="number" value="0"></div>
-          <div><div class="small">वाचन मिनिटे</div><input id="book" type="number" value="0"></div>
-          <div><div class="small">Depth Follow-up</div><input id="depth" type="number" value="0"></div>
-          <div><div class="small">Meeting</div><input id="meeting" type="number" value="0"></div>
+      <div class="section glass smartEntryShell">
+        <div class="sectionHead">
+          <div><h3>📱 Daily Performance Entry</h3><div class="small" id="entryName"></div></div>
+          <span class="badge" id="entryLiveScoreBadge">आजचा Score 0%</span>
         </div>
-        <div class="btnrow"><button class="primary green" onclick="saveEntry()">✅ आजची नोंद जतन करा</button></div>
+
+        <div class="entryScoreStrip">
+          <div><small>Live FTD</small><b id="entryLiveScore">0%</b></div>
+          <div class="entryOverallProgress"><i id="entryOverallBar" style="width:0%"></i></div>
+          <div class="small" id="entryLiveHint">प्रत्येक activity भरताच progress दिसेल.</div>
+        </div>
+
+        <div class="smartEntryGrid">
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">👥</span><div><b>नवीन संपर्क</b><small>Target 2</small></div><span id="namesPct" class="entryPct">0%</span></div>
+            <input id="names" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="namesBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">📞</span><div><b>कॉल / भेटी</b><small>Target 5</small></div><span id="callsPct" class="entryPct">0%</span></div>
+            <input id="calls" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="callsBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">🎯</span><div><b>प्लॅन</b><small>Target 2</small></div><span id="plansPct" class="entryPct">0%</span></div>
+            <input id="plans" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="plansBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">💼</span><div><b>PV</b><small>Target 167</small></div><span id="pvPct" class="entryPct">0%</span></div>
+            <input id="pv" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="pvBarEntry" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">🎧</span><div><b>व्हिडिओ</b><small>Target 20 min</small></div><span id="videoPct" class="entryPct">0%</span></div>
+            <input id="video" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="videoBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">📚</span><div><b>वाचन</b><small>Target 20 min</small></div><span id="bookPct" class="entryPct">0%</span></div>
+            <input id="book" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="bookBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">🔁</span><div><b>Depth Follow-up</b><small>Target 1</small></div><span id="depthPct" class="entryPct">0%</span></div>
+            <input id="depth" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="depthBar" style="width:0%"></i></div>
+          </div>
+          <div class="entryMetricCard">
+            <div class="entryMetricTop"><span class="entryMetricIcon">🤝</span><div><b>Meeting</b><small>Target 1</small></div><span id="meetingPct" class="entryPct">0%</span></div>
+            <input id="meeting" type="number" min="0" inputmode="numeric" value="0" oninput="updateDailyEntryPreview()">
+            <div class="entryMiniProgress"><i id="meetingBar" style="width:0%"></i></div>
+          </div>
+        </div>
+        <div class="btnrow entrySaveRow">
+          <button class="primary green entrySaveBtn" onclick="saveEntry()">✅ आजची नोंद जतन करा</button>
+        </div>
       </div>
     </div>
 
@@ -869,7 +1061,7 @@ body.lightTheme .logoutBtn{
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V25.0 • OLD USER LOGIN REPAIR</div>
+              <div><b>Version:</b> V28.0 • ADMIN-FIRST WORKFLOW</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -912,7 +1104,125 @@ body.lightTheme .logoutBtn{
       </div>
     </div>
 
-    <div id="adminView" class="hidden">
+    
+<div id="adminView" class="hidden">
+      <!-- V27: Today Command Center -->
+      <div class="section glass v27HeroPanel">
+        <div class="sectionHead">
+          <div>
+            <div class="v27Eyebrow">ADMIN EXECUTION OS</div>
+            <h3>🎯 TODAY COMMAND CENTER</h3>
+            <div class="small" id="commandCenterSub">Admin साठी Leader Daily Entry नाही — फक्त Team Execution, Follow-up आणि Growth Actions.</div>
+          </div>
+          <span class="badge">₹1 CRORE COMMAND</span>
+        </div>
+        <div id="commandKpiGrid" class="commandKpiGrid"></div>
+        <div id="commandFilteredList" class="commandFilteredList"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="sectionHead">
+          <div><h3>⚡ आज Admin ने ही कामे करायची</h3><div class="small">Auto Priority • Max 10 actions • actual performance वर आधारित</div></div>
+          <span class="badge">SMART ACTION QUEUE</span>
+        </div>
+        <div id="smartActionQueue"></div>
+      </div>
+
+      <div class="adminTwoCol">
+        <div class="section glass">
+          <div class="sectionHead"><h3>🔥 आज Result देऊ शकणारे Leaders</h3><span class="badge">OPPORTUNITY</span></div>
+          <div id="opportunityDetector"></div>
+        </div>
+        <div class="section glass">
+          <div class="sectionHead"><h3>🚨 Smart Alerts</h3><span class="badge">SIGNAL ONLY</span></div>
+          <div id="smartAlerts"></div>
+        </div>
+      </div>
+
+      <details class="section glass premiumDetails" open>
+        <summary>📅 Follow-up Calendar & One-Tap Follow-up <span id="followupOverdueBadge" class="badge">0 Overdue</span></summary>
+        <div class="followupCalendarCards" id="followupCalendarCards"></div>
+        <div id="followupCalendarList"></div>
+      </details>
+
+      <details class="section glass premiumDetails">
+        <summary>🔎 Leader Search & Smart Filters</summary>
+        <div class="explorerTools">
+          <input id="adminLeaderSearch" placeholder="Leader नाव / Mobile शोधा" oninput="renderLeaderExplorer()">
+          <div class="filterChips" id="adminFilterChips">
+            <button onclick="setLeaderExplorerFilter('all',this)" class="active">All</button>
+            <button onclick="setLeaderExplorerFilter('activeToday',this)">Active Today</button>
+            <button onclick="setLeaderExplorerFilter('noEntry',this)">No Entry</button>
+            <button onclick="setLeaderExplorerFilter('ftdLow',this)">FTD &lt; 60%</button>
+            <button onclick="setLeaderExplorerFilter('pvBehind',this)">PV Behind</button>
+            <button onclick="setLeaderExplorerFilter('opportunity',this)">High Opportunity</button>
+            <button onclick="setLeaderExplorerFilter('risk',this)">At Risk</button>
+            <button onclick="setLeaderExplorerFilter('inactive3',this)">Inactive 3 Days</button>
+            <button onclick="setLeaderExplorerFilter('followupDue',this)">Follow-up Due</button>
+            <button onclick="setLeaderExplorerFilter('targetDone',this)">Target Completed</button>
+          </div>
+        </div>
+        <div id="leaderExplorerList"></div>
+      </details>
+
+      <details class="section glass premiumDetails">
+        <summary>📈 Weekly Leader Review</summary>
+        <div class="reviewControls">
+          <select id="weeklyLeaderSelect"></select>
+          <button class="primary" onclick="renderWeeklyReview(true)">👁️ Weekly Review</button>
+          <button class="primary gold" onclick="downloadWeeklyPDF()">📥 Weekly PDF</button>
+        </div>
+        <div id="weeklyReviewPreview"></div>
+      </details>
+
+      <details class="section glass premiumDetails">
+        <summary>📊 Monthly Leader Scorecard</summary>
+        <div class="reviewControls">
+          <select id="monthlyLeaderSelect"></select>
+          <input id="monthlyScoreMonth" type="month">
+          <button class="primary" onclick="renderMonthlyScorecard(true)">👁️ Scorecard</button>
+          <button class="primary gold" onclick="downloadMonthlyScorecardPDF()">📥 Monthly PDF</button>
+        </div>
+        <div id="monthlyScorecardPreview"></div>
+      </details>
+
+      <details class="section glass premiumDetails">
+        <summary>🗓️ 30-Day Leader Activity Heatmap</summary>
+        <div class="heatLegend"><span>🟢 Strong</span><span>🟡 Partial</span><span>🔴 Weak</span><span>⚪ No Entry</span></div>
+        <div id="leaderHeatmap"></div>
+      </details>
+
+      <div class="adminTwoCol">
+        <details class="section glass premiumDetails">
+          <summary>🔻 Team Business Funnel</summary>
+          <div id="v27TeamFunnel"></div>
+        </details>
+        <details class="section glass premiumDetails">
+          <summary>🧭 Admin Execution Score</summary>
+          <div id="adminExecutionScoreBox"></div>
+        </details>
+      </div>
+
+      <div class="adminTwoCol">
+        <details class="section glass premiumDetails">
+          <summary>🏅 Recognition Suggestions</summary>
+          <div id="recognitionEngine"></div>
+        </details>
+        <details class="section glass premiumDetails">
+          <summary>🛡️ Data Quality & Safety Center</summary>
+          <div class="btnrow"><button class="primary" onclick="runAdminHealthCheck(true)">🩺 RUN HEALTH CHECK</button></div>
+          <div id="dataHealthPanel"></div>
+        </details>
+      </div>
+
+      <details class="section glass premiumDetails">
+        <summary>🌙 Day Close Review</summary>
+        <div id="nightReviewSummary"></div>
+        <textarea id="nightReviewNote" class="v27Textarea" placeholder="आजचा Admin note / उद्याचा मुख्य focus..."></textarea>
+        <div class="btnrow"><button class="primary green" onclick="saveNightReview()">💾 Day Close Save करा</button></div>
+        <div id="nightReviewHistory"></div>
+      </details>
+
       <div class="section glass">
         <div class="sectionHead">
           <div><h3>⚡ Admin War Room</h3></div>
@@ -939,6 +1249,20 @@ body.lightTheme .logoutBtn{
           <button class="primary" onclick="refreshAdminLive(true)">🔄 Live Data Refresh</button>
         </div>
         <div id="adminLiveEntryList" class="liveMonitorGrid"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="sectionHead">
+          <div><h3>📄 Leader-wise Daily Report</h3><div class="small">Leader आणि Date निवडा — Daily performance टक्केवारीसह पहा.</div></div>
+          <span class="badge">ADMIN REPORT</span>
+        </div>
+        <div class="dailyReportControls">
+          <select id="dailyReportLeaderSelect"></select>
+          <input id="dailyReportDate" type="date">
+          <button class="primary" onclick="renderLeaderDailyReport(true)">👁️ Report पहा</button>
+          <button class="primary gold" onclick="downloadLeaderDailyPDF()">📥 Daily PDF</button>
+        </div>
+        <div id="leaderDailyReportPreview" class="leaderDailyPreview"></div>
       </div>
 
       <div class="section glass">
@@ -984,7 +1308,7 @@ body.lightTheme .logoutBtn{
         </div>
         <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="repairAllOldUserLogins()">🔐 Old Login Repair</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
         <div class="safetyStrip">
-          <span class="safetyPill">Version: V25.0</span>
+          <span class="safetyPill">Version: V28.0</span>
           <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
           <span class="safetyPill">Hard Delete: Disabled</span>
           <span class="safetyPill">Daily Backup: Enabled</span>
@@ -1038,6 +1362,54 @@ body.lightTheme .logoutBtn{
 </div>
 
 
+
+<div class="modalX" id="followupModal" onclick="if(event.target.id==='followupModal')closeFollowupModal()">
+  <div class="sheetX glass">
+    <div class="sectionHead">
+      <div><h3 id="followupModalTitle">Leader Follow-up</h3><div class="small" id="followupModalMeta"></div></div>
+      <button class="iconbtn" onclick="closeFollowupModal()">✕</button>
+    </div>
+    <input type="hidden" id="followupUser">
+    <div class="formGrid">
+      <div><div class="small">Result</div>
+        <select id="followupOutcome">
+          <option>Connected</option><option>Not Connected</option><option>Call Back</option>
+          <option>Motivated</option><option>Target Discussed</option><option>Problem Reported</option>
+          <option>Will Work Today</option><option>Follow-up Required</option>
+        </select>
+      </div>
+      <div><div class="small">Next Follow-up / Reminder</div><input id="followupNextAt" type="datetime-local"></div>
+      <div><div class="small">Leader Problem</div><input id="followupProblem" placeholder="Problem / barrier"></div>
+      <div><div class="small">Commitment</div><input id="followupCommitment" placeholder="Leader ने काय commitment दिली?"></div>
+      <div><div class="small">Target</div><input id="followupTarget" placeholder="उदा. आज 5 calls / 167 PV"></div>
+      <div><div class="small">Training Requirement</div><input id="followupTraining" placeholder="कुठले training पाहिजे?"></div>
+      <div style="grid-column:1/-1"><div class="small">Remark</div><textarea id="followupRemark" class="v27Textarea" placeholder="Short controlled remark"></textarea></div>
+      <div style="grid-column:1/-1"><div class="small">Next Action</div><input id="followupNextAction" placeholder="पुढची नेमकी action"></div>
+    </div>
+    <div class="btnrow">
+      <button class="primary green" onclick="saveFollowupRecord()">✅ Follow-up Save</button>
+      <button class="primary" onclick="markFollowupDoneOnly()">✅ Done — No Next Reminder</button>
+    </div>
+    <div class="section" style="padding:0;margin-top:10px">
+      <h3 style="font-size:13px">Follow-up History</h3>
+      <div id="followupHistoryPreview"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modalX" id="adminMorningModal">
+  <div class="sheetX glass morningSheet">
+    <div class="sectionHead">
+      <div><div class="v27Eyebrow">GOOD MORNING ADMIN</div><h3>आजचा Execution Brief</h3></div>
+      <button class="iconbtn" onclick="dismissMorningBrief(false)">✕</button>
+    </div>
+    <div id="adminMorningContent"></div>
+    <div class="btnrow">
+      <button class="primary green" onclick="dismissMorningBrief(true)">🚀 START TODAY'S ACTIONS</button>
+    </div>
+  </div>
+</div>
+
 <div class="modalX" id="leader360Modal" onclick="if(event.target.id==='leader360Modal')closeLeader360()">
   <div class="sheetX glass">
     <div class="sectionHead">
@@ -1055,9 +1427,9 @@ body.lightTheme .logoutBtn{
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V25.0";
+const APP_VERSION="V28.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="OLD USER LOGIN REPAIR";
+const APP_RELEASE="ADMIN-FIRST WORKFLOW";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -1086,6 +1458,14 @@ const ACTIVITY_LOG_PATH=`${CLOUD_ROOT}/activity_log`;
 const DAILY_BACKUP_PATH=`${CLOUD_ROOT}/backups/daily`;
 const ARCHIVE_PATH=`${CLOUD_ROOT}/archives`;
 const BRANDING_PATH=`${CLOUD_ROOT}/settings/branding`;
+
+const FOLLOWUP_HISTORY_PATH=`${CLOUD_ROOT}/followups`;
+const FOLLOWUP_SCHEDULE_PATH=`${CLOUD_ROOT}/followup_schedule`;
+const ADMIN_ACTIONS_PATH=`${CLOUD_ROOT}/admin_actions`;
+const ADMIN_DAY_REVIEW_PATH=`${CLOUD_ROOT}/admin_day_reviews`;
+const MONTH_NOTES_PATH=`${CLOUD_ROOT}/leader_month_notes`;
+const REPORT_LOG_PATH=`${CLOUD_ROOT}/report_log`;
+
 const DATA_POLICY_VERSION="FINAL_STABLE_V1";
 const STABLE_DATA_ROOT="ds_world_growth_os_v1";
 /* DO NOT CHANGE ROOT IN FUTURE VERSIONS: all historical users and entries remain under this path. */
@@ -1659,6 +2039,8 @@ async function syncCloudData(){
 
 function hydrateCloudRoot(root){
   root=root||{};
+  adminRootCache=root;
+  lastRootSyncAt=Date.now();
   const rawUsers={...(root.users_permanent||{}),...(root.users||{})};
   cloudUsersCache=rawUsers;
   cloudEntriesCache=root.entries||{};
@@ -1726,28 +2108,57 @@ function renderAdminLiveMonitor(){
 }
 
 function startCloudListeners(){
-  if(!firebaseReady||!db||cloudListenersStarted)return;
+  if(!firebaseReady||!db||cloudListenersStarted||!currentUser)return;
   cloudListenersStarted=true;
-  db.ref(CLOUD_ROOT).on("value",async snap=>{
-    const root=snap.val()||{};
-    hydrateCloudRoot(root);
 
-    // Repair invalid active+archived records without blocking live display.
-    const raw=root.users||{};
-    const needsRepair=Object.values(raw).some(r=>r&&r.archived===true&&r.active!==false);
-    if(needsRepair)restorePermanentUsers().catch(console.warn);
+  if(currentUser.role==="admin"){
+    // One authoritative root listener for Admin only.
+    db.ref(CLOUD_ROOT).on("value",snap=>{
+      const root=snap.val()||{};
+      hydrateCloudRoot(root);
+      const raw=root.users||{};
+      const needsRepair=Object.values(raw).some(r=>r&&r.archived===true&&r.active!==false);
+      if(needsRepair)restorePermanentUsers().catch(console.warn);
 
-    if(currentUser&&currentUser.role==="admin"){
-      renderUsers();renderLeaderboard();renderAdminWarRoom();renderAdminLiveMonitor();
+      renderUsers();
+      renderLeaderboard();
+      renderAdminLiveMonitor();
+      renderAdminWarRoom();
+      scheduleAdminSuiteRender();
+
       const t=document.getElementById("liveMonitorTime");
       if(t)t.textContent="Live "+new Date().toLocaleTimeString("mr-IN");
-    }else if(currentUser){
+    },err=>{
+      console.warn("Firebase admin root listener failed",err);
+      setCloudStatus("error","☁️ Live Sync Error");
+    });
+  }else{
+    // Leader receives only own user + own entries + branding from the app.
+    const username=currentUser.username;
+    db.ref(cloudUserPath(username)).on("value",snap=>{
+      if(!snap.exists())return;
+      const remote=snap.val();
+      if(remote.active===false){showToast("User Deactivated आहे");return}
+      const users=getUsers().filter(u=>String(u.username)!==String(remote.username));
+      users.push(remote);setUsers(users);
+      currentUser=cleanUserForSession(remote);
+      localStorage.setItem("ds_current_user",JSON.stringify(currentUser));
+      applyLeaderPermissionsUI();
       renderAll();
-    }
-  },err=>{
-    console.warn("Firebase root listener failed",err);
-    setCloudStatus("error","☁️ Live Sync Error");
-  });
+    },err=>console.warn("Leader user listener",err));
+
+    db.ref(cloudEntriesPath(username)).on("value",snap=>{
+      if(snap.exists())mergeEntryData(username,snap.val()||{});
+      renderAll();
+    },err=>console.warn("Leader entry listener",err));
+
+    db.ref(BRANDING_PATH).on("value",snap=>{
+      if(snap.exists()){
+        try{localStorage.setItem("ds_branding",JSON.stringify(snap.val()||{}))}catch(e){}
+        loadBranding();
+      }
+    },err=>console.warn("Brand listener",err));
+  }
 }
 window.addEventListener("online",()=>{setCloudStatus("","☁️ Syncing");syncCloudData();startCloudListeners()});
 window.addEventListener("offline",()=>setCloudStatus("offline","☁️ Offline"));
@@ -1789,6 +2200,13 @@ const targets={names:2,calls:5,plans:2,pv:167,video:20,book:20,depth:1,meeting:1
 
 let cloudUsersCache={};
 let cloudEntriesCache={};
+let adminRootCache={};
+let lastRootSyncAt=0;
+let adminSuiteRenderTimer=null;
+let adminLeaderExplorerFilter="all";
+let followupCalendarFilter="today";
+let commandCenterFilter="";
+
 
 function defaultPermissions(role="leader"){
   if(role==="admin")return {dailyEntry:true,ownReport:true,profileEdit:true};
@@ -1864,11 +2282,22 @@ async function boot(){
   topName.textContent=currentUser.name;topRole.textContent=currentUser.role.toUpperCase();
   avatar.textContent=(currentUser.name||"U").trim()[0].toUpperCase();
   entryName.textContent=currentUser.name+" • "+new Date().toLocaleDateString("mr-IN");
-  adminTabApp.classList.toggle("hidden",currentUser.role!=="admin");
+  const isAdmin=currentUser.role==="admin";
+  adminTabApp.classList.toggle("hidden",!isAdmin);
+
+  const dashTab=document.getElementById("dashboardTabApp");
+  const entryTab=document.getElementById("entryTabApp");
   const lbtab=document.getElementById("leaderboardTabApp");
-  if(lbtab)lbtab.classList.toggle("hidden",currentUser.role!=="admin");
-  const htab=document.getElementById("historyTabApp");if(htab)htab.classList.toggle("hidden",currentUser.role!=="admin");
-  heroTitle.textContent=currentUser.role==="admin"?"आज टीम कुठे उभी आहे, हे एका नजरेत पाहा.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
+  const htab=document.getElementById("historyTabApp");
+
+  // Role-specific navigation:
+  // Leader = personal Dashboard + Daily Entry + Reports.
+  // Admin = Command Center + Team tools. Do not show Leader Daily Entry / normal Dashboard.
+  if(dashTab)dashTab.classList.toggle("hidden",isAdmin);
+  if(entryTab)entryTab.classList.toggle("hidden",isAdmin);
+  if(lbtab)lbtab.classList.toggle("hidden",!isAdmin);
+  if(htab)htab.classList.toggle("hidden",!isAdmin);
+  heroTitle.textContent=currentUser.role==="admin"?"आज कोणत्या Leader वर काम करायचे — Command Center तुम्हाला नेमकी action सांगेल.":"तुमची आजची कृतीच तुमची उद्याची ओळख ठरवते.";
   await loadBranding();
   applyLeaderPermissionsUI();
   if(currentUser.role==="admin"){await restorePermanentUsers();await mergeAllUsersFromFirebase();await refreshAdminLive(false);}
@@ -1881,6 +2310,9 @@ async function boot(){
 }
 function logout(){localStorage.removeItem("ds_current_user");location.reload()}
 function showView(v,btn){
+  if(currentUser&&currentUser.role==="admin"&&(v==="dashboard"||v==="entry")){
+    return openAppTab("admin");
+  }
   if(currentUser&&currentUser.role==="leader"){
     const p=userPermissions(currentUser);
     if(v==="entry"&&p.dailyEntry===false)return showToast("Daily Entry Right Admin ने बंद केला आहे");
@@ -1958,7 +2390,16 @@ function ftdScore(e){
   return Math.round(s/Object.keys(targets).length)
 }
 function renderAll(){
-  renderDash();renderExecutionIntelligence();renderLeaderProfile();renderLeaderboard();renderReport();if(currentUser.role==="admin"){renderUsers();renderAdminWarRoom()}
+  renderDash();
+  renderExecutionIntelligence();
+  renderLeaderProfile();
+  renderLeaderboard();
+  renderReport();
+  if(currentUser.role==="admin"){
+    renderUsers();
+    renderAdminWarRoom();
+    scheduleAdminSuiteRender();
+  }
 }
 function renderDash(){
   const e=allEntries()[todayKey()]||{};
@@ -2593,29 +3034,10 @@ async function resetUserPassword(username){
   showToast(saved?"Password update + Login verify झाला ✅":"Password Firebase मध्ये save झाला नाही");
   renderUsers();
 }
-function renderReport(){if(!currentUser)return;const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis(),mt=a.totals,mtdPvPct=scorePct(mt.pv,5000);reportTitle.textContent=`${currentUser.name} — Performance Report`;reportMeta.textContent=`${new Date().toLocaleDateString("mr-IN")} • ${currentUser.role.toUpperCase()}`;reportKpis.innerHTML=`<div class="kpi"><div class="label">FTD Score</div><div class="value">${f}%</div><div class="sub">आजची कामगिरी</div></div><div class="kpi"><div class="label">MTD PV</div><div class="value">${mt.pv}</div><div class="sub">${mtdPvPct}% of 5000</div></div><div class="kpi"><div class="label">MTD Calls</div><div class="value">${mt.calls}</div><div class="sub">Target 150</div></div><div class="kpi"><div class="label">MTD Plans</div><div class="value">${mt.plans}</div><div class="sub">Target 60</div></div>`;gapAnalysis.innerHTML=a.gaps.map(x=>`<div>${x}</div>`).join("");actionPlan.innerHTML=a.actions.map(x=>`<div>${x}</div>`).join("");reportCoach.textContent=f>=90&&mtdPvPct>=70?"🏆 Performance मजबूत आहे. आता consistency टिकवून extra growth वर काम करा.":f>=70?"💪 दिशा योग्य आहे. सर्वात कमी असलेल्या activity वर आज अतिरिक्त 30–45 मिनिटे focus करा.":"⚡ आजचा दिवस recover करता येऊ शकतो. Calls → Presentations → PV या क्रमाने execution करा आणि दिवस संपण्याआधी पुन्हा score पाहा."}
-function printReport(){
-  renderReport();
-  const node=document.getElementById("printableReport");
-  node.classList.add("a4Compact");
-  const content=node.outerHTML;
-  node.classList.remove("a4Compact");
-  const w=window.open("","_blank","width=900,height=1200");
-  if(!w){window.print();return}
-  w.document.write(`<!DOCTYPE html><html><head><title>RCM DS WORLD A4 Report</title>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>${Array.from(document.querySelectorAll("style")).map(s=>s.innerHTML).join("\n")}</style>
-  </head><body style="background:#fff;margin:0;padding:0">${content}</body></html>`);
-  w.document.close();
-  setTimeout(()=>{w.focus();w.print()},550);
-}
-function buildWhatsAppReport(){const today=allEntries()[todayKey()]||{},f=ftdScore(today),a=buildGapAnalysis();return `📊 DS WORLD PERFORMANCE REPORT\n👤 ${currentUser.name}\n📅 ${new Date().toLocaleDateString("mr-IN")}\n\n🔥 FTD Score: ${f}%\n💼 MTD PV: ${a.totals.pv}/5000\n📞 MTD Calls: ${a.totals.calls}/150\n🎯 MTD Plans: ${a.totals.plans}/60\n\n🔍 कुठे कमी:\n${a.gaps.slice(0,4).join("\n")}\n\n🎯 पुढील Action:\n${a.actions.slice(0,4).join("\n")}`}
-function shareWhatsAppReport(){
-  const txt=buildWhatsAppReport();
-  const url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
-  const w=window.open(url,"_blank");
-  if(!w) window.location.href=url;
-}
+
+
+
+
 
 
 function getEntriesFor(username){return JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}")}
@@ -2801,24 +3223,54 @@ let adminChartResizeTimer=null;
 window.addEventListener("resize",()=>{clearTimeout(adminChartResizeTimer);adminChartResizeTimer=setTimeout(()=>{if(currentUser&&currentUser.role==="admin")renderAdminWarRoom()},180)});
 
 function openLeader360(username){
-  const u=getUsers().find(x=>x.username===username);if(!u)return;
-  const s=leaderSnapshot(u),d=new Date(),left=Math.max(daysInCurrentMonth()-d.getDate(),1),req=Math.ceil(Math.max(5000-s.m.pv,0)/left),proj=Math.round(s.m.pv/elapsedDays()*daysInCurrentMonth());
+  const u=getUsers().find(x=>String(x.username)===String(username));if(!u)return;
+  if(currentUser.role!=="admin"&&String(currentUser.username)!==String(username))return showToast("हा Profile उपलब्ध नाही");
+
+  const s=leaderSnapshot(u),d=new Date(),left=Math.max(daysInCurrentMonth()-d.getDate(),1);
+  const req=Math.ceil(Math.max(5000-s.m.pv,0)/left),proj=Math.round(s.m.pv/elapsedDays()*daysInCurrentMonth());
   const bm=bestMonthFor(u.username),allDays=totalActiveDaysAllTime(u.username),up=userPermissions(u),prof=u.profile||{};
-  l360Name.textContent=u.name+" — 360° Profile";l360Meta.textContent=u.username+" • Joined "+formatDateSafe(u.createdAt)+" • "+(prof.village||"Area not set")+" • Goal "+Number(prof.monthlyGoal||5000)+" PV • Best "+(bm?bm.ym+" / "+bm.pv+" PV":"—")+" • Total Active "+allDays;
-  l360Kpis.innerHTML=`
-    <div class="kpi"><div class="label">FTD</div><div class="value">${s.f}%</div><div class="sub">Today Score</div></div>
-    <div class="kpi"><div class="label">Growth Score</div><div class="value">${s.g}</div><div class="sub">${growthLevelText(s.g)}</div></div>
-    <div class="kpi"><div class="label">MTD PV</div><div class="value">${s.m.pv}</div><div class="sub">${s.mtdPct}% of target</div></div>
-    <div class="kpi"><div class="label">Required Daily PV</div><div class="value">${req}</div><div class="sub">${left} days left</div></div>
-    <div class="kpi"><div class="label">Calls</div><div class="value">${s.m.calls}</div><div class="sub">Target 150</div></div>
-    <div class="kpi"><div class="label">Presentations</div><div class="value">${s.m.plans}</div><div class="sub">Target 60</div></div>
-    <div class="kpi"><div class="label">Active Days</div><div class="value">${s.active}</div><div class="sub">Consistency</div></div>
-    <div class="kpi"><div class="label">Projection</div><div class="value">${proj}</div><div class="sub">Month-end PV</div></div>`;
-  const weakest=[];
-  const metrics=[["Calls",s.m.calls,150],["Presentations",s.m.plans,60],["PV",s.m.pv,5000],["Depth",s.m.depth,20],["Meeting",s.m.meeting,28]];
-  metrics.sort((a,b)=>(a[1]/a[2])-(b[1]/b[2])).slice(0,2).forEach(x=>weakest.push(`🔍 ${x[0]} सध्या ${Math.round(x[1]/x[2]*100)}% आहे.`));
-  l360Diagnosis.innerHTML=(s.reasons.length?`<div>⚠️ ${s.reasons.join(" • ")}</div>`:"<div>🟢 मोठा risk दिसत नाही.</div>")+weakest.map(x=>`<div>${x}</div>`).join("")+`<div style="margin-top:6px">🎯 पुढील focus: Calls → Presentation → PV conversion.</div><div style="margin-top:8px"><b>Rights:</b> Entry ${up.dailyEntry?"✅":"🔒"} • Report ${up.ownReport?"✅":"🔒"} • Profile Edit ${up.profileEdit?"✅":"🔒"}</div>`;
-  leader360Modal.classList.add("show")
+  const ops=leaderOpsSnapshot(u),trend=leaderTrend(u.username),best=bestDayFor(u.username),last=lastEntryInfo(u.username);
+  const fh=getFollowupHistory(u.username),lastFollow=fh[0]||null,sched=getFollowupSchedule(u.username);
+  const metricRows=monthlyMetricPcts(u.username);
+  const strongest=[...metricRows].sort((a,b)=>b.pct-a.pct)[0],weakest=[...metricRows].sort((a,b)=>a.pct-b.pct)[0];
+
+  l360Name.textContent=u.name+" — 360° PRO";
+  l360Meta.textContent=u.username+" • Joined "+formatDateSafe(u.createdAt)+" • "+(prof.village||"Area not set")+" • Goal "+Number(prof.monthlyGoal||5000)+" PV";
+
+  const baseKpis=[
+    ["FTD",s.f+"%","Today"],["MTD",s.mtdPct+"%","PV Pace"],["Current PV",s.m.pv,"Target 5000"],
+    ["Consistency",ops.consistency+"%","Active Days "+s.active],["Projected",proj,"Month End"],["Required PV",req,"Per Day"]
+  ];
+  if(currentUser.role==="admin")baseKpis.splice(1,0,["Health",ops.health.score+"/100",ops.health.level]);
+  l360Kpis.innerHTML=baseKpis.map(x=>`<div class="kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div><div class="sub">${x[2]}</div></div>`).join("");
+
+  const rights=`Entry ${up.dailyEntry?"✅":"🔒"} • Report ${up.ownReport?"✅":"🔒"} • Profile ${up.profileEdit?"✅":"🔒"}`;
+  l360Diagnosis.innerHTML=`
+    <div class="reviewKpis">
+      <div class="reviewKpi"><small>Best Month</small><b>${bm?bm.ym+" • "+bm.pv+" PV":"—"}</b></div>
+      <div class="reviewKpi"><small>Best Day</small><b>${best?best.date+" • "+best.pv+" PV":"—"}</b></div>
+      <div class="reviewKpi"><small>Last Entry</small><b>${last?last.date+" • "+last.ftd+"%":"—"}</b></div>
+      <div class="reviewKpi"><small>30-Day Trend</small><b class="${trend.ftd.delta>0?"trendUp":trend.ftd.delta<0?"trendDown":"trendFlat"}">${formatTrend(trend.ftd.delta)} FTD</b></div>
+      <div class="reviewKpi"><small>Strongest</small><b>${strongest?strongest.label+" "+strongest.pct+"%":"—"}</b></div>
+      <div class="reviewKpi"><small>Weakest</small><b>${weakest?weakest.label+" "+weakest.pct+"%":"—"}</b></div>
+      <div class="reviewKpi"><small>Last Follow-up</small><b>${lastFollow?new Date(lastFollow.at).toLocaleDateString("mr-IN")+" • "+lastFollow.outcome:"—"}</b></div>
+      <div class="reviewKpi"><small>Next Follow-up</small><b>${sched?.dueAt?new Date(sched.dueAt).toLocaleString("mr-IN"):"—"}</b></div>
+    </div>
+    ${currentUser.role==="admin"?`<div class="healthExplain"><b>Health ${ops.health.score}/100:</b> ${ops.health.reasons.join(" • ")||"All key areas stable"}</div>`:""}
+    <div class="healthExplain"><b>Admin Notes:</b> ${lastFollow?.remark||lastFollow?.problem||"—"}</div>
+    <div class="healthExplain"><b>Rights:</b> ${rights}</div>
+    ${currentUser.role==="admin"?`
+      <div class="actionBtnGrid">
+        <button class="actionMini" onclick="startCall('${u.username}')">📞 Call</button>
+        <button class="actionMini" onclick="whatsAppLeader('${u.username}')">📲 WhatsApp</button>
+        <button class="actionMini" onclick="openDailyReportFor('${u.username}',todayKey())">📄 Daily</button>
+        <button class="actionMini" onclick="openWeeklyFor('${u.username}')">📈 Weekly</button>
+        <button class="actionMini" onclick="openMonthlyFor('${u.username}')">📊 Monthly</button>
+        <button class="actionMini" onclick="openFollowupModal('${u.username}','360')">📝 Follow-up</button>
+        <button class="actionMini" onclick="editLeaderProfileAdmin('${u.username}')">✏️ Edit Profile</button>
+      </div>`:""}
+    <div style="margin-top:8px">🎯 <b>Next Focus:</b> ${ops.primaryAction}</div>`;
+  leader360Modal.classList.add("show");
 }
 function closeLeader360(){leader360Modal.classList.remove("show")}
 
@@ -2930,148 +3382,11 @@ function buildReportData(){
     ftdRows,mtdRows,weakMtd,strongFtd,actions,coach,notes
   };
 }
-function renderReport(){
-  if(!currentUser)return;
-  const d=buildReportData();
-  const monthName=new Date().toLocaleDateString("mr-IN",{month:"long",year:"numeric"});
-  const nowTxt=new Date().toLocaleString("mr-IN");
 
-  const titleEl=document.getElementById("reportMainTitle");
-  const subEl=document.getElementById("reportSubTitle");
-  const meta=document.getElementById("reportMetaBox");
-  const kpi=document.getElementById("reportKpiGrid");
-  const ftdBody=document.getElementById("reportFtdTable");
-  const mtdBody=document.getElementById("reportMtdTable");
-  const gap=document.getElementById("reportGapAnalysis");
-  const actions=document.getElementById("reportActionList");
-  const coach=document.getElementById("reportCoachText");
-  const notes=document.getElementById("reportNotesText");
 
-  titleEl.textContent=`${currentUser.name} यांचा प्रगती अहवाल`;
-  subEl.textContent=`${monthName} • आजचा अहवाल + मासिक विश्लेषण + Smart Coach Action Plan`;
-  meta.innerHTML=`<div><b>नाव:</b> ${currentUser.name}</div>
-                  <div><b>युजरनेम:</b> ${currentUser.username}</div>
-                  <div><b>दिनांक:</b> ${nowTxt}</div>`;
 
-  kpi.innerHTML=[
-    {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD Performance"},
-    {l:"मासिक PV",v:d.mt.pv,s:`उर्वरित ${d.remainingPv}`},
-    {l:"मासिक प्रगती",v:d.mtdPct+"%",s:"MTD Achievement"},
-    {l:"सातत्य",v:d.consistency+"%",s:`Active Days ${d.mt.activeDays}`},
-    {l:"सलग दिवस",v:d.streak+" 🔥",s:"Current Streak"},
-    {l:"दररोज आवश्यक PV",v:d.reqDailyPv,s:`Days Left ${d.leftDays}`},
-    {l:"Projected PV",v:d.projectedPv,s:"Month End Projection"},
-    {l:"यशाची शक्यता",v:d.probability+"%",s:"Success Probability"}
-  ].map(x=>`<div class="reportKpi">
-      <div class="rkLbl">${x.l}</div>
-      <div class="rkVal">${x.v}</div>
-      <div class="rkSub">${x.s}</div>
-    </div>`).join("");
 
-  ftdBody.innerHTML=d.ftdRows.map(r=>`<tr>
-      <td>${r.label}</td>
-      <td>${r.target}</td>
-      <td>${r.actual}</td>
-      <td>${r.pct}%</td>
-      <td>${r.statusHtml}</td>
-    </tr>`).join("");
 
-  mtdBody.innerHTML=d.mtdRows.map(r=>`<tr>
-      <td>${r.label}</td>
-      <td>${r.target}</td>
-      <td>${r.actual}</td>
-      <td>${r.remaining}</td>
-      <td>${r.pct}%</td>
-      <td>${r.req}</td>
-    </tr>`).join("");
-
-  gap.innerHTML=d.weakMtd.map(r=>`<div style="margin:8px 0;padding:10px 12px;border:1px solid #e8eef6;border-radius:14px;background:#fafcff">
-      <b>${r.label}</b> — झाले: ${r.actual} / लक्ष्य: ${r.target} • उर्वरित: ${r.remaining} • सध्याचे Achievement: ${r.pct}%
-    </div>`).join("") || "सध्या प्रमुख gap दिसत नाही.";
-
-  actions.innerHTML=d.actions.slice(0,5).map(a=>`<li>${a}</li>`).join("") || `<li>आजची सातत्यपूर्ण कामगिरी कायम ठेवा.</li>`;
-  coach.textContent=d.coach;
-  notes.textContent=d.notes || "आज कोणतीही अतिरिक्त नोंद केलेली नाही.";
-}
-async function downloadPDFReport(){
-  renderReport();
-  if(!window.jspdf||!window.html2canvas){showToast("PDF library load झालेली नाही");return}
-  const node=document.getElementById("printableReport");
-  const {jsPDF}=window.jspdf;
-  try{
-    node.classList.add("a4Compact");
-    await new Promise(r=>setTimeout(r,80));
-
-    const canvas=await html2canvas(node,{
-      scale:1.7,
-      useCORS:true,
-      backgroundColor:"#ffffff",
-      logging:false,
-      windowWidth:node.scrollWidth
-    });
-
-    const pdf=new jsPDF("p","mm","a4");
-    const pageW=210,pageH=297,margin=6;
-    const maxW=pageW-margin*2,maxH=pageH-margin*2;
-    const imgRatio=canvas.width/canvas.height;
-    let w=maxW,h=w/imgRatio;
-    if(h>maxH){h=maxH;w=h*imgRatio}
-    const x=(pageW-w)/2,y=(pageH-h)/2;
-    const img=canvas.toDataURL("image/jpeg",0.94);
-    pdf.addImage(img,"JPEG",x,y,w,h,undefined,"FAST");
-    pdf.save(`${currentUser.username || "report"}_${todayKey()}_A4.pdf`);
-    showToast("Compact A4 PDF तयार झाला ✅");
-  }catch(e){
-    console.warn(e);showToast("PDF तयार करताना error आला");
-  }finally{
-    node.classList.remove("a4Compact");
-  }
-}
-function printReport(){
-  renderReport();
-  const content=document.getElementById("printableReport").outerHTML;
-  const w=window.open("","_blank","width=900,height=1200");
-  if(!w){window.print();return}
-  w.document.write(`<!DOCTYPE html><html><head><title>Report</title>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>${Array.from(document.querySelectorAll("style")).map(s=>s.innerHTML).join("\n")}</style>
-  </head><body style="background:#fff;padding:14px">${content}</body></html>`);
-  w.document.close();
-  setTimeout(()=>{w.focus();w.print()},500);
-}
-function buildWhatsAppReport(){
-  const d=buildReportData();
-  const weak=d.weakMtd.map(x=>`${x.label} ${x.pct}%`).join(", ");
-  const actions=d.actions.slice(0,3).map((x,i)=>`${i+1}. ${x}`).join("\n");
-  return `📄 RCM • DS WORLD Performance Report
-👤 ${currentUser.name}
-📅 ${new Date().toLocaleDateString("mr-IN")}
-🔥 आजचा स्कोअर: ${d.ftd}%
-📈 मासिक प्रगती: ${d.mtdPct}%
-💼 मासिक PV: ${d.mt.pv}
-🎯 उर्वरित PV: ${d.remainingPv}
-📌 दररोज आवश्यक PV: ${d.reqDailyPv}
-⭐ सातत्य: ${d.consistency}%
-🚀 Projected Month End PV: ${d.projectedPv}
-
-🔍 कमी असलेले भाग:
-${weak || "सध्या मोठा gap नाही"}
-
-🎯 पुढील Action:
-${actions || "काम सुरू ठेवा"}
-
-🧠 Smart Coach:
-${d.coach}
-
-Brand: RCM • DS WORLD`;
-}
-function shareWhatsAppReport(){
-  renderReport();
-  const txt=buildWhatsAppReport();
-  const url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
-  const win=window.open(url,"_blank");
-  if(!win) window.location.href=url;
-}
 
 
 /* ===== ADMIN LIVE + RIGHTS FIX DATA / HISTORY / BRANDING ===== */
@@ -3355,57 +3670,1106 @@ function reportNumber(){
 }
 
 
+
+
+applyTheme();
+startFirebaseConnectionMonitor();
+boot();
+
+/* ===== V26 DAILY REPORT + SMART ENTRY ===== */
+const DAILY_REPORT_METRICS=[
+  {key:"names",label:"नवीन संपर्क",icon:"👥",target:2},
+  {key:"calls",label:"कॉल / भेटी",icon:"📞",target:5},
+  {key:"plans",label:"प्लॅन",icon:"🎯",target:2},
+  {key:"pv",label:"PV",icon:"💼",target:167},
+  {key:"video",label:"व्हिडिओ मिनिटे",icon:"🎧",target:20},
+  {key:"book",label:"वाचन मिनिटे",icon:"📚",target:20},
+  {key:"depth",label:"Depth Follow-up",icon:"🔁",target:1},
+  {key:"meeting",label:"Meeting",icon:"🤝",target:1}
+];
+
+function rawDailyPct(actual,target){
+  return Math.max(0,Math.round(Number(actual||0)/Math.max(Number(target||0),1)*100));
+}
+function loadDailyEntryForm(){
+  if(!currentUser)return;
+  const e=getEntriesFor(currentUser.username)[todayKey()]||{};
+  DAILY_REPORT_METRICS.forEach(m=>{
+    const input=document.getElementById(m.key);
+    if(input)input.value=Number(e[m.key]||0);
+  });
+  updateDailyEntryPreview();
+}
+function updateDailyEntryPreview(){
+  let cappedTotal=0;
+  DAILY_REPORT_METRICS.forEach(m=>{
+    const input=document.getElementById(m.key);
+    const val=Math.max(0,Number(input?.value||0));
+    const raw=rawDailyPct(val,m.target);
+    const capped=Math.min(raw,100);
+    cappedTotal+=capped;
+    const pctEl=document.getElementById(m.key+"Pct");
+    if(pctEl)pctEl.textContent=`${raw}%`;
+    const barId=m.key==="pv"?"pvBarEntry":m.key+"Bar";
+    const bar=document.getElementById(barId);
+    if(bar)bar.style.width=capped+"%";
+  });
+  const overall=Math.round(cappedTotal/DAILY_REPORT_METRICS.length);
+  const score=document.getElementById("entryLiveScore");
+  const badge=document.getElementById("entryLiveScoreBadge");
+  const bar=document.getElementById("entryOverallBar");
+  const hint=document.getElementById("entryLiveHint");
+  if(score)score.textContent=overall+"%";
+  if(badge)badge.textContent="आजचा Score "+overall+"%";
+  if(bar)bar.style.width=overall+"%";
+  if(hint){
+    hint.textContent=overall>=85?"उत्कृष्ट — आजची execution मजबूत आहे."
+      :overall>=60?"चांगली progress — अजून थोडे targets पूर्ण करा."
+      :"कमी असलेल्या activity आधी पूर्ण करा.";
+  }
+}
+
+function populateAdminDailyReportLeaders(){
+  const sel=document.getElementById("dailyReportLeaderSelect");
+  const date=document.getElementById("dailyReportDate");
+  if(!sel||!currentUser||currentUser.role!=="admin")return;
+  const old=sel.value;
+  const leaders=getUsers().filter(u=>u.role==="leader"&&u.active!==false);
+  sel.innerHTML=leaders.map(u=>`<option value="${u.username}">${u.name} • ${u.username}</option>`).join("");
+  if(old&&leaders.some(u=>String(u.username)===String(old)))sel.value=old;
+  if(date&&!date.value)date.value=todayKey();
+  if(leaders.length)renderLeaderDailyReport();
+}
+
+function getLeaderDailyReportData(username,date){
+  const user=getUsers().find(u=>String(u.username)===String(username));
+  if(!user)return null;
+  const e=getEntriesFor(username)[date]||{};
+  const hasEntry=!!getEntriesFor(username)[date];
+  const rows=DAILY_REPORT_METRICS.map(m=>{
+    const actual=Number(e[m.key]||0);
+    const pct=rawDailyPct(actual,m.target);
+    return {...m,actual,pct,capped:Math.min(pct,100)};
+  });
+  const ftd=Math.round(rows.reduce((s,r)=>s+r.capped,0)/rows.length);
+  return {user,date,e,rows,ftd,hasEntry,updatedAt:Number(e.updatedAt||0)};
+}
+function dailyStatusText(pct){
+  if(pct>=100)return "✅ पूर्ण";
+  if(pct>=60)return "🟡 प्रगती";
+  if(pct>0)return "🟠 सुरू";
+  return "🔴 बाकी";
+}
+function renderLeaderDailyReport(track=false){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const sel=document.getElementById("dailyReportLeaderSelect");
+  const dateEl=document.getElementById("dailyReportDate");
+  const box=document.getElementById("leaderDailyReportPreview");
+  if(!sel||!dateEl||!box)return;
+  const d=getLeaderDailyReportData(sel.value,dateEl.value||todayKey());
+  if(!d){box.innerHTML=`<div class="small">Leader निवडा.</div>`;return}
+
+  const strongest=[...d.rows].sort((a,b)=>b.pct-a.pct)[0];
+  const weakest=[...d.rows].sort((a,b)=>a.pct-b.pct)[0];
+  const missing=d.rows.filter(r=>r.actual<=0);
+  const advice=d.ftd>=85
+    ? `आजची execution मजबूत आहे. ${weakest?.label||"उरलेली activity"} पूर्ण करून momentum टिकवा.`
+    : d.ftd>=60
+      ? `${weakest?.label||"कमकुवत activity"} वर पुढचा focus ठेवा.`
+      : `Calls → Plans → PV या क्रमाने recovery action घ्या.`;
+
+  const scoreClass=d.ftd>=85?"dailyReportStatusGood":d.ftd>=60?"dailyReportStatusWarn":"dailyReportStatusBad";
+  box.innerHTML=`
+    <div class="dailyReportCard">
+      <div class="dailyReportHero">
+        <div>
+          <h4>${d.user.name}</h4>
+          <div class="small">${d.user.username} • ${d.date}</div>
+          <div class="small">${d.hasEntry?(d.updatedAt?"Last Save: "+new Date(d.updatedAt).toLocaleString("mr-IN"):"Entry Available"):"Entry नाही"}</div>
+        </div>
+        <div style="text-align:right"><div class="small">Daily FTD</div><div class="dailyReportScore ${scoreClass}">${d.ftd}%</div></div>
+      </div>
+      <div class="dailyMetricGrid">
+        ${d.rows.map(r=>`
+          <div class="dailyMetricBox">
+            <small>${r.icon} ${r.label}</small>
+            <b>${r.actual} / ${r.target} (${r.pct}%)</b>
+            <small>${dailyStatusText(r.pct)}</small>
+          </div>`).join("")}
+      </div>
+      <div class="reviewKpis">
+        <div class="reviewKpi"><small>Strongest</small><b>${strongest?strongest.label+" ("+strongest.pct+"%)":"—"}</b></div>
+        <div class="reviewKpi"><small>Weakest</small><b>${weakest?weakest.label+" ("+weakest.pct+"%)":"—"}</b></div>
+        <div class="reviewKpi"><small>Missing</small><b>${missing.length}</b></div>
+        <div class="reviewKpi"><small>Admin Recommendation</small><b style="font-size:10px">${advice}</b></div>
+      </div>
+    </div>`;
+  if(track)trackAdminReport("daily",d.user.username);
+}
+function buildLeaderDailyPdfHTML(d){
+  const strongest=[...d.rows].sort((a,b)=>b.pct-a.pct)[0];
+  const weakest=[...d.rows].sort((a,b)=>a.pct-b.pct)[0];
+  const missing=d.rows.filter(r=>r.actual<=0);
+  const advice=d.ftd>=85
+    ? `आजची execution मजबूत आहे. सातत्य टिकवा.`
+    : d.ftd>=60
+      ? `${weakest?.label||"कमकुवत activity"} वर पुढचा focus ठेवा.`
+      : `Calls → Plans → PV या क्रमाने recovery action घ्या.`;
+  const rows=d.rows.map(r=>`
+    <tr>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:left">${r.icon} ${r.label}</td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${r.target}</td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${r.actual}</td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center"><b>${r.actual} / ${r.target} (${r.pct}%)</b></td>
+      <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:center">${dailyStatusText(r.pct)}</td>
+    </tr>`).join("");
+  return `
+    <div style="width:190mm;background:#fff;color:#172033;padding:8mm;font-family:system-ui,-apple-system,'Noto Sans Devanagari','Segoe UI',sans-serif">
+      <div style="border-top:5px solid #1f5fae;padding-top:7px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:19px;font-weight:950">RCM • DS WORLD</div><div style="font-size:10px;color:#667085">Leader Daily Performance Report</div></div>
+          <div style="text-align:right;font-size:9px;color:#667085">Report: D-${String(d.date).replaceAll("-","")}-${String(d.user.username).slice(-4)}<br>Generated: ${new Date().toLocaleString("mr-IN")}<br>${APP_VERSION}</div>
+        </div>
+        <div style="margin-top:9px;padding:8px 10px;background:#f3f7fb;border-radius:9px;display:flex;justify-content:space-between">
+          <div><b style="font-size:15px">${d.user.name}</b><div style="font-size:9px;color:#667085">${d.user.username} • ${d.date}</div></div>
+          <div style="text-align:right"><div style="font-size:9px;color:#667085">DAILY FTD</div><b style="font-size:22px">${d.ftd}%</b></div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;margin-top:9px;font-size:9px">
+          <thead><tr style="background:#173b67;color:#fff"><th style="padding:6px;text-align:left">Activity</th><th>Target</th><th>Actual</th><th>Achievement</th><th>Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;font-size:9px">
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Strongest:</b><br>${strongest?strongest.label+" ("+strongest.pct+"%)":"—"}</div>
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Weakest:</b><br>${weakest?weakest.label+" ("+weakest.pct+"%)":"—"}</div>
+          <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Missing:</b><br>${missing.length?missing.map(x=>x.label).join(", "):"None"}</div>
+        </div>
+        <div style="margin-top:7px;padding:8px;background:#f8fafc;border-radius:8px;font-size:9px;line-height:1.5"><b>Admin Recommendation:</b> ${advice}</div>
+        <div style="margin-top:18px;display:flex;justify-content:space-between;font-size:8px;color:#667085"><span>RCM • DS WORLD Growth OS</span><span>Admin / Mentor Signature __________________</span></div>
+      </div>
+    </div>`;
+}
+async function downloadLeaderDailyPDF(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  if(!window.jspdf||!window.html2canvas)return showToast("PDF library load झालेली नाही");
+  const sel=document.getElementById("dailyReportLeaderSelect");
+  const dateEl=document.getElementById("dailyReportDate");
+  const d=getLeaderDailyReportData(sel?.value,dateEl?.value||todayKey());
+  if(!d)return showToast("Leader निवडा");
+  const host=document.createElement("div");
+  host.style.position="fixed";host.style.left="-10000px";host.style.top="0";host.style.background="#fff";
+  host.innerHTML=buildLeaderDailyPdfHTML(d);
+  document.body.appendChild(host);
+  try{
+    const node=host.firstElementChild;
+    const canvas=await html2canvas(node,{scale:1.6,useCORS:true,backgroundColor:"#ffffff"});
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF("p","mm","a4");
+    const pageW=210,pageH=297,margin=7,maxW=pageW-margin*2,maxH=pageH-margin*2;
+    const ratio=canvas.width/canvas.height;
+    let w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}
+    pdf.addImage(canvas.toDataURL("image/jpeg",.94),"JPEG",(pageW-w)/2,margin,w,h,undefined,"FAST");
+    pdf.save(`${d.user.name.replace(/\s+/g,"_")}_${d.date}_Daily_Report.pdf`);
+    trackAdminReport("daily_pdf",d.user.username);
+    showToast("Leader Daily PDF तयार झाला ✅");
+  }catch(e){
+    console.warn(e);showToast("Daily PDF तयार करताना error आला");
+  }finally{host.remove()}
+}
+
+// Hooks without changing core data/login behavior.
+
+
+/* ===== AUTHORITATIVE REPORT FUNCTIONS — V27 ===== */
 function renderReport(){
   if(!currentUser)return;
   const d=buildReportData();
   const monthName=new Date().toLocaleDateString("mr-IN",{month:"long",year:"numeric"});
   const nowTxt=new Date().toLocaleString("mr-IN");
-  const titleEl=document.getElementById("reportMainTitle");
-  const subEl=document.getElementById("reportSubTitle");
-  const meta=document.getElementById("reportMetaBox");
-  const kpi=document.getElementById("reportKpiGrid");
-  const ftdBody=document.getElementById("reportFtdTable");
-  const mtdBody=document.getElementById("reportMtdTable");
-  const gap=document.getElementById("reportGapAnalysis");
-  const actions=document.getElementById("reportActionList");
-  const coach=document.getElementById("reportCoachText");
-  const notes=document.getElementById("reportNotesText");
+  const titleEl=document.getElementById("reportMainTitle"),subEl=document.getElementById("reportSubTitle"),
+        meta=document.getElementById("reportMetaBox"),kpi=document.getElementById("reportKpiGrid"),
+        ftdBody=document.getElementById("reportFtdTable"),mtdBody=document.getElementById("reportMtdTable"),
+        gap=document.getElementById("reportGapAnalysis"),actions=document.getElementById("reportActionList"),
+        coach=document.getElementById("reportCoachText"),notes=document.getElementById("reportNotesText");
   if(!titleEl)return;
 
   titleEl.textContent=`${currentUser.name} यांचा प्रगती अहवाल`;
   subEl.textContent=`${monthName} • FTD + MTD + Smart Coach Action Plan`;
-  meta.innerHTML=`<div><b>Report No:</b> ${reportNumber()}</div>
-                  <div><b>नाव:</b> ${currentUser.name}</div>
-                  <div><b>Mobile:</b> ${currentUser.username}</div>
-                  <div><b>Generated:</b> ${nowTxt}</div>
-                  <div><b>Version:</b> ${APP_VERSION} • ${APP_RELEASE}</div>`;
+  meta.innerHTML=`<div><b>Report No:</b> ${reportNumber()}</div><div><b>नाव:</b> ${currentUser.name}</div><div><b>Mobile:</b> ${currentUser.username}</div><div><b>Generated:</b> ${nowTxt}</div><div><b>Version:</b> ${APP_VERSION}</div>`;
 
   kpi.innerHTML=[
-    {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD Performance"},
-    {l:"मासिक PV",v:d.mt.pv,s:`उर्वरित ${d.remainingPv}`},
-    {l:"मासिक प्रगती",v:d.mtdPct+"%",s:"MTD Achievement"},
-    {l:"सातत्य",v:d.consistency+"%",s:`Active Days ${d.mt.activeDays}`},
-    {l:"सलग दिवस",v:d.streak+" 🔥",s:"Current Streak"},
-    {l:"दररोज आवश्यक PV",v:d.reqDailyPv,s:`Days Left ${d.leftDays}`},
-    {l:"Projected PV",v:d.projectedPv,s:"Month End Projection"},
-    {l:"यशाची शक्यता",v:d.probability+"%",s:"Success Probability"}
+    {l:"आजचा स्कोअर",v:d.ftd+"%",s:"FTD"}, {l:"मासिक PV",v:d.mt.pv,s:`Target ${d.monthTargets.pv}`},
+    {l:"MTD Progress",v:d.mtdPct+"%",s:"PV achievement"}, {l:"Required Daily PV",v:d.reqDailyPv,s:`${d.leftDays} days left`},
+    {l:"Consistency",v:d.consistency+"%",s:`${activeDayCount(currentUser.username)} active days`},
+    {l:"Projected PV",v:d.projectedPv,s:"Month-end pace"}, {l:"Streak",v:d.streak+" days",s:"Current streak"},
+    {l:"Target Readiness",v:d.probability+"%",s:"FTD/MTD consistency heuristic"}
   ].map(x=>`<div class="reportKpi"><div class="rkLbl">${x.l}</div><div class="rkVal">${x.v}</div><div class="rkSub">${x.s}</div></div>`).join("");
 
-  ftdBody.innerHTML=d.ftdRows.map(r=>`<tr><td>${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.pct}%</td><td>${r.statusHtml}</td></tr>`).join("");
-  mtdBody.innerHTML=d.mtdRows.map(r=>`<tr><td>${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.remaining}</td><td>${r.pct}%</td><td>${r.req}</td></tr>`).join("");
-
-  gap.innerHTML=d.weakMtd.map(r=>`<div style="margin:8px 0;padding:10px 12px;border:1px solid #e8eef6;border-radius:14px;background:#fafcff">
-      <b>${r.label}</b> — झाले: ${r.actual} / लक्ष्य: ${r.target} • उर्वरित: ${r.remaining} • Achievement: ${r.pct}%
-    </div>`).join("") || "सध्या प्रमुख gap दिसत नाही.";
-  actions.innerHTML=d.actions.slice(0,5).map(a=>`<li>${a}</li>`).join("") || `<li>आजची सातत्यपूर्ण कामगिरी कायम ठेवा.</li>`;
+  ftdBody.innerHTML=d.ftdRows.map(r=>`<tr><td>${r.icon||""} ${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.actual} / ${r.target} (${Math.round(r.actual/Math.max(r.target,1)*100)}%)</td><td>${r.statusHtml}</td></tr>`).join("");
+  mtdBody.innerHTML=d.mtdRows.map(r=>`<tr><td>${r.icon||""} ${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.remaining}</td><td>${r.actual} / ${r.target} (${r.pct}%)</td><td>${r.req}</td></tr>`).join("");
+  gap.innerHTML=d.weakMtd.map(r=>`<div><b>${r.label}:</b> ${r.actual}/${r.target} (${r.pct}%)</div>`).join("");
+  actions.innerHTML=d.actions.map(x=>`<li>${x}</li>`).join("");
   coach.textContent=d.coach;
-  notes.textContent=d.notes || "आज कोणतीही अतिरिक्त नोंद केलेली नाही.";
+  notes.textContent=d.notes||"आजच्या नोंदीमधील टिपा उपलब्ध नाहीत.";
   applyBrandingToUI();
 }
+async function downloadPDFReport(){
+  renderReport();
+  if(!window.jspdf||!window.html2canvas){showToast("PDF library load झालेली नाही");return}
+  const node=document.getElementById("printableReport"),{jsPDF}=window.jspdf;
+  try{
+    node.classList.add("a4Compact");await new Promise(r=>setTimeout(r,80));
+    const canvas=await html2canvas(node,{scale:1.7,useCORS:true,backgroundColor:"#ffffff",logging:false,windowWidth:node.scrollWidth});
+    const pdf=new jsPDF("p","mm","a4"),pageW=210,pageH=297,margin=6,maxW=198,maxH=285,ratio=canvas.width/canvas.height;
+    let w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}
+    pdf.addImage(canvas.toDataURL("image/jpeg",0.94),"JPEG",(pageW-w)/2,(pageH-h)/2,w,h,undefined,"FAST");
+    pdf.save(`${currentUser.username||"report"}_${todayKey()}_A4.pdf`);showToast("Compact A4 PDF तयार झाला ✅");
+  }catch(e){console.warn(e);showToast("PDF तयार करताना error आला")}
+  finally{node.classList.remove("a4Compact")}
+}
+function printReport(){
+  renderReport();
+  const node=document.getElementById("printableReport");node.classList.add("a4Compact");
+  const content=node.outerHTML;node.classList.remove("a4Compact");
+  const w=window.open("","_blank","width=900,height=1200");if(!w){window.print();return}
+  w.document.write(`<!DOCTYPE html><html><head><title>RCM DS WORLD A4 Report</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${Array.from(document.querySelectorAll("style")).map(s=>s.innerHTML).join("\n")}</style></head><body style="background:#fff;margin:0;padding:0">${content}</body></html>`);
+  w.document.close();setTimeout(()=>{w.focus();w.print()},550);
+}
+function buildWhatsAppReport(){
+  const d=buildReportData(),weak=d.weakMtd.map(x=>`${x.label} ${x.pct}%`).join(", "),actions=d.actions.slice(0,3).map((x,i)=>`${i+1}. ${x}`).join("\n");
+  return `📄 RCM • DS WORLD Performance Report
+👤 ${currentUser.name}
+📅 ${new Date().toLocaleDateString("mr-IN")}
+🔥 आजचा स्कोअर: ${d.ftd}%
+📈 मासिक प्रगती: ${d.mtdPct}%
+💼 मासिक PV: ${d.mt.pv}
+🎯 उर्वरित PV: ${d.remainingPv}
+📌 दररोज आवश्यक PV: ${d.reqDailyPv}
+⭐ सातत्य: ${d.consistency}%
+🚀 Projected Month End PV: ${d.projectedPv}
 
-applyTheme();
-startFirebaseConnectionMonitor();
-boot();
+🔍 कमी असलेले भाग:
+${weak||"सध्या मोठा gap नाही"}
+
+🎯 पुढील Action:
+${actions||"काम सुरू ठेवा"}
+
+🧠 Smart Coach:
+${d.coach}
+
+Brand: RCM • DS WORLD`;
+}
+function shareWhatsAppReport(){
+  renderReport();const txt=buildWhatsAppReport(),url="https://api.whatsapp.com/send?text="+encodeURIComponent(txt);
+  const win=window.open(url,"_blank");if(!win)window.location.href=url;
+}
+
+/* ===== V27 ₹1 CRORE ADMIN EXECUTION & LEADER GROWTH COMMAND CENTER ===== */
+function clamp(v,min=0,max=100){return Math.max(min,Math.min(max,Number(v||0)))}
+function activeLeaders(){return getUsers().filter(u=>u.role==="leader"&&u.active!==false)}
+function getDateKeyOffset(days){
+  const d=new Date();d.setDate(d.getDate()+days);return localDateKey(d)
+}
+function dateOnlyMs(key){
+  const [y,m,d]=String(key).split("-").map(Number);
+  return new Date(y,m-1,d,0,0,0,0).getTime();
+}
+function daysBetweenKeys(a,b){return Math.round((dateOnlyMs(b)-dateOnlyMs(a))/86400000)}
+
+function lastEntryInfo(username){
+  const arr=Object.entries(getEntriesFor(username)).sort((a,b)=>String(b[0]).localeCompare(String(a[0])));
+  if(!arr.length)return null;
+  const [date,e]=arr[0];return {date,e,ftd:ftdScore(e),pv:Number(e.pv||0)};
+}
+function inactiveDaysFor(username){
+  const last=lastEntryInfo(username);if(!last)return 999;
+  return Math.max(0,daysBetweenKeys(last.date,todayKey()));
+}
+function bestDayFor(username){
+  const arr=Object.entries(getEntriesFor(username)).map(([date,e])=>({date,pv:Number(e.pv||0),ftd:ftdScore(e)}));
+  arr.sort((a,b)=>(b.ftd*100000+b.pv)-(a.ftd*100000+a.pv));return arr[0]||null;
+}
+function monthlyMetricPcts(username){
+  const m=getMonthTotals(username),days=daysInCurrentMonth();
+  const defs=[
+    ["names","New Contacts",60],["calls","Calls",150],["plans","Presentations",60],["pv","PV",5000],
+    ["video","Video",20*days],["book","Reading",20*days],["depth","Depth",20],["meeting","Meeting",28]
+  ];
+  return defs.map(([key,label,target])=>({key,label,target,actual:Number(m[key]||0),pct:Math.round(Number(m[key]||0)/Math.max(target,1)*100)}));
+}
+function expectedPacePct(){return elapsedDays()/daysInCurrentMonth()*100}
+function paceAchievement(actual,target){
+  const expected=Number(target||0)*elapsedDays()/daysInCurrentMonth();
+  return clamp(Number(actual||0)/Math.max(expected,1)*100);
+}
+function leaderHealthScore(u){
+  const e=getEntriesFor(u.username)[todayKey()]||{},m=getMonthTotals(u.username);
+  const ftd=ftdScore(e);
+  const consistency=clamp(activeDayCount(u.username)/elapsedDays()*100);
+  const mtdPct=Number(m.pv||0)/5000*100;
+  const monthPace=clamp(mtdPct/Math.max(expectedPacePct(),1)*100);
+  const learn=clamp((paceAchievement(m.video,20*daysInCurrentMonth())+paceAchievement(m.book,20*daysInCurrentMonth()))/2);
+  const components=[
+    {label:"Daily Execution",value:ftd,weight:20},
+    {label:"Monthly Pace",value:monthPace,weight:15},
+    {label:"Consistency",value:consistency,weight:15},
+    {label:"Calls",value:paceAchievement(m.calls,150),weight:10},
+    {label:"Presentations",value:paceAchievement(m.plans,60),weight:10},
+    {label:"PV",value:paceAchievement(m.pv,5000),weight:15},
+    {label:"Learning",value:learn,weight:5},
+    {label:"Depth",value:paceAchievement(m.depth,20),weight:5},
+    {label:"Meetings",value:paceAchievement(m.meeting,28),weight:5}
+  ];
+  const score=Math.round(components.reduce((s,c)=>s+c.value*c.weight/100,0));
+  const reasons=components.map(c=>({...c,deduction:Math.round(c.weight*(100-c.value)/100)}))
+    .filter(c=>c.deduction>1).sort((a,b)=>b.deduction-a.deduction).slice(0,4)
+    .map(c=>`${c.label} -${c.deduction}`);
+  const level=score>=85?"🟢 Strong":score>=65?"🟡 Stable":score>=40?"🟠 Needs Support":"🔴 Critical";
+  const cls=score>=85?"healthStrong":score>=65?"healthStable":score>=40?"healthSupport":"healthCritical";
+  return {score,components,reasons,level,cls};
+}
+function leaderTrend(username){
+  const entries=getEntriesFor(username);
+  const dates=[];
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dates.push(localDateKey(d))}
+  const first=dates.slice(0,7),last=dates.slice(7);
+  const calc=arr=>{
+    const rows=arr.map(k=>entries[k]).filter(Boolean);
+    const total=k=>rows.reduce((s,e)=>s+Number(e?.[k]||0),0);
+    return {pv:total("pv"),calls:total("calls"),plans:total("plans"),ftd:rows.length?Math.round(rows.reduce((s,e)=>s+ftdScore(e),0)/rows.length):0};
+  };
+  const a=calc(first),b=calc(last);
+  const delta=(now,prev)=>prev?Math.round((now-prev)/prev*100):(now?100:0);
+  return {pv:{...b,delta:delta(b.pv,a.pv)},calls:{delta:delta(b.calls,a.calls)},plans:{delta:delta(b.plans,a.plans)},ftd:{delta:b.ftd-a.ftd},raw:{previous:a,current:b}};
+}
+function formatTrend(delta){
+  const n=Number(delta||0);
+  return `${n>0?"+":""}${n}% ${n>0?"↑":n<0?"↓":"→"}`;
+}
+function getFollowupSchedule(username){
+  return (adminRootCache.followup_schedule||{})[safeCloudKey(username)]||null;
+}
+function getFollowupHistory(username){
+  const raw=(adminRootCache.followups||{})[safeCloudKey(username)]||{};
+  return Object.values(raw).filter(Boolean).sort((a,b)=>Number(b.at||0)-Number(a.at||0));
+}
+function followupDueState(username){
+  const s=getFollowupSchedule(username);
+  if(!s||s.status==="done"||!s.dueAt)return {due:false,type:"none",schedule:s};
+  const now=Date.now(),due=Number(s.dueAt);
+  const t0=dateOnlyMs(todayKey()),t1=t0+86400000,t2=t1+86400000,t7=t0+7*86400000;
+  if(due<now)return {due:true,type:"overdue",schedule:s};
+  if(due>=t0&&due<t1)return {due:true,type:"today",schedule:s};
+  if(due>=t1&&due<t2)return {due:true,type:"tomorrow",schedule:s};
+  if(due>=t0&&due<t7)return {due:true,type:"week",schedule:s};
+  return {due:false,type:"future",schedule:s};
+}
+function previousMonthPV(username){
+  const ym=previousMonthKey(),entries=getEntriesFor(username);
+  return Object.entries(entries).filter(([d])=>d.startsWith(ym)).reduce((s,[,e])=>s+Number(e.pv||0),0);
+}
+function detectOpportunity(u){
+  const e=getEntriesFor(u.username)[todayKey()]||{},m=getMonthTotals(u.username);
+  const f=ftdScore(e),pvPace=paceAchievement(m.pv,5000),callPace=paceAchievement(m.calls,150),planPace=paceAchievement(m.plans,60);
+  const inactive=inactiveDaysFor(u.username),prevPv=previousMonthPV(u.username),best=bestMonthFor(u.username);
+  if((callPace>=80||planPace>=80)&&pvPace<65)
+    return {level:"HIGH CONVERSION OPPORTUNITY",rank:3,reason:"Activity मजबूत पण PV conversion मागे",action:"Closing / purchase follow-up coaching करा."};
+  if(f>=70&&Number(e.pv||0)<167)
+    return {level:"HIGH CONVERSION OPPORTUNITY",rank:3,reason:"आज execution चांगली; PV pending",action:"आजच PV close करण्यावर follow-up करा."};
+  if(inactive>=3&&((best?.pv||0)>=3000||prevPv>=2500))
+    return {level:"REACTIVATION OPPORTUNITY",rank:2,reason:`पूर्वी strong; ${inactive} दिवस inactive`,action:"Personal reconnect + छोटा restart target द्या."};
+  if(prevPv>=2500&&pvPace<60)
+    return {level:"REACTIVATION OPPORTUNITY",rank:2,reason:"मागील महिन्यापेक्षा current pace कमी",action:"Drop reason समजून 7-day comeback plan द्या."};
+  if(callPace>=65&&planPace<55)
+    return {level:"MEDIUM OPPORTUNITY",rank:1,reason:"Calls आहेत पण presentations कमी",action:"Call → Presentation conversion वर coaching करा."};
+  return null;
+}
+function primaryActionFor(snapshot){
+  if(snapshot.followup.type==="overdue")return "Overdue follow-up लगेच पूर्ण करा.";
+  if(snapshot.noEntry)return "Call करून आजची entry + काम सुरू करून घ्या.";
+  if(snapshot.inactiveDays>=3)return "Reactivation call करा आणि छोटा restart target द्या.";
+  if(snapshot.ftd<60&&Number(snapshot.today.calls||0)<5)return `अजून ${Math.max(5-Number(snapshot.today.calls||0),0)} calls साठी motivate करा.`;
+  if(Number(snapshot.today.calls||0)>=5&&Number(snapshot.today.plans||0)<2)return "Call activity चांगली; 2 presentations close करायला सांगा.";
+  if(snapshot.pvPace<70)return "PV pace मागे आहे — purchase / conversion follow-up करा.";
+  if(snapshot.opportunity)return snapshot.opportunity.action;
+  return "Consistency टिकवण्यासाठी appreciation + next target द्या.";
+}
+function leaderOpsSnapshot(u){
+  const entries=getEntriesFor(u.username),today=entries[todayKey()]||{},hasEntry=!!entries[todayKey()];
+  const ftd=ftdScore(today),m=getMonthTotals(u.username),consistency=Math.round(clamp(activeDayCount(u.username)/elapsedDays()*100));
+  const pvPace=paceAchievement(m.pv,5000),callsPace=paceAchievement(m.calls,150),plansPace=paceAchievement(m.plans,60);
+  const inactiveDays=inactiveDaysFor(u.username),followup=followupDueState(u.username),health=leaderHealthScore(u);
+  const opportunity=detectOpportunity(u);
+  const expectedPct=expectedPacePct(),mtdPvPct=m.pv/5000*100;
+  const noEntry=!hasEntry,completed=hasEntry&&ftd>=100,partial=hasEntry&&ftd<100;
+  const pvBehind=mtdPvPct<expectedPct-10,targetDone=m.pv>=5000;
+  let priority=0,reasons=[],code="stable";
+  if(noEntry){priority+=30;reasons.push("आज Entry नाही");code="no_entry"}
+  if(ftd<60){priority+=20;reasons.push(`FTD ${ftd}%`);if(code==="stable")code="low_ftd"}
+  if(pvPace<70){priority+=20;reasons.push("PV pace मागे");if(code==="stable")code="pv_gap"}
+  if(callsPace<70){priority+=10;reasons.push("Calls pace कमी");if(code==="stable")code="calls_gap"}
+  if(plansPace<70){priority+=10;reasons.push("Presentations pace कमी");if(code==="stable")code="plans_gap"}
+  if(consistency<70){priority+=10;reasons.push(`Consistency ${consistency}%`)}
+  if(inactiveDays>=3){priority+=20;reasons.push(`${inactiveDays} दिवस inactive`);code="inactive"}
+  if(followup.type==="overdue"){priority+=25;reasons.push("Follow-up overdue");code="overdue"}
+  if(opportunity?.rank===3){priority+=10;reasons.push("High conversion chance")}
+  const level=priority>=70?"CRITICAL":priority>=50?"HIGH":priority>=25?"MEDIUM":"GOOD";
+  const cls=priority>=70?"priorityCritical":priority>=50?"priorityHigh":priority>=25?"priorityMedium":"priorityGood";
+  const out={u,today,m,hasEntry,ftd,consistency,pvPace,callsPace,plansPace,inactiveDays,followup,health,opportunity,
+    noEntry,completed,partial,pvBehind,targetDone,priority,reasons,code,level,cls};
+  out.primaryAction=primaryActionFor(out);
+  return out;
+}
+function allOpsSnapshots(){return activeLeaders().map(leaderOpsSnapshot)}
+function completedActionCodes(){
+  return (adminRootCache.admin_actions||{})[todayKey()]||{};
+}
+function isActionCompleted(username,code){
+  return !!completedActionCodes()?.[safeCloudKey(username)]?.[safeCloudKey(code)]?.doneAt;
+}
+function smartActionQueueData(){
+  return allOpsSnapshots()
+    .filter(x=>x.priority>=15&&!isActionCompleted(x.u.username,x.code))
+    .sort((a,b)=>b.priority-a.priority)
+    .slice(0,10);
+}
+function scheduleAdminSuiteRender(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  clearTimeout(adminSuiteRenderTimer);
+  adminSuiteRenderTimer=setTimeout(()=>renderAdminCommandSuite(),120);
+}
+function renderAdminCommandSuite(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  populateV27LeaderSelectors();
+  renderTodayCommandCenter();
+  renderSmartActionQueue();
+  renderOpportunityDetector();
+  renderSmartAlerts();
+  renderFollowupCalendar();
+  renderLeaderExplorer();
+  renderWeeklyReview(false);
+  renderMonthlyScorecard(false);
+  renderLeaderHeatmap();
+  renderV27TeamFunnel();
+  renderAdminExecutionScore();
+  renderRecognitionEngine();
+  renderDataHealthFromCache();
+  renderNightReview();
+  showMorningBriefIfNeeded();
+}
+function renderTodayCommandCenter(){
+  const grid=document.getElementById("commandKpiGrid");if(!grid)return;
+  const rows=allOpsSnapshots(),total=rows.length;
+  const completed=rows.filter(x=>x.completed).length,partial=rows.filter(x=>x.partial).length,noEntry=rows.filter(x=>x.noEntry).length;
+  const due=rows.filter(x=>["overdue","today"].includes(x.followup.type)).length;
+  const opp=rows.filter(x=>x.opportunity?.rank===3).length,risk=rows.filter(x=>x.priority>=50).length;
+  const pv=rows.reduce((s,x)=>s+Number(x.today.pv||0),0),calls=rows.reduce((s,x)=>s+Number(x.today.calls||0),0);
+  const plans=rows.reduce((s,x)=>s+Number(x.today.plans||0),0),names=rows.reduce((s,x)=>s+Number(x.today.names||0),0);
+  const expected=total*167,gap=Math.max(expected-pv,0);
+  const cards=[
+    ["total","Total Active Leaders",total,"Team"],["completed","Entry Completed",completed,"100% FTD"],["partial","Partial Entry",partial,"Entry आहे"],["noEntry","No Entry",noEntry,"Follow-up"],
+    ["followup","Need Follow-up",due,"Today/Overdue"],["opportunity","High Opportunity",opp,"Conversion"],["risk","At Risk",risk,"Priority ≥ HIGH"],
+    ["todayPv","Today Team PV",pv,"Actual"],["calls","Today Calls",calls,"Activity"],["plans","Today Presentations",plans,"Activity"],["names","Today New Contacts",names,"Prospecting"],
+    ["expectedPv","Expected Today PV",expected,"167 × Leaders"],["pvGap","Gap to Today's Target",gap,"Close Today"]
+  ];
+  grid.innerHTML=cards.map(c=>`<div class="commandKpi" onclick="setCommandFilter('${c[0]}')"><small>${c[1]}</small><b>${c[2]}</b><div class="cksub">${c[3]}</div></div>`).join("");
+  const sub=document.getElementById("commandCenterSub");
+  if(sub)sub.textContent=`${new Date().toLocaleDateString("mr-IN")} • Live Sync ${lastRootSyncAt?new Date(lastRootSyncAt).toLocaleTimeString("mr-IN"):"—"}`;
+  if(commandCenterFilter)renderCommandFilteredList(commandCenterFilter);
+}
+function setCommandFilter(type){
+  commandCenterFilter=type;renderCommandFilteredList(type);
+  document.getElementById("commandFilteredList")?.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function commandFilterRows(type){
+  const rows=allOpsSnapshots();
+  if(type==="completed")return rows.filter(x=>x.completed);
+  if(type==="partial")return rows.filter(x=>x.partial);
+  if(type==="noEntry")return rows.filter(x=>x.noEntry);
+  if(type==="followup")return rows.filter(x=>["overdue","today"].includes(x.followup.type));
+  if(type==="opportunity")return rows.filter(x=>x.opportunity?.rank===3);
+  if(type==="risk")return rows.filter(x=>x.priority>=50);
+  if(type==="todayPv")return rows.filter(x=>Number(x.today.pv||0)>0).sort((a,b)=>Number(b.today.pv||0)-Number(a.today.pv||0));
+  if(type==="calls")return rows.filter(x=>Number(x.today.calls||0)>0).sort((a,b)=>Number(b.today.calls||0)-Number(a.today.calls||0));
+  if(type==="plans")return rows.filter(x=>Number(x.today.plans||0)>0).sort((a,b)=>Number(b.today.plans||0)-Number(a.today.plans||0));
+  if(type==="names")return rows.filter(x=>Number(x.today.names||0)>0).sort((a,b)=>Number(b.today.names||0)-Number(a.today.names||0));
+  if(type==="pvGap"||type==="expectedPv")return rows.filter(x=>Number(x.today.pv||0)<167).sort((a,b)=>Number(a.today.pv||0)-Number(b.today.pv||0));
+  return rows;
+}
+function renderCommandFilteredList(type){
+  const box=document.getElementById("commandFilteredList");if(!box)return;
+  const rows=commandFilterRows(type);
+  box.innerHTML=`<div class="sectionHead" style="margin-top:6px"><b>${type} • ${rows.length} Leader</b><button class="actionMini" onclick="commandCenterFilter='';document.getElementById('commandFilteredList').innerHTML=''">✕ Close</button></div>`+
+    (rows.length?rows.map(x=>opsLeaderCardHTML(x)).join(""):`<div class="small">या filter मध्ये Leader नाही.</div>`);
+}
+function opsLeaderCardHTML(x){
+  return `<div class="opsLeaderCard">
+    <div class="opsTop">
+      <div><b>${x.u.name}</b><div class="small">${x.u.username} • FTD ${x.ftd}% • MTD PV ${x.m.pv}</div></div>
+      <span class="${x.health.cls}"><b>${x.health.score}/100</b> ${x.health.level}</span>
+    </div>
+    <div class="actionReason">${x.reasons.join(" • ")||"Performance stable"} </div>
+    <div class="actionAdvice">🎯 ${x.primaryAction}</div>
+    ${leaderActionButtons(x.u.username)}
+  </div>`;
+}
+function leaderActionButtons(username){
+  return `<div class="actionBtnGrid">
+    <button class="actionMini" onclick="startCall('${username}')">📞 Call</button>
+    <button class="actionMini" onclick="whatsAppLeader('${username}')">📲 WhatsApp</button>
+    <button class="actionMini" onclick="openFollowupModal('${username}','done')">✅ Follow-up Done</button>
+    <button class="actionMini" onclick="openFollowupModal('${username}','remark')">📝 Remark</button>
+    <button class="actionMini" onclick="openFollowupModal('${username}','schedule')">📅 Next Follow-up</button>
+    <button class="actionMini" onclick="openFollowupModal('${username}','reminder')">⏰ Reminder</button>
+    <button class="actionMini" onclick="openLeader360('${username}')">👁 360°</button>
+  </div>`;
+}
+function renderSmartActionQueue(){
+  const box=document.getElementById("smartActionQueue");if(!box)return;
+  const rows=smartActionQueueData();
+  box.innerHTML=rows.length?rows.map((x,i)=>`<div class="smartActionCard">
+    <div class="actionTop">
+      <div><b>${i+1}. ${x.u.name}</b><div class="small">${x.u.username} • Priority ${x.priority}</div></div>
+      <span class="${x.cls}"><b>${x.level}</b></span>
+    </div>
+    <div class="actionReason">कारण: ${x.reasons.slice(0,4).join(" • ")}</div>
+    <div class="actionAdvice">Action: ${x.primaryAction}</div>
+    ${leaderActionButtons(x.u.username)}
+    <div class="actionBtnGrid"><button class="actionMini" onclick="completeAdminAction('${x.u.username}','${x.code}')">✅ Action DONE</button></div>
+  </div>`).join(""):`<div class="small" style="margin-top:10px">✅ आजची priority action queue clear आहे.</div>`;
+}
+async function completeAdminAction(username,code){
+  if(!currentUser||currentUser.role!=="admin"||!firebaseReady||!db)return;
+  const obj={username,code,doneAt:Date.now(),doneBy:currentUser.username};
+  await db.ref(`${ADMIN_ACTIONS_PATH}/${todayKey()}/${safeCloudKey(username)}/${safeCloudKey(code)}`).set(obj);
+  showToast("Admin Action Done ✅");
+}
+function renderOpportunityDetector(){
+  const box=document.getElementById("opportunityDetector");if(!box)return;
+  const rows=allOpsSnapshots().filter(x=>x.opportunity).sort((a,b)=>b.opportunity.rank-a.opportunity.rank).slice(0,8);
+  box.innerHTML=rows.length?rows.map(x=>`<div class="opportunityCard">
+    <div class="actionTop"><b>${x.u.name}</b><span class="badge">${x.opportunity.level}</span></div>
+    <div class="actionReason">${x.opportunity.reason}</div><div class="actionAdvice">${x.opportunity.action}</div>
+    ${leaderActionButtons(x.u.username)}
+  </div>`).join(""):`<div class="small" style="margin-top:8px">आज विशेष opportunity signal नाही.</div>`;
+}
+function renderSmartAlerts(){
+  const box=document.getElementById("smartAlerts");if(!box)return;
+  const rows=allOpsSnapshots(),alerts=[];
+  rows.forEach(x=>{
+    if(x.inactiveDays>=3)alerts.push({type:"critical",text:`🔴 ${x.u.name}: ${x.inactiveDays} दिवस inactive`});
+    if(x.followup.type==="overdue")alerts.push({type:"critical",text:`⏰ ${x.u.name}: Follow-up overdue`});
+    if(x.pvPace<75)alerts.push({type:"action",text:`🟠 ${x.u.name}: PV pace मागे (${Math.round(x.pvPace)}% of expected pace)`});
+    if(Number(x.today.calls||0)>=5&&Number(x.today.plans||0)<2)alerts.push({type:"action",text:`🟡 ${x.u.name}: Calls good, Plans low`});
+    if(x.targetDone)alerts.push({type:"positive",text:`🟢 ${x.u.name}: Monthly PV target completed`});
+    if(x.ftd>=100)alerts.push({type:"positive",text:`🔥 ${x.u.name}: Today 100% FTD`});
+  });
+  const groups=[["Critical","critical"],["Action","action"],["Positive","positive"]];
+  box.innerHTML=groups.map(([label,type])=>{
+    const a=alerts.filter(x=>x.type===type).slice(0,5);
+    return `<div class="alertCard"><b>${label} Alerts</b>${a.length?a.map(x=>`<div class="small" style="margin-top:5px">${x.text}</div>`).join(""):`<div class="small" style="margin-top:5px">No ${label.toLowerCase()} alert</div>`}</div>`;
+  }).join("");
+}
+function startCall(username){
+  try{sessionStorage.setItem("ds_pending_call_user",String(username))}catch(e){}
+  window.location.href="tel:"+username;
+}
+window.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState!=="visible"||!currentUser||currentUser.role!=="admin")return;
+  let u="";try{u=sessionStorage.getItem("ds_pending_call_user")||"";sessionStorage.removeItem("ds_pending_call_user")}catch(e){}
+  if(u)setTimeout(()=>openFollowupModal(u,"call"),250);
+});
+function whatsAppLeader(username){
+  const u=getUsers().find(x=>String(x.username)===String(username));
+  const msg=`नमस्कार ${u?.name||""} 🙏 आजच्या कामाचा छोटा follow-up आहे. आजचे Calls, Presentations आणि PV यातील पुढची action पूर्ण करून मला update करा.`;
+  window.open(`https://wa.me/91${username}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+function openFollowupModal(username,mode="followup"){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const u=getUsers().find(x=>String(x.username)===String(username));if(!u)return;
+  followupUser.value=u.username;followupModalTitle.textContent=`${u.name} — Follow-up`;
+  followupModalMeta.textContent=`${u.username} • ${mode}`;
+  followupOutcome.value=mode==="call"?"Connected":mode==="schedule"||mode==="reminder"?"Follow-up Required":"Connected";
+  followupRemark.value="";followupProblem.value="";followupCommitment.value="";followupTarget.value="";followupTraining.value="";followupNextAction.value="";
+  const sched=getFollowupSchedule(username);
+  if(sched?.dueAt){
+    const d=new Date(Number(sched.dueAt)-new Date().getTimezoneOffset()*60000);
+    followupNextAt.value=d.toISOString().slice(0,16);
+  }else followupNextAt.value="";
+  renderFollowupHistoryPreview(username);
+  followupModal.classList.add("show");
+}
+function closeFollowupModal(){document.getElementById("followupModal")?.classList.remove("show")}
+function renderFollowupHistoryPreview(username){
+  const box=document.getElementById("followupHistoryPreview");if(!box)return;
+  const rows=getFollowupHistory(username).slice(0,8);
+  box.innerHTML=rows.length?rows.map(r=>`<div class="followupHistoryRow"><b>${r.outcome}</b> • ${new Date(r.at).toLocaleString("mr-IN")}<br>${r.remark||r.problem||r.nextAction||"No remark"}</div>`).join(""):`<div class="small">History नाही.</div>`;
+}
+async function saveFollowupRecord(forceNoNext=false){
+  if(!currentUser||currentUser.role!=="admin"||!firebaseReady||!db)return showToast("Firebase connect आवश्यक आहे");
+  const username=normalizeUsername(followupUser.value);if(!username)return;
+  const nextRaw=forceNoNext?"":followupNextAt.value;
+  const record={
+    username,outcome:followupOutcome.value,remark:followupRemark.value.trim(),problem:followupProblem.value.trim(),
+    commitment:followupCommitment.value.trim(),target:followupTarget.value.trim(),training:followupTraining.value.trim(),
+    nextAction:followupNextAction.value.trim(),nextAt:nextRaw?new Date(nextRaw).getTime():0,
+    at:Date.now(),by:currentUser.username,byName:currentUser.name
+  };
+  const latest=getFollowupHistory(username)[0];
+  if(latest&&latest.outcome===record.outcome&&latest.remark===record.remark&&Date.now()-Number(latest.at||0)<120000)
+    return showToast("Duplicate follow-up save रोखला आहे");
+
+  const pushKey=db.ref(`${FOLLOWUP_HISTORY_PATH}/${safeCloudKey(username)}`).push().key;
+  const updates={};
+  updates[`followups/${safeCloudKey(username)}/${pushKey}`]=record;
+  updates[`followup_schedule/${safeCloudKey(username)}`]=record.nextAt
+    ?{username,dueAt:record.nextAt,status:"pending",purpose:record.nextAction||record.outcome,updatedAt:Date.now()}
+    :{username,dueAt:0,status:"done",purpose:record.outcome,updatedAt:Date.now()};
+  await db.ref(CLOUD_ROOT).update(updates);
+  showToast("Follow-up Permanent Save झाला ✅");
+  closeFollowupModal();
+}
+function markFollowupDoneOnly(){saveFollowupRecord(true)}
+function scheduleRows(){
+  const raw=adminRootCache.followup_schedule||{};
+  return Object.values(raw).filter(x=>x&&x.username&&x.status!=="done"&&x.dueAt).map(x=>({...x,state:followupDueState(x.username)}));
+}
+function renderFollowupCalendar(){
+  const cards=document.getElementById("followupCalendarCards"),list=document.getElementById("followupCalendarList");if(!cards||!list)return;
+  const rows=scheduleRows(),counts={
+    today:rows.filter(x=>x.state.type==="today").length,
+    overdue:rows.filter(x=>x.state.type==="overdue").length,
+    tomorrow:rows.filter(x=>x.state.type==="tomorrow").length,
+    week:rows.filter(x=>["today","tomorrow","week"].includes(x.state.type)).length
+  };
+  cards.innerHTML=[["today","TODAY",counts.today],["overdue","OVERDUE",counts.overdue],["tomorrow","TOMORROW",counts.tomorrow],["week","THIS WEEK",counts.week]]
+    .map(x=>`<div class="followupCalCard" onclick="setFollowupCalendarFilter('${x[0]}')"><small>${x[1]}</small><b>${x[2]}</b></div>`).join("");
+  const ob=document.getElementById("followupOverdueBadge");if(ob)ob.textContent=`${counts.overdue} Overdue`;
+  renderFollowupCalendarList();
+}
+function setFollowupCalendarFilter(type){followupCalendarFilter=type;renderFollowupCalendarList()}
+function renderFollowupCalendarList(){
+  const box=document.getElementById("followupCalendarList");if(!box)return;
+  let rows=scheduleRows();
+  if(followupCalendarFilter==="week")rows=rows.filter(x=>["today","tomorrow","week"].includes(x.state.type));
+  else rows=rows.filter(x=>x.state.type===followupCalendarFilter);
+  rows.sort((a,b)=>Number(a.dueAt)-Number(b.dueAt));
+  box.innerHTML=rows.length?rows.map(r=>{
+    const u=getUsers().find(x=>String(x.username)===String(r.username));
+    return `<div class="followupItem"><div class="actionTop"><div><b>${u?.name||r.username}</b><div class="small">${new Date(r.dueAt).toLocaleString("mr-IN")} • ${r.purpose||"Follow-up"}</div></div><span class="badge">${r.state.type.toUpperCase()}</span></div>${leaderActionButtons(r.username)}</div>`;
+  }).join(""):`<div class="small" style="margin-top:9px">या कालावधीत follow-up नाही.</div>`;
+}
+function setLeaderExplorerFilter(filter,btn){
+  adminLeaderExplorerFilter=filter;
+  document.querySelectorAll("#adminFilterChips button").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  renderLeaderExplorer();
+}
+function renderLeaderExplorer(){
+  const box=document.getElementById("leaderExplorerList");if(!box)return;
+  const q=(document.getElementById("adminLeaderSearch")?.value||"").trim().toLowerCase();
+  let rows=allOpsSnapshots();
+  if(q)rows=rows.filter(x=>x.u.name.toLowerCase().includes(q)||String(x.u.username).includes(q));
+  const f=adminLeaderExplorerFilter;
+  if(f==="activeToday")rows=rows.filter(x=>x.hasEntry);
+  if(f==="noEntry")rows=rows.filter(x=>x.noEntry);
+  if(f==="ftdLow")rows=rows.filter(x=>x.ftd<60);
+  if(f==="pvBehind")rows=rows.filter(x=>x.pvBehind);
+  if(f==="opportunity")rows=rows.filter(x=>x.opportunity?.rank===3);
+  if(f==="risk")rows=rows.filter(x=>x.priority>=50);
+  if(f==="inactive3")rows=rows.filter(x=>x.inactiveDays>=3);
+  if(f==="followupDue")rows=rows.filter(x=>["today","overdue"].includes(x.followup.type));
+  if(f==="targetDone")rows=rows.filter(x=>x.targetDone);
+  rows.sort((a,b)=>b.priority-a.priority);
+  box.innerHTML=rows.length?rows.map(x=>{
+    const tr=leaderTrend(x.u.username);
+    return `<div class="opsLeaderCard">
+      <div class="opsTop"><div><b>${x.u.name}</b><div class="small">${x.u.username}</div></div><span class="${x.health.cls}">${x.health.level} • ${x.health.score}</span></div>
+      <div class="liveStats">
+        <span class="metricpill">FTD ${x.ftd}%</span><span class="metricpill">PV ${x.m.pv}</span><span class="metricpill">Consistency ${x.consistency}%</span>
+        <span class="metricpill ${tr.raw.current.pv>=tr.raw.previous.pv?"trendUp":"trendDown"}">PV ${formatTrend(tr.pv.delta)}</span>
+        <span class="metricpill ${tr.plans.delta>=0?"trendUp":"trendDown"}">Plans ${formatTrend(tr.plans.delta)}</span>
+      </div>
+      <div class="healthExplain">${x.health.reasons.join(" • ")||"Health stable"}</div>${leaderActionButtons(x.u.username)}
+    </div>`;
+  }).join(""):`<div class="small" style="margin-top:8px">या filter मध्ये Leader नाही.</div>`;
+}
+function populateV27LeaderSelectors(){
+  const leaders=activeLeaders();
+  ["weeklyLeaderSelect","monthlyLeaderSelect"].forEach(id=>{
+    const sel=document.getElementById(id);if(!sel)return;
+    const old=sel.value;
+    sel.innerHTML=leaders.map(u=>`<option value="${u.username}">${u.name} • ${u.username}</option>`).join("");
+    if(old&&leaders.some(u=>String(u.username)===String(old)))sel.value=old;
+  });
+  const mi=document.getElementById("monthlyScoreMonth");if(mi&&!mi.value)mi.value=localMonthKey();
+}
+function dateKeysBack(n,endOffset=0){
+  const arr=[];for(let i=n-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i-endOffset);arr.push(localDateKey(d))}return arr;
+}
+function weeklyReviewData(username){
+  const u=getUsers().find(x=>String(x.username)===String(username));if(!u)return null;
+  const entries=getEntriesFor(username),dates=dateKeysBack(7),prevDates=dateKeysBack(7,7);
+  const rows=dates.map(date=>{const e=entries[date]||{},active=!!entries[date];return {date,e,active,ftd:ftdScore(e),calls:Number(e.calls||0),plans:Number(e.plans||0),pv:Number(e.pv||0)}});
+  const calc=ds=>{
+    const rs=ds.map(date=>entries[date]).filter(Boolean);
+    return {active:rs.length,calls:sum(rs,"calls"),plans:sum(rs,"plans"),pv:sum(rs,"pv"),ftd:rs.length?Math.round(rs.reduce((s,e)=>s+ftdScore(e),0)/rs.length):0}
+  };
+  const now=calc(dates),prev=calc(prevDates);
+  const best=[...rows].sort((a,b)=>b.ftd-a.ftd||b.pv-a.pv)[0],weak=[...rows].sort((a,b)=>a.ftd-b.ftd||a.pv-b.pv)[0];
+  const activity=[
+    {label:"Calls",pct:Math.round(now.calls/(5*7)*100)},
+    {label:"Presentations",pct:Math.round(now.plans/(2*7)*100)},
+    {label:"PV",pct:Math.round(now.pv/(167*7)*100)}
+  ].sort((a,b)=>a.pct-b.pct);
+  const focus=`${activity[0].label} या भागात 7-day achievement ${activity[0].pct}% आहे. पुढील 7 दिवस daily target पूर्ण करण्यावर focus करा.`;
+  const trend=now.ftd>prev.ftd?"↑":now.ftd<prev.ftd?"↓":"→";
+  return {u,rows,now,prev,best,weak,focus,trend};
+}
+function renderWeeklyReview(track=false){
+  const box=document.getElementById("weeklyReviewPreview"),sel=document.getElementById("weeklyLeaderSelect");if(!box||!sel||!sel.value)return;
+  const d=weeklyReviewData(sel.value);if(!d)return;
+  box.innerHTML=`<div class="reviewCard">
+    <div class="reviewTop"><div><b>${d.u.name}</b><div class="small">Last 7 Days</div></div><span class="badge">Trend ${d.trend}</span></div>
+    <div class="reviewKpis">
+      <div class="reviewKpi"><small>7-Day Avg FTD</small><b>${d.now.ftd}%</b></div><div class="reviewKpi"><small>Total Calls</small><b>${d.now.calls}</b></div>
+      <div class="reviewKpi"><small>Total Plans</small><b>${d.now.plans}</b></div><div class="reviewKpi"><small>Total PV</small><b>${d.now.pv}</b></div>
+      <div class="reviewKpi"><small>Active Days</small><b>${d.now.active}/7</b></div><div class="reviewKpi"><small>Best Day</small><b>${d.best?.date||"—"} • ${d.best?.ftd||0}%</b></div>
+      <div class="reviewKpi"><small>Weakest Day</small><b>${d.weak?.date||"—"} • ${d.weak?.ftd||0}%</b></div><div class="reviewKpi"><small>Trend</small><b>${d.trend}</b></div>
+    </div>
+    <table class="compactTable"><thead><tr><th>Date</th><th>FTD</th><th>Calls</th><th>Plans</th><th>PV</th><th>Status</th></tr></thead><tbody>
+      ${d.rows.map(r=>`<tr><td>${r.date.slice(5)}</td><td>${r.ftd}%</td><td>${r.calls}</td><td>${r.plans}</td><td>${r.pv}</td><td>${r.active?(r.ftd>=85?"🟢":r.ftd>=60?"🟡":"🔴"):"⚪"}</td></tr>`).join("")}
+    </tbody></table>
+    <div class="actionAdvice">Next Week Focus: ${d.focus}</div>
+  </div>`;
+  if(track)trackAdminReport("weekly",d.u.username);
+}
+function monthDaysFor(ym){
+  const [y,m]=ym.split("-").map(Number);return new Date(y,m,0).getDate()
+}
+function monthlyScoreData(username,ym){
+  const u=getUsers().find(x=>String(x.username)===String(username));if(!u)return null;
+  const entries=getEntriesFor(username),tot=monthTotalsFromEntries(entries,ym),days=monthDaysFor(ym);
+  const current=ym===localMonthKey(),elapsed=current?elapsedDays():days;
+  const defs=[
+    {key:"names",label:"New Contacts",target:60},{key:"calls",label:"Calls",target:150},{key:"plans",label:"Presentations",target:60},
+    {key:"pv",label:"PV",target:5000},{key:"video",label:"Video",target:20*days},{key:"book",label:"Reading",target:20*days},
+    {key:"depth",label:"Depth",target:20},{key:"meeting",label:"Meetings",target:28}
+  ].map(x=>({...x,actual:Number(tot[x.key]||0),pct:Math.round(Number(tot[x.key]||0)/Math.max(x.target,1)*100)}));
+  const consistency=Math.round(clamp(tot.activeDays/Math.max(elapsed,1)*100));
+  const projected=current?Math.round(tot.pv/Math.max(elapsed,1)*days):tot.pv;
+  const left=Math.max(days-elapsed,1),required=current?Math.ceil(Math.max(5000-tot.pv,0)/left):0;
+  const weeks=[1,2,3,4,5].map(w=>{
+    const rs=Object.entries(entries).filter(([date])=>date.startsWith(ym)&&Math.ceil(Number(date.slice(8,10))/7)===w).map(([,e])=>e);
+    return {week:w,pv:sum(rs,"pv"),ftd:rs.length?Math.round(rs.reduce((s,e)=>s+ftdScore(e),0)/rs.length):0};
+  });
+  const bestWeek=[...weeks].sort((a,b)=>b.pv-a.pv)[0];
+  const weak=[...defs].sort((a,b)=>a.pct-b.pct)[0];
+  const pvPct=Math.round(tot.pv/5000*100),pace=current?clamp(pvPct/Math.max(elapsed/days*100,1)*100):clamp(pvPct);
+  const growth=Math.round(clamp(pace*.45+consistency*.25+clamp(defs.find(x=>x.key==="calls").pct)*.15+clamp(defs.find(x=>x.key==="plans").pct)*.15));
+  const health=current?leaderHealthScore(u):{score:growth,level:growth>=85?"🟢 Strong":growth>=65?"🟡 Stable":growth>=40?"🟠 Needs Support":"🔴 Critical"};
+  const note=(adminRootCache.leader_month_notes||{})[safeCloudKey(username)]?.[ym]?.note||"";
+  return {u,ym,tot,defs,consistency,projected,required,bestWeek,weak,growth,health,note,elapsed,days};
+}
+function renderMonthlyScorecard(track=false){
+  const box=document.getElementById("monthlyScorecardPreview"),sel=document.getElementById("monthlyLeaderSelect"),mi=document.getElementById("monthlyScoreMonth");
+  if(!box||!sel||!sel.value||!mi?.value)return;
+  const d=monthlyScoreData(sel.value,mi.value);if(!d)return;
+  box.innerHTML=`<div class="reviewCard">
+    <div class="reviewTop"><div><b>${d.u.name}</b><div class="small">${d.ym} Monthly Scorecard</div></div><span class="badge">${d.health.level} • ${d.health.score}</span></div>
+    <div class="reviewKpis">
+      <div class="reviewKpi"><small>PV</small><b>${d.tot.pv}/5000 (${Math.round(d.tot.pv/5000*100)}%)</b></div>
+      <div class="reviewKpi"><small>Active Days</small><b>${d.tot.activeDays}</b></div>
+      <div class="reviewKpi"><small>Consistency</small><b>${d.consistency}%</b></div>
+      <div class="reviewKpi"><small>Projected PV</small><b>${d.projected}</b></div>
+      <div class="reviewKpi"><small>Required Daily</small><b>${d.required}</b></div>
+      <div class="reviewKpi"><small>Best Week</small><b>W${d.bestWeek?.week||"—"} • ${d.bestWeek?.pv||0} PV</b></div>
+      <div class="reviewKpi"><small>Weakest Metric</small><b>${d.weak.label} ${d.weak.pct}%</b></div>
+      <div class="reviewKpi"><small>Growth Score</small><b>${d.growth}/100</b></div>
+    </div>
+    <table class="compactTable"><thead><tr><th>Metric</th><th>Target</th><th>Actual</th><th>Achievement</th></tr></thead><tbody>
+      ${d.defs.map(r=>`<tr><td>${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.actual} / ${r.target} (${r.pct}%)</td></tr>`).join("")}
+    </tbody></table>
+    <div style="margin-top:9px"><div class="small">Admin Notes</div><textarea id="monthlyAdminNote" class="v27Textarea" placeholder="Monthly coaching note...">${escapeHtml(d.note)}</textarea>
+    <div class="btnrow"><button class="actionMini" onclick="saveMonthlyAdminNote('${d.u.username}','${d.ym}')">💾 Save Admin Note</button></div></div>
+  </div>`;
+  if(track)trackAdminReport("monthly",d.u.username);
+}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+async function saveMonthlyAdminNote(username,ym){
+  if(!firebaseReady||!db)return showToast("Firebase connect आवश्यक");
+  const note=document.getElementById("monthlyAdminNote")?.value.trim()||"";
+  await db.ref(`${MONTH_NOTES_PATH}/${safeCloudKey(username)}/${ym}`).set({username,ym,note,updatedAt:Date.now(),by:currentUser.username});
+  showToast("Monthly Admin Note save झाली ✅");
+}
+function openDailyReportFor(username,date){
+  const sel=document.getElementById("dailyReportLeaderSelect"),di=document.getElementById("dailyReportDate");
+  if(sel)sel.value=username;if(di)di.value=date||todayKey();renderLeaderDailyReport(true);
+  document.getElementById("leaderDailyReportPreview")?.scrollIntoView({behavior:"smooth",block:"center"});
+  closeLeader360();
+}
+function openWeeklyFor(username){
+  const sel=document.getElementById("weeklyLeaderSelect");if(sel)sel.value=username;renderWeeklyReview(true);
+  document.getElementById("weeklyReviewPreview")?.scrollIntoView({behavior:"smooth",block:"center"});closeLeader360();
+}
+function openMonthlyFor(username){
+  const sel=document.getElementById("monthlyLeaderSelect");if(sel)sel.value=username;renderMonthlyScorecard(true);
+  document.getElementById("monthlyScorecardPreview")?.scrollIntoView({behavior:"smooth",block:"center"});closeLeader360();
+}
+function renderLeaderHeatmap(){
+  const box=document.getElementById("leaderHeatmap");if(!box)return;
+  const dates=dateKeysBack(30);
+  box.innerHTML=activeLeaders().map(u=>{
+    const entries=getEntriesFor(u.username);
+    return `<div class="heatLeader"><div class="heatLeaderTitle"><b>${u.name}</b><span class="small">${u.username}</span></div><div class="heatGrid">
+      ${dates.map(date=>{
+        const e=entries[date],f=e?ftdScore(e):0,cls=!e?"heatNone":f>=85?"heatStrong":f>=60?"heatPartial":"heatWeak";
+        return `<button class="heatCell ${cls}" title="${date} • ${e?f+"%":"No Entry"}" onclick="openDailyReportFor('${u.username}','${date}')"></button>`;
+      }).join("")}
+    </div></div>`;
+  }).join("");
+}
+function renderV27TeamFunnel(){
+  const box=document.getElementById("v27TeamFunnel");if(!box)return;
+  const dates=dateKeysBack(7),leaders=activeLeaders();
+  let names=0,calls=0,plans=0,pv=0;
+  leaders.forEach(u=>dates.forEach(d=>{const e=getEntriesFor(u.username)[d]||{};names+=Number(e.names||0);calls+=Number(e.calls||0);plans+=Number(e.plans||0);pv+=Number(e.pv||0)}));
+  const c2c=names?Math.round(calls/names*100):0,c2p=calls?Math.round(plans/calls*100):0,pvPerPlan=plans?Math.round(pv/plans):0;
+  const weakest=c2p<c2c?"Presentations":"Calls";
+  const rows=[["New Contacts",names,Math.min(names/Math.max(names,1)*100,100)],["Calls",calls,Math.min(c2c,100)],["Presentations",plans,Math.min(c2p,100)],["PV",pv,Math.min(pv/(167*7*Math.max(leaders.length,1))*100,100)]];
+  box.innerHTML=`<div class="small" style="margin-top:10px">Last 7 Days • actual team data</div>`+
+    rows.map(r=>`<div class="funnelMetric"><div class="funnelMetricTop"><span>${r[0]}</span><b>${r[1]}</b></div><div class="funnelMetricTrack"><i style="width:${r[2]}%"></i></div></div>`).join("")+
+    `<div class="reviewKpis"><div class="reviewKpi"><small>Contacts → Calls</small><b>${c2c}%</b></div><div class="reviewKpi"><small>Calls → Plans</small><b>${c2p}%</b></div><div class="reviewKpi"><small>PV / Plan</small><b>${pvPerPlan}</b></div><div class="reviewKpi"><small>Main Bottleneck</small><b>${weakest}</b></div></div>`;
+}
+function todayFollowupsDone(){
+  const raw=adminRootCache.followups||{};let n=0;
+  Object.values(raw).forEach(history=>Object.values(history||{}).forEach(r=>{if(r&&localDateKey(new Date(Number(r.at||0)))===todayKey())n++}));
+  return n;
+}
+function todayContactedUserSet(){
+  const set=new Set(),raw=adminRootCache.followups||{};
+  Object.entries(raw).forEach(([key,history])=>Object.values(history||{}).forEach(r=>{if(r&&localDateKey(new Date(Number(r.at||0)))===todayKey())set.add(key)}));
+  return set;
+}
+function uniqueReportsReviewedToday(){
+  return Object.keys((adminRootCache.report_log||{})[todayKey()]||{}).length
+}
+function actionsCompletedToday(){
+  const raw=(adminRootCache.admin_actions||{})[todayKey()]||{};let n=0;
+  Object.values(raw).forEach(v=>n+=Object.values(v||{}).filter(x=>x?.doneAt).length);return n;
+}
+function adminExecutionData(){
+  const snapshots=allOpsSnapshots(),due=snapshots.filter(x=>["today","overdue"].includes(x.followup.type)).length;
+  const done=todayFollowupsDone(),crit=snapshots.filter(x=>x.priority>=70),contacted=todayContactedUserSet();
+  const critDone=crit.filter(x=>contacted.has(safeCloudKey(x.u.username))).length,reports=uniqueReportsReviewedToday(),actions=actionsCompletedToday();
+  const followPct=due?clamp(done/due*100):100,critPct=crit.length?clamp(critDone/crit.length*100):100,reportPct=clamp(reports/Math.max(activeLeaders().length,1)*100),actionPct=clamp(actions/Math.max(smartActionQueueData().length+actions,1)*100);
+  const score=Math.round(followPct*.35+critPct*.30+reportPct*.15+actionPct*.20);
+  return {score,due,done,critical:crit.length,critDone,reports,actions};
+}
+function renderAdminExecutionScore(){
+  const box=document.getElementById("adminExecutionScoreBox");if(!box)return;
+  const d=adminExecutionData();
+  box.innerHTML=`<div class="execRing" style="--p:${d.score}%"><b>${d.score}%</b></div>
+    <div class="reviewKpis">
+      <div class="reviewKpi"><small>Follow-ups Due</small><b>${d.due}</b></div><div class="reviewKpi"><small>Follow-ups Done</small><b>${d.done}</b></div>
+      <div class="reviewKpi"><small>Critical Contacted</small><b>${d.critDone}/${d.critical}</b></div><div class="reviewKpi"><small>Reports Reviewed</small><b>${d.reports}</b></div>
+      <div class="reviewKpi"><small>Actions Completed</small><b>${d.actions}</b></div>
+    </div>`;
+}
+async function trackAdminReport(type,username){
+  if(!firebaseReady||!db||!currentUser||currentUser.role!=="admin")return;
+  const key=`${safeCloudKey(type)}_${safeCloudKey(username)}`;
+  await db.ref(`${REPORT_LOG_PATH}/${todayKey()}/${key}`).set({type,username,viewedAt:Date.now(),by:currentUser.username});
+}
+function recognitionSuggestions(){
+  const rows=allOpsSnapshots(),out=[];
+  rows.filter(x=>x.ftd>=100).forEach(x=>out.push({u:x.u,type:"Today 100% FTD",text:"आजचे सर्व daily targets पूर्ण केले"}));
+  rows.filter(x=>dateKeysBack(7).every(d=>!!getEntriesFor(x.u.username)[d])).forEach(x=>out.push({u:x.u,type:"7-Day Consistency",text:"सलग 7 दिवस activity entry"}));
+  rows.filter(x=>x.targetDone).forEach(x=>out.push({u:x.u,type:"Target Completed",text:`Monthly PV ${x.m.pv}`}));
+  const trendRows=rows.map(x=>({x,tr:leaderTrend(x.u.username)})).sort((a,b)=>b.tr.ftd.delta-a.tr.ftd.delta);
+  if(trendRows[0]?.tr.ftd.delta>0)out.push({u:trendRows[0].x.u,type:"Highest Improvement",text:`FTD trend ${formatTrend(trendRows[0].tr.ftd.delta)}`});
+  const bestCalls=[...rows].sort((a,b)=>Number(b.today.calls||0)-Number(a.today.calls||0))[0];
+  if(Number(bestCalls?.today.calls||0)>0)out.push({u:bestCalls.u,type:"Best Calls Today",text:`${bestCalls.today.calls} calls`});
+  const bestPlans=[...rows].sort((a,b)=>Number(b.today.plans||0)-Number(a.today.plans||0))[0];
+  if(Number(bestPlans?.today.plans||0)>0)out.push({u:bestPlans.u,type:"Best Presentations Today",text:`${bestPlans.today.plans} presentations`});
+  rows.filter(x=>x.opportunity?.level==="REACTIVATION OPPORTUNITY"&&x.hasEntry).slice(0,2).forEach(x=>out.push({u:x.u,type:"Strong Comeback",text:"Inactive period नंतर पुन्हा activity"}));
+  const seen=new Set();return out.filter(x=>{const k=x.u.username+"|"+x.type;if(seen.has(k))return false;seen.add(k);return true}).slice(0,10);
+}
+function renderRecognitionEngine(){
+  const box=document.getElementById("recognitionEngine");if(!box)return;
+  const rows=recognitionSuggestions();
+  box.innerHTML=rows.length?rows.map(r=>`<div class="recognitionCard"><div class="actionTop"><b>${r.u.name}</b><span class="badge">${r.type}</span></div><div class="small" style="margin-top:5px">${r.text}</div><div class="btnrow"><button class="actionMini" onclick="shareRecognition('${r.u.username}','${escapeJs(r.type)}','${escapeJs(r.text)}')">📲 WhatsApp Recognition</button></div></div>`).join(""):`<div class="small" style="margin-top:8px">आज recognition suggestion नाही.</div>`;
+}
+function escapeJs(s){return String(s||"").replaceAll("\\","\\\\").replaceAll("'","\\'").replaceAll("\n"," ")}
+function shareRecognition(username,type,text){
+  const u=getUsers().find(x=>String(x.username)===String(username));
+  const msg=`🏅 अभिनंदन ${u?.name||""}!\\n${type}\\n${text}\\n\\nRCM • DS WORLD`;
+  window.open(`https://wa.me/91${username}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+function healthStatusHTML(label,status,value){
+  const dot=status==="green"?"dotGreen":status==="yellow"?"dotYellow":"dotRed";
+  return `<div class="healthRow"><span class="statusDot ${dot}"></span><b>${label}</b><div class="small">${value}</div></div>`;
+}
+function calculateHealthFromRoot(root){
+  root=root||{};
+  const users=root.users||{},perm=root.users_permanent||{},entries=root.entries||{};
+  const userVals=Object.values(users).filter(u=>u&&u.username&&u.username!=="admin");
+  const permVals=Object.values(perm).filter(u=>u&&u.username&&u.username!=="admin");
+  const missingHash=userVals.filter(u=>!u.passwordHash).length;
+  const unverified=userVals.filter(u=>!u.cloudVerifiedAt).length;
+  const archived=userVals.filter(u=>u.archived===true&&u.active===false).length;
+  const names=userVals.map(u=>normalizeUsername(u.username)),dups=names.filter((v,i,a)=>a.indexOf(v)!==i).length;
+  const mismatch=Math.abs(userVals.length-permVals.length);
+  let entrySync=0;
+  activeLeaders().forEach(u=>{
+    const local=getEntriesFor(u.username)[todayKey()];
+    const cloud=entries[safeCloudKey(u.username)]?.[todayKey()];
+    if(local&&!cloud)entrySync++;
+  });
+  const dailyBackups=root.backups?.daily||{};
+  const backupKeys=Object.keys(dailyBackups).sort();
+  const lastBackup=backupKeys.length?backupKeys[backupKeys.length-1]:"—";
+  return {users:userVals.length,perm:permVals.length,missingHash,unverified,archived,dups,mismatch,entrySync,lastBackup};
+}
+function renderDataHealthFromCache(){
+  const box=document.getElementById("dataHealthPanel");if(!box)return;
+  const h=calculateHealthFromRoot(adminRootCache);
+  const online=!!lastRootSyncAt;
+  box.innerHTML=`<div class="healthGrid">
+    ${healthStatusHTML("Firebase Connection",online?"green":"red",online?"LIVE • "+new Date(lastRootSyncAt).toLocaleTimeString("mr-IN"):"No live sync")}
+    ${healthStatusHTML("Users Registry",h.mismatch?"yellow":"green",`${h.users} users`)}
+    ${healthStatusHTML("Permanent Users",h.mismatch?"yellow":"green",`${h.perm} permanent • mismatch ${h.mismatch}`)}
+    ${healthStatusHTML("Entry Sync",h.entrySync?"red":"green",h.entrySync?`${h.entrySync} local/cloud mismatch`:"Today sync OK")}
+    ${healthStatusHTML("Backup Status",h.lastBackup==="—"?"yellow":"green",`Last ${h.lastBackup}`)}
+    ${healthStatusHTML("Missing Password Hash",h.missingHash?"red":"green",`${h.missingHash}`)}
+    ${healthStatusHTML("Unverified User",h.unverified?"yellow":"green",`${h.unverified}`)}
+    ${healthStatusHTML("Duplicate Mobile",h.dups?"red":"green",`${h.dups}`)}
+    ${healthStatusHTML("Archived Alias","green",`${h.archived} safely archived`)}
+    ${healthStatusHTML("Last Sync",online?"green":"yellow",lastRootSyncAt?new Date(lastRootSyncAt).toLocaleString("mr-IN"):"—")}
+  </div>`;
+}
+async function runAdminHealthCheck(show=true){
+  if(!firebaseReady||!db)return showToast("Firebase connect नाही");
+  try{
+    const s=await db.ref(CLOUD_ROOT).once("value");
+    const root=s.val()||{};adminRootCache=root;lastRootSyncAt=Date.now();
+    renderDataHealthFromCache();
+    if(show)showToast("Data Health Check पूर्ण ✅");
+  }catch(e){console.warn(e);showToast("Health Check failed")}
+}
+function nightSnapshotData(){
+  const rows=allOpsSnapshots(),active=rows.filter(x=>x.hasEntry).length,avg=rows.length?Math.round(rows.reduce((s,x)=>s+x.ftd,0)/rows.length):0;
+  const pv=rows.reduce((s,x)=>s+Number(x.today.pv||0),0),miss=rows.filter(x=>x.noEntry).map(x=>x.u.name);
+  const trends=rows.map(x=>({name:x.u.name,d:leaderTrend(x.u.username).ftd.delta})).sort((a,b)=>b.d-a.d);
+  return {active,total:rows.length,avg,pv,miss,improved:trends.filter(x=>x.d>0).slice(0,3),dropped:trends.filter(x=>x.d<0).sort((a,b)=>a.d-b.d).slice(0,3),followDone:todayFollowupsDone(),followPending:scheduleRows().filter(x=>["today","overdue"].includes(x.state.type)).length};
+}
+function renderNightReview(){
+  const box=document.getElementById("nightReviewSummary"),hist=document.getElementById("nightReviewHistory");if(!box)return;
+  const d=nightSnapshotData();
+  box.innerHTML=`<div class="reviewKpis">
+    <div class="reviewKpi"><small>Active Leaders</small><b>${d.active}/${d.total}</b></div><div class="reviewKpi"><small>Team Avg FTD</small><b>${d.avg}%</b></div>
+    <div class="reviewKpi"><small>Team PV Today</small><b>${d.pv}</b></div><div class="reviewKpi"><small>Missed Entry</small><b>${d.miss.length}</b></div>
+    <div class="reviewKpi"><small>Follow-ups Done</small><b>${d.followDone}</b></div><div class="reviewKpi"><small>Follow-ups Pending</small><b>${d.followPending}</b></div>
+  </div>
+  <div class="small" style="margin-top:7px"><b>Improved:</b> ${d.improved.map(x=>x.name+" "+formatTrend(x.d)).join(", ")||"—"}<br><b>Dropped:</b> ${d.dropped.map(x=>x.name+" "+formatTrend(x.d)).join(", ")||"—"}<br><b>No Entry:</b> ${d.miss.join(", ")||"None"}</div>`;
+  if(hist){
+    const raw=(adminRootCache.admin_day_reviews||{})[todayKey()]||{};
+    const arr=Object.values(raw).filter(Boolean).sort((a,b)=>Number(b.at||0)-Number(a.at||0)).slice(0,3);
+    hist.innerHTML=arr.map(r=>`<div class="nightSnapshot"><div class="small">${new Date(r.at).toLocaleString("mr-IN")}</div>${escapeHtml(r.note||"")}</div>`).join("");
+  }
+}
+async function saveNightReview(){
+  if(!firebaseReady||!db)return showToast("Firebase connect आवश्यक");
+  const note=document.getElementById("nightReviewNote")?.value.trim()||"",snapshot=nightSnapshotData();
+  const key=db.ref(`${ADMIN_DAY_REVIEW_PATH}/${todayKey()}`).push().key;
+  await db.ref(`${ADMIN_DAY_REVIEW_PATH}/${todayKey()}/${key}`).set({date:todayKey(),note,snapshot,at:Date.now(),by:currentUser.username});
+  if(document.getElementById("nightReviewNote"))document.getElementById("nightReviewNote").value="";
+  showToast("Day Close permanent snapshot save झाला ✅");
+}
+function morningYesterdayData(){
+  const y=getDateKeyOffset(-1),leaders=activeLeaders(),rows=leaders.map(u=>getEntriesFor(u.username)[y]).filter(Boolean);
+  return {active:rows.length,pv:sum(rows,"pv"),avg:rows.length?Math.round(rows.reduce((s,e)=>s+ftdScore(e),0)/rows.length):0};
+}
+function showMorningBriefIfNeeded(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const modal=document.getElementById("adminMorningModal");if(!modal||modal.classList.contains("show"))return;
+  if(localStorage.getItem("ds_admin_morning_brief_seen")===todayKey())return;
+  const y=morningYesterdayData(),rows=allOpsSnapshots(),actions=smartActionQueueData().slice(0,3);
+  const noEntry=rows.filter(x=>x.noEntry).length,due=rows.filter(x=>["today","overdue"].includes(x.followup.type)).length,opp=rows.filter(x=>x.opportunity?.rank===3).length;
+  const teamPv=getMonthTotalsTeamPV(),remaining=Math.max(activeLeaders().length*5000-teamPv,0),daysLeft=Math.max(daysInCurrentMonth()-elapsedDays(),1),req=Math.ceil(remaining/daysLeft);
+  adminMorningContent.innerHTML=`
+    <div class="small"><b>Yesterday</b></div><div class="morningGrid">
+      <div class="morningBox"><small>Active Leaders</small><b>${y.active}</b></div><div class="morningBox"><small>Team PV</small><b>${y.pv}</b></div><div class="morningBox"><small>Avg FTD</small><b>${y.avg}%</b></div>
+    </div>
+    <div class="small" style="margin-top:10px"><b>Today</b></div><div class="morningGrid">
+      <div class="morningBox"><small>No Entry Risk</small><b>${noEntry}</b></div><div class="morningBox"><small>Follow-ups Due</small><b>${due}</b></div>
+      <div class="morningBox"><small>High Opportunity</small><b>${opp}</b></div><div class="morningBox"><small>Required Team PV / Day</small><b>${req}</b></div>
+    </div>
+    <div class="morningTopActions"><b>TOP 3 ACTIONS TODAY</b>${actions.map((x,i)=>`<div class="coachStep" style="margin-top:6px">${i+1}. ${x.u.name} — ${x.primaryAction}</div>`).join("")||'<div class="small">Priority queue clear.</div>'}</div>`;
+  modal.classList.add("show");
+}
+function dismissMorningBrief(start){
+  localStorage.setItem("ds_admin_morning_brief_seen",todayKey());
+  document.getElementById("adminMorningModal")?.classList.remove("show");
+  if(start)document.getElementById("smartActionQueue")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function getMonthTotalsTeamPV(){return activeLeaders().reduce((s,u)=>s+Number(getMonthTotals(u.username).pv||0),0)}
+function reportPdfShell(title,subtitle,body){
+  return `<div style="width:190mm;background:#fff;color:#182334;padding:8mm;font-family:system-ui,-apple-system,'Noto Sans Devanagari','Segoe UI',sans-serif">
+    <div style="border-top:5px solid #1f5fae;padding-top:7px">
+      <div style="display:flex;justify-content:space-between"><div><b style="font-size:18px">RCM • DS WORLD</b><div style="font-size:10px;color:#667085">${title}</div></div><div style="text-align:right;font-size:8px;color:#667085">${APP_VERSION}<br>${new Date().toLocaleString("mr-IN")}</div></div>
+      <div style="margin-top:7px;font-size:10px;color:#667085">${subtitle}</div>${body}
+      <div style="margin-top:18px;display:flex;justify-content:space-between;font-size:8px;color:#667085"><span>Growth OS Smart Reporting</span><span>Admin / Mentor Signature __________________</span></div>
+    </div></div>`;
+}
+async function htmlStringToA4PDF(htmlString,filename){
+  if(!window.jspdf||!window.html2canvas)return showToast("PDF library load झालेली नाही");
+  const host=document.createElement("div");host.style.position="fixed";host.style.left="-10000px";host.style.top="0";host.style.background="#fff";host.innerHTML=htmlString;document.body.appendChild(host);
+  try{
+    const canvas=await html2canvas(host.firstElementChild,{scale:1.55,useCORS:true,backgroundColor:"#fff"});
+    const {jsPDF}=window.jspdf,pdf=new jsPDF("p","mm","a4"),pageW=210,pageH=297,margin=7,maxW=196,maxH=283,ratio=canvas.width/canvas.height;
+    let w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}
+    pdf.addImage(canvas.toDataURL("image/jpeg",.94),"JPEG",(pageW-w)/2,margin,w,h,undefined,"FAST");pdf.save(filename);
+  }finally{host.remove()}
+}
+async function downloadWeeklyPDF(){
+  const sel=document.getElementById("weeklyLeaderSelect"),d=weeklyReviewData(sel?.value);if(!d)return showToast("Leader निवडा");
+  const body=`<div style="margin-top:9px;padding:8px;background:#f3f7fb;border-radius:8px"><b>${d.u.name}</b> • ${d.u.username}<span style="float:right">Avg FTD ${d.now.ftd}%</span></div>
+  <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:9px"><thead><tr style="background:#173b67;color:#fff"><th>Date</th><th>FTD</th><th>Calls</th><th>Plans</th><th>PV</th><th>Status</th></tr></thead><tbody>
+  ${d.rows.map(r=>`<tr><td style="padding:6px;border-bottom:1px solid #ddd">${r.date}</td><td>${r.ftd}%</td><td>${r.calls}</td><td>${r.plans}</td><td>${r.pv}</td><td>${r.active?"Active":"Inactive"}</td></tr>`).join("")}</tbody></table>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px;font-size:9px"><div>Calls <b>${d.now.calls}</b></div><div>Plans <b>${d.now.plans}</b></div><div>PV <b>${d.now.pv}</b></div><div>Active <b>${d.now.active}/7</b></div></div>
+  <div style="margin-top:8px;font-size:9px"><b>Next Week Focus:</b> ${d.focus}</div>`;
+  await htmlStringToA4PDF(reportPdfShell("Weekly Leader Review",`Report ID: W-${todayKey().replaceAll("-","")}-${String(d.u.username).slice(-4)}`,body),`${d.u.name.replace(/\s+/g,"_")}_Weekly_${todayKey()}.pdf`);
+  trackAdminReport("weekly_pdf",d.u.username);
+}
+async function downloadMonthlyScorecardPDF(){
+  const sel=document.getElementById("monthlyLeaderSelect"),mi=document.getElementById("monthlyScoreMonth"),d=monthlyScoreData(sel?.value,mi?.value||localMonthKey());if(!d)return showToast("Leader निवडा");
+  const body=`<div style="margin-top:9px;padding:8px;background:#f3f7fb;border-radius:8px"><b>${d.u.name}</b> • ${d.u.username}<span style="float:right">${d.ym}</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px;font-size:9px"><div>PV <b>${d.tot.pv}/5000</b></div><div>Consistency <b>${d.consistency}%</b></div><div>Projected <b>${d.projected}</b></div><div>Health <b>${d.health.score}</b></div></div>
+  <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:9px"><thead><tr style="background:#173b67;color:#fff"><th>Metric</th><th>Target</th><th>Actual</th><th>Achievement</th></tr></thead><tbody>
+  ${d.defs.map(r=>`<tr><td style="padding:6px;border-bottom:1px solid #ddd">${r.label}</td><td>${r.target}</td><td>${r.actual}</td><td>${r.actual}/${r.target} (${r.pct}%)</td></tr>`).join("")}</tbody></table>
+  <div style="margin-top:8px;font-size:9px"><b>Weakest:</b> ${d.weak.label} ${d.weak.pct}% • <b>Best Week:</b> W${d.bestWeek?.week||"—"} ${d.bestWeek?.pv||0} PV<br><b>Admin Note:</b> ${escapeHtml(d.note||"—")}</div>`;
+  await htmlStringToA4PDF(reportPdfShell("Monthly Leader Scorecard",`Report ID: M-${d.ym.replace("-","")}-${String(d.u.username).slice(-4)}`,body),`${d.u.name.replace(/\s+/g,"_")}_${d.ym}_Monthly.pdf`);
+  trackAdminReport("monthly_pdf",d.u.username);
+}
+
+const _v26ShowView=showView;
+showView=function(v,btn){
+  const result=_v26ShowView(v,btn);
+  if(v==="entry")loadDailyEntryForm();
+  if(v==="admin"){
+    populateAdminDailyReportLeaders();
+    scheduleAdminSuiteRender();
+  }
+  return result;
+};
+const _v26RenderUsers=renderUsers;
+renderUsers=function(){
+  const result=_v26RenderUsers();
+  populateAdminDailyReportLeaders();
+  populateV27LeaderSelectors();
+  return result;
+};
+
 </script>
 </body>
 </html>
