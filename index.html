@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>RCM • DS WORLD Growth OS — V32.0 CLEAR TODAY ENTRY DASHBOARD</title>
+<title>RCM • DS WORLD Growth OS — V34.0 LEADER BACKDATED ENTRY + AUDIT</title>
 <style>
 :root{
   --bg:#07101f; --bg2:#0b1730; --card:#101f3c; --card2:#142747;
@@ -1356,6 +1356,112 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
   .todayEntryPanel{padding:9px}
 }
 
+
+/* ===== V33 ADMIN BACKDATED ENTRY ===== */
+.backdateControls{
+  display:grid;
+  grid-template-columns:minmax(170px,1.5fr) minmax(145px,1fr) auto;
+  gap:8px;
+  margin-top:10px;
+  align-items:center;
+}
+.backdateMetricGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+.backdateMetric{
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:9px;
+  background:rgba(255,255,255,.025);
+}
+.backdateMetric small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.backdateMetric input{
+  text-align:center;
+  font-size:17px!important;
+  font-weight:900!important;
+}
+.backdateAuditInfo{
+  margin-top:9px;
+  padding:9px 10px;
+  border-radius:11px;
+  border:1px solid rgba(215,180,95,.18);
+  background:rgba(215,180,95,.06);
+  font-size:10px;
+  line-height:1.55;
+  color:var(--muted);
+}
+.reportAuditStamp{
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.025);
+  font-size:9px;
+  line-height:1.55;
+}
+body.lightTheme .backdateMetric,
+body.lightTheme .backdateAuditInfo,
+body.lightTheme .reportAuditStamp{
+  background:#fafbfc!important;
+  border-color:#e1e6eb!important;
+}
+@media(max-width:720px){
+  .backdateControls{grid-template-columns:1fr 1fr}
+  .backdateControls button{grid-column:1/-1}
+  .backdateMetricGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:380px){
+  .backdateControls{grid-template-columns:1fr}
+  .backdateMetricGrid{grid-template-columns:1fr 1fr}
+}
+
+
+/* ===== V34 LEADER BACKDATED ENTRY ===== */
+.leaderEntryDateBar{
+  display:grid;
+  grid-template-columns:minmax(150px,1fr) auto auto;
+  gap:8px;
+  align-items:end;
+  margin:10px 0 0;
+  padding:9px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+}
+.leaderEntryDateStatus{
+  min-width:125px;
+  align-self:center;
+}
+.leaderEntryDateStatus .small{
+  margin-top:4px;
+  font-size:9px;
+  line-height:1.35;
+}
+body.lightTheme .leaderEntryDateBar{
+  background:#fafbfc!important;
+  border-color:#e1e6eb!important;
+}
+@media(max-width:520px){
+  .leaderEntryDateBar{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+  .leaderEntryDateStatus{
+    grid-column:1/-1;
+    order:3;
+    min-width:0;
+  }
+}
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1374,7 +1480,7 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
       <div class="loginLogo">DS</div>
       <h1>DS WORLD Growth OS</h1>
       <p>Performance • Discipline • Growth</p>
-      <div class="loginVersion">V32.0 • CLEAR TODAY ENTRY DASHBOARD</div>
+      <div class="loginVersion">V34.0 • LEADER BACKDATED ENTRY + AUDIT</div>
     </div>
 
     <div class="loginTabs">
@@ -1399,7 +1505,7 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
           <h1>RCM • DS WORLD Growth OS</h1>
           <div class="brandVersionLine">
             <small>Leader Growth & Performance System</small>
-            <span class="versionBadge">V32.0 • CLEAR TODAY ENTRY DASHBOARD</span>
+            <span class="versionBadge">V34.0 • LEADER BACKDATED ENTRY + AUDIT</span>
           </div>
         </div>
       </div>
@@ -1515,6 +1621,18 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
           <span class="badge" id="entryLiveScoreBadge">आजचा Score 0%</span>
         </div>
 
+        <div class="leaderEntryDateBar">
+          <div>
+            <div class="small">📅 Activity Date</div>
+            <input id="entryActivityDate" type="date" onchange="loadDailyEntryForm()">
+          </div>
+          <div class="leaderEntryDateStatus">
+            <span class="badge" id="entryDateModeBadge">TODAY</span>
+            <div class="small" id="entryDateAuditHint">आजची entry</div>
+          </div>
+          <button class="actionMini" type="button" onclick="setEntryDateToday()">आज</button>
+        </div>
+
         <div class="entryScoreStrip">
           <div><small>Live FTD</small><b id="entryLiveScore">0%</b></div>
           <div class="entryOverallProgress"><i id="entryOverallBar" style="width:0%"></i></div>
@@ -1564,7 +1682,7 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
           </div>
         </div>
         <div class="btnrow entrySaveRow">
-          <button class="primary green entrySaveBtn" onclick="saveEntry()">✅ आजची नोंद जतन करा</button>
+          <button class="primary green entrySaveBtn" onclick="saveEntry()">✅ नोंद Save करा</button>
         </div>
       </div>
     </div>
@@ -1667,7 +1785,7 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
             <div>
               <div><b>Brand:</b> RCM • DS WORLD</div>
               <div><b>System:</b> Growth OS Smart Reporting</div>
-              <div><b>Version:</b> V32.0 • CLEAR TODAY ENTRY DASHBOARD</div>
+              <div><b>Version:</b> V34.0 • LEADER BACKDATED ENTRY + AUDIT</div>
             </div>
             <div class="reportSign">Admin / Mentor Signature</div>
           </div>
@@ -1857,6 +1975,43 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
 </div>
 <div id="leaderSummaryReportPreview"></div>
 </details>
+
+<details class="section glass premiumDetails" open="">
+  <summary>🗓️ Admin Back-dated Entry <span class="badge">ADMIN ONLY</span></summary>
+  <div class="small" style="margin-top:10px">
+    Leader आणि जुनी Date निवडून त्या दिवसाची actual activity भरा. Save केल्यावर Activity Date आणि actual Save Date-Time वेगवेगळे audit stamp म्हणून जतन होतील.
+  </div>
+
+  <div class="backdateControls">
+    <select id="backdateLeaderSelect"></select>
+    <input id="backdateEntryDate" type="date">
+    <button class="primary" onclick="loadBackdatedEntry()">📥 Existing Entry Load</button>
+  </div>
+
+  <div id="backdateExistingInfo" class="backdateAuditInfo">Date आणि Leader निवडा.</div>
+
+  <div class="backdateMetricGrid">
+    <div class="backdateMetric"><small>👥 नवीन संपर्क</small><input id="bd_names" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>📞 Calls / भेटी</small><input id="bd_calls" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>🎯 Plans</small><input id="bd_plans" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>💼 PV</small><input id="bd_pv" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>🎧 Video मिनिटे</small><input id="bd_video" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>📚 Reading मिनिटे</small><input id="bd_book" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>🔁 Depth Follow-up</small><input id="bd_depth" type="number" min="0" inputmode="numeric" value="0"></div>
+    <div class="backdateMetric"><small>🤝 Meeting</small><input id="bd_meeting" type="number" min="0" inputmode="numeric" value="0"></div>
+  </div>
+
+  <div style="margin-top:9px">
+    <div class="small">Admin Note / Back-date reason</div>
+    <textarea id="bd_note" class="v27Textarea" placeholder="उदा. Leader कडून उशिरा report मिळाला / previous entry correction"></textarea>
+  </div>
+
+  <div class="btnrow">
+    <button class="primary green" onclick="saveAdminBackdatedEntry()">💾 Back-dated Entry Save करा</button>
+    <button class="actionMini" onclick="clearBackdatedEntryForm()">↺ Clear</button>
+  </div>
+</details>
+
 <div class="section glass">
 <div class="sectionHead">
 <div><h3>📄 Leader-wise Daily Report</h3><div class="small">Leader आणि Date निवडा — Daily performance टक्केवारीसह पहा.</div></div>
@@ -1952,7 +2107,7 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
 </div>
 <div class="btnrow"><button class="primary" onclick="addUser()">➕ User Add करा</button><button class="primary gold" onclick="recoverOldUsersAndData(true)">♻️ जुने Users शोधा</button><button class="primary" onclick="repairAllOldUserLogins()">🔐 Old Login Repair</button><button class="primary" onclick="syncCloudData()">☁️ Firebase Sync</button></div>
 <div class="safetyStrip">
-<span class="safetyPill">Version: V32.0</span>
+<span class="safetyPill">Version: V34.0</span>
 <span class="safetyPill">Stable Root: ds_world_growth_os_v1</span>
 <span class="safetyPill">Hard Delete: Disabled</span>
 <span class="safetyPill">Daily Backup: Enabled</span>
@@ -2054,9 +2209,9 @@ body.lightTheme .pendingPanel{border-color:#f1d2d7!important}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSION="V32.0";
+const APP_VERSION="V34.0";
 const APP_BUILD="12 SEP 2026";
-const APP_RELEASE="CLEAR TODAY ENTRY DASHBOARD";
+const APP_RELEASE="LEADER BACKDATED ENTRY + AUDIT";
 const ADMIN_DEFAULT={name:"Super Admin",username:"admin",password:"admin123",role:"admin"};
 
 const firebaseConfig = {
@@ -2092,6 +2247,7 @@ const ADMIN_ACTIONS_PATH=`${CLOUD_ROOT}/admin_actions`;
 const ADMIN_DAY_REVIEW_PATH=`${CLOUD_ROOT}/admin_day_reviews`;
 const MONTH_NOTES_PATH=`${CLOUD_ROOT}/leader_month_notes`;
 const REPORT_LOG_PATH=`${CLOUD_ROOT}/report_log`;
+const ENTRY_AUDIT_PATH=`${CLOUD_ROOT}/entry_audit`;
 
 const DATA_POLICY_VERSION="FINAL_STABLE_V1";
 const STABLE_DATA_ROOT="ds_world_growth_os_v1";
@@ -2976,22 +3132,74 @@ async function saveEntry(){
   const perms=userPermissions(currentUser);
   if(currentUser.role!=="admin"&&perms.dailyEntry===false)return showToast("Admin ने Daily Entry Right बंद केला आहे");
 
-  const e={};
-  Object.keys(targets).forEach(k=>e[k]=Number(document.getElementById(k).value||0));
-  e.updatedAt=Date.now();
-  e.savedBy=currentUser.username;
+  const dateInput=document.getElementById("entryActivityDate");
+  const activityDate=(dateInput&&dateInput.value)||todayKey();
+  if(activityDate>todayKey())return showToast("Future date वर entry करता येणार नाही");
 
-  const data=allEntries();data[todayKey()]=e;
+  const now=Date.now();
+  const data=allEntries();
+  const existing=data[activityDate]||null;
+  const isBackdated=activityDate<todayKey();
+
+  if(existing&&isBackdated){
+    const ok=confirm(`${activityDate} ची entry आधीच आहे.\n\nUpdate करून जुना snapshot Audit History मध्ये ठेवायचा?`);
+    if(!ok)return;
+  }
+
+  const e={};
+  Object.keys(targets).forEach(k=>e[k]=Math.max(0,Number(document.getElementById(k).value||0)));
+
+  e.activityDate=activityDate;
+  e.backdated=isBackdated;
+  e.entryMode=isBackdated?"leader_backdated":"leader_daily";
+  e.enteredAt=existing?.enteredAt||existing?.createdAt||existing?.updatedAt||now;
+  e.createdAt=existing?.createdAt||existing?.enteredAt||existing?.updatedAt||now;
+  e.updatedAt=now;
+  e.enteredBy=currentUser.username;
+  e.enteredByName=currentUser.name;
+  e.savedBy=currentUser.username;
+  e.lastEditedBy=currentUser.username;
+  e.lastEditedByName=currentUser.name;
+
+  // Preserve old note fields if they exist.
+  if(existing?.note)e.note=existing.note;
+  if(existing?.notes)e.notes=existing.notes;
+  if(existing?.adminNote)e.adminNote=existing.adminNote;
+
+  // Keep local data immediately, same stable key.
+  data[activityDate]=e;
   localStorage.setItem(entryKey(),JSON.stringify(data));
 
   if(firebaseReady&&db){
     try{
-      const path=`${cloudEntriesPath(currentUser.username)}/${todayKey()}`;
-      await db.ref(path).set(e);
+      const userKey=safeCloudKey(currentUser.username);
+      const updates={};
+
+      if(existing){
+        const auditKey=String(now);
+        updates[`entry_audit/${userKey}/${activityDate}/${auditKey}`]={
+          snapshot:existing,
+          archivedAt:now,
+          archivedBy:currentUser.username,
+          archivedByName:currentUser.name,
+          reason:isBackdated?"leader_backdated_update":"leader_daily_update"
+        };
+      }
+
+      updates[`entries/${userKey}/${activityDate}`]=e;
+      await db.ref(CLOUD_ROOT).update(updates);
+
+      const path=`${cloudEntriesPath(currentUser.username)}/${activityDate}`;
       const check=await db.ref(path).once("value");
       if(!check.exists())throw new Error("Entry cloud verification failed");
+
       setCloudStatus("online","☁️ Entry Synced");
-      showToast("आजची Entry Firebase मध्ये Save झाली ✅");
+      await logActivity(
+        isBackdated?(existing?"LEADER_BACKDATED_UPDATE":"LEADER_BACKDATED_CREATE"):"LEADER_DAILY_ENTRY",
+        `${currentUser.name} • Activity ${activityDate} • Saved ${new Date(now).toLocaleString("mr-IN")}`,
+        currentUser.username
+      );
+      showToast(isBackdated?`Back-dated Entry ${activityDate} Save झाली ✅`:"आजची Entry Firebase मध्ये Save झाली ✅");
     }catch(err){
       console.warn(err);
       showToast("Entry फोनमध्ये save आहे • Firebase Sync तपासा");
@@ -3002,8 +3210,13 @@ async function saveEntry(){
   }else{
     showToast("Entry फोनमध्ये save झाली • Firebase Offline");
   }
+
   renderAll();
-  openAppTab("dashboard");
+  if(isBackdated){
+    loadDailyEntryForm();
+  }else{
+    openAppTab("dashboard");
+  }
 }
 function monthEntries(username){
   const data=JSON.parse(localStorage.getItem("ds_entries_"+username)||"{}");
@@ -4320,13 +4533,43 @@ function rawDailyPct(actual,target){
 }
 function loadDailyEntryForm(){
   if(!currentUser)return;
-  const e=getEntriesFor(currentUser.username)[todayKey()]||{};
+
+  const dateInput=document.getElementById("entryActivityDate");
+  if(dateInput){
+    dateInput.max=todayKey();
+    if(!dateInput.value)dateInput.value=todayKey();
+    if(dateInput.value>todayKey())dateInput.value=todayKey();
+  }
+  const activityDate=(dateInput&&dateInput.value)||todayKey();
+  const e=getEntriesFor(currentUser.username)[activityDate]||{};
+
   DAILY_REPORT_METRICS.forEach(m=>{
     const input=document.getElementById(m.key);
     if(input)input.value=Number(e[m.key]||0);
   });
+
+  const isBackdated=activityDate<todayKey();
+  const mode=document.getElementById("entryDateModeBadge");
+  const hint=document.getElementById("entryDateAuditHint");
+  if(mode)mode.textContent=isBackdated?"BACK-DATED":"TODAY";
+
+  if(hint){
+    if(e&&Object.keys(e).length){
+      const stamp=Number(e.updatedAt||e.enteredAt||e.createdAt||0);
+      hint.textContent=`${activityDate} • ${stamp?"Last Save "+new Date(stamp).toLocaleString("mr-IN"):"Existing entry"}`;
+    }else{
+      hint.textContent=isBackdated?`${activityDate} साठी नवी back-dated entry`:"आजची नवी entry";
+    }
+  }
+
   updateDailyEntryPreview();
 }
+
+function setEntryDateToday(){
+  const el=document.getElementById("entryActivityDate");
+  if(el){el.value=todayKey();loadDailyEntryForm()}
+}
+
 function updateDailyEntryPreview(){
   let cappedTotal=0;
   DAILY_REPORT_METRICS.forEach(m=>{
@@ -4379,7 +4622,21 @@ function getLeaderDailyReportData(username,date){
     return {...m,actual,pct,capped:Math.min(pct,100)};
   });
   const ftd=Math.round(rows.reduce((s,r)=>s+r.capped,0)/rows.length);
-  return {user,date,e,rows,ftd,hasEntry,updatedAt:Number(e.updatedAt||0)};
+  const savedAt=Number(e.updatedAt||e.enteredAt||e.createdAt||0);
+  const enteredAt=Number(e.enteredAt||e.createdAt||e.updatedAt||0);
+  const enteredBy=e.enteredByName||e.enteredBy||e.savedBy||user.name||user.username;
+  const entryMode=e.entryMode||"leader_daily";
+  const isBackdated=e.backdated===true||entryMode==="admin_backdated"||entryMode==="leader_backdated";
+  const auditLabel=entryMode==="admin_backdated"?"ADMIN BACK-DATED ENTRY"
+    :entryMode==="leader_backdated"?"LEADER BACK-DATED ENTRY"
+    :entryMode==="admin_manual"?"ADMIN MANUAL ENTRY"
+    :"ENTRY AUDIT";
+  return {
+    user,date,e,rows,ftd,hasEntry,
+    updatedAt:savedAt,enteredAt,enteredBy,entryMode,isBackdated,auditLabel,
+    activityDate:e.activityDate||date,
+    adminNote:e.adminNote||e.note||e.notes||""
+  };
 }
 function dailyStatusText(pct){
   if(pct>=100)return "✅ पूर्ण";
@@ -4406,16 +4663,30 @@ function renderLeaderDailyReport(track=false){
       : `Calls → Plans → PV या क्रमाने recovery action घ्या.`;
 
   const scoreClass=d.ftd>=85?"dailyReportStatusGood":d.ftd>=60?"dailyReportStatusWarn":"dailyReportStatusBad";
+  const savedStamp=d.updatedAt?new Date(d.updatedAt).toLocaleString("mr-IN"):"—";
+  const enteredStamp=d.enteredAt?new Date(d.enteredAt).toLocaleString("mr-IN"):"—";
+
   box.innerHTML=`
     <div class="dailyReportCard">
       <div class="dailyReportHero">
         <div>
           <h4>${d.user.name}</h4>
-          <div class="small">${d.user.username} • ${d.date}</div>
-          <div class="small">${d.hasEntry?(d.updatedAt?"Last Save: "+new Date(d.updatedAt).toLocaleString("mr-IN"):"Entry Available"):"Entry नाही"}</div>
+          <div class="small">${d.user.username}</div>
+          <div class="small"><b>Activity Date:</b> ${d.activityDate}</div>
         </div>
         <div style="text-align:right"><div class="small">Daily FTD</div><div class="dailyReportScore ${scoreClass}">${d.ftd}%</div></div>
       </div>
+
+      ${d.hasEntry?`
+      <div class="reportAuditStamp">
+        <b>${d.isBackdated?"🗓️ "+d.auditLabel:"🕒 "+d.auditLabel}</b><br>
+        Activity Date: <b>${d.activityDate}</b> •
+        Entered/Saved: <b>${enteredStamp}</b> •
+        Last Updated: <b>${savedStamp}</b> •
+        Entered By: <b>${d.enteredBy}</b>
+        ${d.adminNote?`<br>Note: ${escapeHtml(d.adminNote)}`:""}
+      </div>`:`<div class="reportAuditStamp">या Date ची entry उपलब्ध नाही.</div>`}
+
       <div class="dailyMetricGrid">
         ${d.rows.map(r=>`
           <div class="dailyMetricBox">
@@ -4442,6 +4713,8 @@ function buildLeaderDailyPdfHTML(d){
     : d.ftd>=60
       ? `${weakest?.label||"कमकुवत activity"} वर पुढचा focus ठेवा.`
       : `Calls → Plans → PV या क्रमाने recovery action घ्या.`;
+  const savedStamp=d.updatedAt?new Date(d.updatedAt).toLocaleString("mr-IN"):"—";
+  const enteredStamp=d.enteredAt?new Date(d.enteredAt).toLocaleString("mr-IN"):"—";
   const rows=d.rows.map(r=>`
     <tr>
       <td style="padding:6px;border-bottom:1px solid #e5e7eb;text-align:left">${r.icon} ${r.label}</td>
@@ -4455,23 +4728,42 @@ function buildLeaderDailyPdfHTML(d){
       <div style="border-top:5px solid #1f5fae;padding-top:7px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div><div style="font-size:19px;font-weight:950">RCM • DS WORLD</div><div style="font-size:10px;color:#667085">Leader Daily Performance Report</div></div>
-          <div style="text-align:right;font-size:9px;color:#667085">Report: D-${String(d.date).replaceAll("-","")}-${String(d.user.username).slice(-4)}<br>Generated: ${new Date().toLocaleString("mr-IN")}<br>${APP_VERSION}</div>
+          <div style="text-align:right;font-size:8px;color:#667085">
+            Report: D-${String(d.date).replaceAll("-","")}-${String(d.user.username).slice(-4)}<br>
+            Generated: ${new Date().toLocaleString("mr-IN")}<br>${APP_VERSION}
+          </div>
         </div>
-        <div style="margin-top:9px;padding:8px 10px;background:#f3f7fb;border-radius:9px;display:flex;justify-content:space-between">
-          <div><b style="font-size:15px">${d.user.name}</b><div style="font-size:9px;color:#667085">${d.user.username} • ${d.date}</div></div>
+
+        <div style="margin-top:8px;padding:8px 10px;background:#f3f7fb;border-radius:9px;display:flex;justify-content:space-between">
+          <div>
+            <b style="font-size:15px">${d.user.name}</b>
+            <div style="font-size:9px;color:#667085">${d.user.username}</div>
+            <div style="font-size:9px;color:#667085"><b>Activity Date:</b> ${d.activityDate}</div>
+          </div>
           <div style="text-align:right"><div style="font-size:9px;color:#667085">DAILY FTD</div><b style="font-size:22px">${d.ftd}%</b></div>
         </div>
-        <table style="width:100%;border-collapse:collapse;margin-top:9px;font-size:9px">
+
+        <div style="margin-top:7px;padding:7px 8px;background:${d.isBackdated?"#fff7e8":"#f8fafc"};border:1px solid ${d.isBackdated?"#efd39a":"#e5e7eb"};border-radius:8px;font-size:8.5px;line-height:1.45">
+          <b>${d.isBackdated?d.auditLabel:"ENTRY AUDIT STAMP"}</b><br>
+          Activity Date: <b>${d.activityDate}</b> •
+          Entered/Saved: <b>${enteredStamp}</b> •
+          Last Updated: <b>${savedStamp}</b> •
+          Entered By: <b>${escapeHtml(d.enteredBy)}</b>
+          ${d.adminNote?`<br>Admin Note: ${escapeHtml(d.adminNote)}`:""}
+        </div>
+
+        <table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:9px">
           <thead><tr style="background:#173b67;color:#fff"><th style="padding:6px;text-align:left">Activity</th><th>Target</th><th>Actual</th><th>Achievement</th><th>Status</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
+
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;font-size:9px">
           <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Strongest:</b><br>${strongest?strongest.label+" ("+strongest.pct+"%)":"—"}</div>
           <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Weakest:</b><br>${weakest?weakest.label+" ("+weakest.pct+"%)":"—"}</div>
           <div style="padding:7px;background:#f8fafc;border-radius:7px"><b>Missing:</b><br>${missing.length?missing.map(x=>x.label).join(", "):"None"}</div>
         </div>
         <div style="margin-top:7px;padding:8px;background:#f8fafc;border-radius:8px;font-size:9px;line-height:1.5"><b>Admin Recommendation:</b> ${advice}</div>
-        <div style="margin-top:18px;display:flex;justify-content:space-between;font-size:8px;color:#667085"><span>RCM • DS WORLD Growth OS</span><span>Admin / Mentor Signature __________________</span></div>
+        <div style="margin-top:17px;display:flex;justify-content:space-between;font-size:8px;color:#667085"><span>RCM • DS WORLD Growth OS</span><span>Admin / Mentor Signature __________________</span></div>
       </div>
     </div>`;
 }
@@ -4767,6 +5059,7 @@ function scheduleAdminSuiteRender(){
 function renderAdminCommandSuite(){
   if(!currentUser||currentUser.role!=="admin")return;
   populateV27LeaderSelectors();
+  populateBackdatedLeaderSelector();
   renderTodayCommandCenter();
   renderTodayEntryStatusDashboard();
   renderSmartActionQueue();
@@ -5630,6 +5923,7 @@ function switchAdminSection(section,btn=null,scrollTop=true){
     renderUsers();
   }else if(section==="reports"){
     populateAdminDailyReportLeaders();
+    populateBackdatedLeaderSelector();
     populateV27LeaderSelectors();
     populateLeaderSummaryReportSelector();
     renderLeaderSummaryReport(false);
@@ -5755,6 +6049,158 @@ function renderTodayEntryStatusDashboard(){
       <div class="todayLeaderTime" style="color:var(--red)">PENDING</div>
     </div>`).join("")
     :`<div class="todayEmptyState">🎉 सर्व Leaders ची आजची entry आली आहे.</div>`;
+}
+
+
+/* ===== V33 ADMIN-ONLY BACKDATED ENTRY ===== */
+const BACKDATE_KEYS=["names","calls","plans","pv","video","book","depth","meeting"];
+
+function populateBackdatedLeaderSelector(){
+  const sel=document.getElementById("backdateLeaderSelect");
+  const di=document.getElementById("backdateEntryDate");
+  if(!sel||!currentUser||currentUser.role!=="admin")return;
+
+  const leaders=activeLeaders(),old=sel.value;
+  sel.innerHTML=leaders.map(u=>`<option value="${u.username}">${u.name} • ${u.username}</option>`).join("");
+  if(old&&leaders.some(u=>String(u.username)===String(old)))sel.value=old;
+
+  if(di){
+    di.max=todayKey();
+    if(!di.value){
+      const d=new Date();
+      d.setDate(d.getDate()-1);
+      di.value=localDateKey(d);
+    }
+  }
+}
+
+function clearBackdatedEntryForm(){
+  BACKDATE_KEYS.forEach(k=>{
+    const el=document.getElementById("bd_"+k);
+    if(el)el.value=0;
+  });
+  const note=document.getElementById("bd_note");
+  if(note)note.value="";
+  const info=document.getElementById("backdateExistingInfo");
+  if(info)info.textContent="Form clear केला. Leader आणि Date तपासून Save करा.";
+}
+
+function loadBackdatedEntry(){
+  if(!currentUser||currentUser.role!=="admin")return;
+  const username=document.getElementById("backdateLeaderSelect")?.value;
+  const date=document.getElementById("backdateEntryDate")?.value;
+  if(!username||!date)return showToast("Leader आणि Date निवडा");
+  if(date>todayKey())return showToast("Future date वर entry करता येणार नाही");
+
+  const u=getUsers().find(x=>String(x.username)===String(username));
+  const e=getEntriesFor(username)[date]||null;
+
+  BACKDATE_KEYS.forEach(k=>{
+    const el=document.getElementById("bd_"+k);
+    if(el)el.value=e?Number(e[k]||0):0;
+  });
+  const note=document.getElementById("bd_note");
+  if(note)note.value=e?(e.adminNote||e.note||e.notes||""):"";
+
+  const info=document.getElementById("backdateExistingInfo");
+  if(!info)return;
+
+  if(!e){
+    info.innerHTML=`🆕 <b>${u?.name||username}</b> • Activity Date <b>${date}</b><br>या date ची entry नाही. Save केल्यावर Admin Back-dated Entry म्हणून audit stamp तयार होईल.`;
+    return;
+  }
+
+  const saved=Number(e.updatedAt||e.enteredAt||e.createdAt||0);
+  const by=e.enteredByName||e.enteredBy||e.savedBy||"—";
+  info.innerHTML=`⚠️ <b>Existing Entry सापडली.</b> Save केल्यास values update होतील; जुना snapshot Entry Audit मध्ये सुरक्षित राहील.<br>
+  Activity Date: <b>${date}</b> • Existing Save: <b>${saved?new Date(saved).toLocaleString("mr-IN"):"—"}</b> • By: <b>${escapeHtml(by)}</b>`;
+}
+
+async function saveAdminBackdatedEntry(){
+  if(!currentUser||currentUser.role!=="admin")return showToast("Admin access आवश्यक आहे");
+  if(!firebaseReady||!db)return showToast("Firebase Online असणे आवश्यक आहे");
+
+  const username=normalizeUsername(document.getElementById("backdateLeaderSelect")?.value);
+  const date=document.getElementById("backdateEntryDate")?.value;
+  if(!username||!date)return showToast("Leader आणि Date निवडा");
+  if(date>todayKey())return showToast("Future date वर entry करता येणार नाही");
+
+  const u=getUsers().find(x=>String(x.username)===String(username));
+  if(!u)return showToast("Leader सापडला नाही");
+
+  const existing=getEntriesFor(username)[date]||null;
+  const now=Date.now();
+
+  if(existing){
+    const ok=confirm(`${u.name} यांची ${date} ची entry आधीच आहे.\n\nUpdate करून जुना snapshot Audit History मध्ये ठेवायचा?`);
+    if(!ok)return;
+  }else if(date===todayKey()){
+    const ok=confirm("ही आजची date आहे. Admin Entry म्हणून save करायची?");
+    if(!ok)return;
+  }
+
+  const e={};
+  BACKDATE_KEYS.forEach(k=>{
+    e[k]=Math.max(0,Number(document.getElementById("bd_"+k)?.value||0));
+  });
+
+  e.activityDate=date;
+  e.backdated=date<todayKey();
+  e.entryMode=e.backdated?"admin_backdated":"admin_manual";
+  e.enteredAt=existing?.enteredAt||now;
+  e.createdAt=existing?.createdAt||now;
+  e.updatedAt=now;
+  e.enteredBy=currentUser.username;
+  e.enteredByName=currentUser.name;
+  e.savedBy=currentUser.username;
+  e.adminNote=(document.getElementById("bd_note")?.value||"").trim();
+  e.lastEditedBy=currentUser.username;
+  e.lastEditedByName=currentUser.name;
+
+  const userKey=safeCloudKey(username);
+  const auditKey=String(now);
+  const updates={};
+
+  if(existing){
+    updates[`entry_audit/${userKey}/${date}/${auditKey}`]={
+      snapshot:existing,
+      archivedAt:now,
+      archivedBy:currentUser.username,
+      archivedByName:currentUser.name,
+      reason:"admin_backdated_update"
+    };
+  }
+
+  updates[`entries/${userKey}/${date}`]=e;
+
+  try{
+    await db.ref(CLOUD_ROOT).update(updates);
+
+    const verify=await db.ref(`${CLOUD_ROOT}/entries/${userKey}/${date}`).once("value");
+    if(!verify.exists())throw new Error("Backdated entry verification failed");
+
+    mergeEntryData(username,{[date]:e});
+
+    await logActivity(
+      existing?"BACKDATED_ENTRY_UPDATE":"BACKDATED_ENTRY_CREATE",
+      `${u.name} • Activity ${date} • Saved ${new Date(now).toLocaleString("mr-IN")}`,
+      username
+    );
+
+    showToast(`Back-dated Entry Save झाली ✅ • ${date}`);
+    loadBackdatedEntry();
+
+    // Auto-open selected Daily Report with both date stamp and actual save timestamp.
+    const rs=document.getElementById("dailyReportLeaderSelect");
+    const rd=document.getElementById("dailyReportDate");
+    if(rs)rs.value=username;
+    if(rd)rd.value=date;
+    renderLeaderDailyReport(true);
+
+  }catch(err){
+    console.warn(err);
+    showToast("Back-dated Entry Firebase मध्ये save झाली नाही");
+  }
 }
 
 const _v26ShowView=showView;
